@@ -10,6 +10,7 @@ using Streameus.Controllers;
 
 namespace Streameus.Tests.Controllers
 {
+    /*
     [TestClass]
     public class ValuesControllerTest
     {
@@ -77,5 +78,5 @@ namespace Streameus.Tests.Controllers
 
             // Assert
         }
-    }
+    }*/
 }

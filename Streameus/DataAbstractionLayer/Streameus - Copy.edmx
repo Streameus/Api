@@ -1,0 +1,643 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Streameus1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AuthorId" Type="int" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Post_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="Conference">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="OwnerId" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="Time" Type="datetime" Nullable="false" />
+          <Property Name="ScheduledDuration" Type="int" Nullable="false" />
+          <Property Name="FinalDuration" Type="int" Nullable="false" />
+          <Property Name="User_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="ConferenceParameters">
+          <Key>
+            <PropertyRef Name="ConferenceId" />
+          </Key>
+          <Property Name="ConferenceId" Type="int" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="FreeTime" Type="int" Nullable="false" />
+          <Property Name="CanAskQuestions" Type="bit" Nullable="false" />
+          <Property Name="CanAskVoiceQuestions" Type="bit" Nullable="false" />
+          <Property Name="Visibility" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConferenceId" Type="int" Nullable="false" />
+          <Property Name="Filename" Type="nvarchar(max)" />
+          <Property Name="Path" Type="nvarchar(max)" />
+          <Property Name="Size" Type="int" Nullable="false" />
+          <Property Name="NumberDownloads" Type="int" Nullable="false" />
+          <Property Name="DateUploaded" Type="datetime" Nullable="false" />
+          <Property Name="DateLastDownload" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Parameters">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Notifmail" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AuthorId" Type="int" Nullable="false" />
+          <Property Name="Visibility" Type="bit" Nullable="false" />
+          <Property Name="Content" Type="nvarchar(max)" />
+          <Property Name="PostDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Pseudo" Type="nvarchar" MaxLength="50" />
+          <Property Name="Language" Type="nvarchar" MaxLength="10" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Gender" Type="bit" Nullable="false" />
+          <Property Name="Reputation" Type="int" Nullable="false" />
+          <Property Name="FollowerNumber" Type="int" Nullable="false" />
+          <Property Name="FollowedNumber" Type="int" Nullable="false" />
+          <Property Name="ParametersId" Type="int" Nullable="false" />
+          <Property Name="Birthday" Type="datetime" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="20" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="City" Type="nvarchar(max)" />
+          <Property Name="Country" Type="nvarchar(max)" />
+          <Property Name="Website" Type="nvarchar(max)" />
+          <Property Name="Profession" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="400" />
+          <Property Name="ConferenceParameters_ConferenceId" Type="int" />
+          <Property Name="ConferenceParameters_ConferenceId1" Type="int" />
+          <Property Name="Conference_Id" Type="int" />
+        </EntityType>
+        <Association Name="FK_dbo_Comment_dbo_Post_Post_Id">
+          <End Role="Post" Type="Self.Post" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Post_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Comment_dbo_User_AuthorId">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Conference_dbo_User_OwnerId">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Conference" Type="Self.Conference" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Conference">
+              <PropertyRef Name="OwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Conference_dbo_User_User_Id">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Conference" Type="Self.Conference" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Conference">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ConferenceParameters_dbo_Conference_ConferenceId">
+          <End Role="Conference" Type="Self.Conference" Multiplicity="1" />
+          <End Role="ConferenceParameters" Type="Self.ConferenceParameters" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Conference">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConferenceParameters">
+              <PropertyRef Name="ConferenceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Document_dbo_Conference_ConferenceId">
+          <End Role="Conference" Type="Self.Conference" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Document" Type="Self.Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Conference">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="ConferenceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Parameters_dbo_User_UserId">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Parameters" Type="Self.Parameters" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Parameters">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Post_dbo_User_AuthorId">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_User_dbo_Conference_Conference_Id">
+          <End Role="Conference" Type="Self.Conference" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Conference">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="Conference_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_User_dbo_ConferenceParameters_ConferenceParameters_ConferenceId">
+          <End Role="ConferenceParameters" Type="Self.ConferenceParameters" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConferenceParameters">
+              <PropertyRef Name="ConferenceId" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="ConferenceParameters_ConferenceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_User_dbo_ConferenceParameters_ConferenceParameters_ConferenceId1">
+          <End Role="ConferenceParameters" Type="Self.ConferenceParameters" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConferenceParameters">
+              <PropertyRef Name="ConferenceId" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="ConferenceParameters_ConferenceId1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Streameus1ModelStoreContainer">
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Conference" EntityType="Self.Conference" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ConferenceParameters" EntityType="Self.ConferenceParameters" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Document" EntityType="Self.Document" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Parameters" EntityType="Self.Parameters" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_Comment_dbo_Post_Post_Id" Association="Self.FK_dbo_Comment_dbo_Post_Post_Id">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Comment_dbo_User_AuthorId" Association="Self.FK_dbo_Comment_dbo_User_AuthorId">
+            <End Role="User" EntitySet="User" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Conference_dbo_User_OwnerId" Association="Self.FK_dbo_Conference_dbo_User_OwnerId">
+            <End Role="User" EntitySet="User" />
+            <End Role="Conference" EntitySet="Conference" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Conference_dbo_User_User_Id" Association="Self.FK_dbo_Conference_dbo_User_User_Id">
+            <End Role="User" EntitySet="User" />
+            <End Role="Conference" EntitySet="Conference" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ConferenceParameters_dbo_Conference_ConferenceId" Association="Self.FK_dbo_ConferenceParameters_dbo_Conference_ConferenceId">
+            <End Role="Conference" EntitySet="Conference" />
+            <End Role="ConferenceParameters" EntitySet="ConferenceParameters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Document_dbo_Conference_ConferenceId" Association="Self.FK_dbo_Document_dbo_Conference_ConferenceId">
+            <End Role="Conference" EntitySet="Conference" />
+            <End Role="Document" EntitySet="Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Parameters_dbo_User_UserId" Association="Self.FK_dbo_Parameters_dbo_User_UserId">
+            <End Role="User" EntitySet="User" />
+            <End Role="Parameters" EntitySet="Parameters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Post_dbo_User_AuthorId" Association="Self.FK_dbo_Post_dbo_User_AuthorId">
+            <End Role="User" EntitySet="User" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_User_dbo_Conference_Conference_Id" Association="Self.FK_dbo_User_dbo_Conference_Conference_Id">
+            <End Role="Conference" EntitySet="Conference" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_User_dbo_ConferenceParameters_ConferenceParameters_ConferenceId" Association="Self.FK_dbo_User_dbo_ConferenceParameters_ConferenceParameters_ConferenceId">
+            <End Role="ConferenceParameters" EntitySet="ConferenceParameters" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_User_dbo_ConferenceParameters_ConferenceParameters_ConferenceId1" Association="Self.FK_dbo_User_dbo_ConferenceParameters_ConferenceParameters_ConferenceId1">
+            <End Role="ConferenceParameters" EntitySet="ConferenceParameters" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Streameus.Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Post" Relationship="Streameus.Models.PostComment" FromRole="Comment" ToRole="Post" />
+          <Property Name="PostId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Author" Relationship="Streameus.Models.UserComment" FromRole="Comment" ToRole="User" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Conference">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ScheduledDuration" Type="Int32" Nullable="false" />
+          <Property Name="FinalDuration" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Owner" Relationship="Streameus.Models.ConferenceOwner" FromRole="Conference" ToRole="User" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Members" Relationship="Streameus.Models.ConferenceMembers" FromRole="Conference" ToRole="User" />
+          <NavigationProperty Name="Documents" Relationship="Streameus.Models.ConferenceDocument" FromRole="Conference" ToRole="Document" />
+          <NavigationProperty Name="ConferenceParameters" Relationship="Streameus.Models.ConferenceToConferenceParameters" FromRole="Conference" ToRole="ConferenceParameters" />
+          </EntityType>
+        <EntityType Name="ConferenceParameters">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="FreeTime" Type="Int32" Nullable="false" />
+          <Property Name="CanAskQuestions" Type="Boolean" Nullable="false" />
+          <Property Name="CanAskVoiceQuestions" Type="Boolean" Nullable="false" />
+          <Property Name="Visibility" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Conference" Relationship="Streameus.Models.ConferenceToConferenceParameters" FromRole="ConferenceParameters" ToRole="Conference" />
+          </EntityType>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Filename" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="Int32" Nullable="false" />
+          <Property Name="NumberDownloads" Type="Int32" Nullable="false" />
+          <Property Name="DateUploaded" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateLastDownload" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Conference" Relationship="Streameus.Models.ConferenceDocument" FromRole="Document" ToRole="Conference" />
+          <Property Name="ConferenceId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Parameters">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Notifmail" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Streameus.Models.UserParameters" FromRole="Parameters" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Visibility" Type="Boolean" Nullable="false" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PostDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Author" Relationship="Streameus.Models.PostUser" FromRole="Post" ToRole="User" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Comments" Relationship="Streameus.Models.PostComment" FromRole="Post" ToRole="Comment" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Pseudo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Language" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="Boolean" Nullable="false" />
+          <Property Name="Reputation" Type="Int32" Nullable="false" />
+          <Property Name="FollowerNumber" Type="Int32" Nullable="false" />
+          <Property Name="FollowedNumber" Type="Int32" Nullable="false" />
+          <Property Name="Birthday" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Website" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Profession" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Posts" Relationship="Streameus.Models.PostUser" FromRole="User" ToRole="Post" />
+          <NavigationProperty Name="ConferencesCreated" Relationship="Streameus.Models.ConferenceOwner" FromRole="User" ToRole="Conference" />
+          <NavigationProperty Name="Conferences" Relationship="Streameus.Models.ConferenceMembers" FromRole="User" ToRole="Conference" />
+          <NavigationProperty Name="Parameters" Relationship="Streameus.Models.UserParameters" FromRole="User" ToRole="Parameters" />
+          <NavigationProperty Name="Abonnements" Relationship="Streameus.Models.FollowingAssociation" FromRole="User" ToRole="User1" />
+          <NavigationProperty Name="Followers" Relationship="Streameus.Models.FollowingAssociation" FromRole="User1" ToRole="User" />
+          </EntityType>
+        <EntityContainer Name="StreameusContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Comment" EntityType="Self.Comment" />
+          <EntitySet Name="Conference" EntityType="Self.Conference" />
+          <EntitySet Name="ConferenceParameters" EntityType="Self.ConferenceParameters" />
+          <EntitySet Name="Document" EntityType="Self.Document" />
+          <EntitySet Name="Parameters" EntityType="Self.Parameters" />
+          <EntitySet Name="Post" EntityType="Self.Post" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <AssociationSet Name="PostUser" Association="Streameus.Models.PostUser">
+            <End Role="User" EntitySet="User" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="ConferenceUser" Association="Streameus.Models.ConferenceOwner">
+            <End Role="Conference" EntitySet="Conference" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="ConferenceUser1" Association="Streameus.Models.ConferenceMembers">
+            <End Role="Conference" EntitySet="Conference" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="ConferenceDocument" Association="Streameus.Models.ConferenceDocument">
+            <End Role="Conference" EntitySet="Conference" />
+            <End Role="Document" EntitySet="Document" />
+          </AssociationSet>
+          <AssociationSet Name="ConferenceToConferenceParameters" Association="Streameus.Models.ConferenceToConferenceParameters">
+            <End Role="Conference" EntitySet="Conference" />
+            <End Role="ConferenceParameters" EntitySet="ConferenceParameters" />
+          </AssociationSet>
+          <AssociationSet Name="UserParameters" Association="Streameus.Models.UserParameters">
+            <End Role="User" EntitySet="User" />
+            <End Role="Parameters" EntitySet="Parameters" />
+          </AssociationSet>
+          <AssociationSet Name="FollowingAssociation" Association="Streameus.Models.FollowingAssociation">
+            <End Role="User" EntitySet="User" />
+            <End Role="User1" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="PostComment" Association="Streameus.Models.PostComment">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="UserComment" Association="Streameus.Models.UserComment">
+            <End Role="User" EntitySet="User" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          </EntityContainer>
+        <Association Name="PostUser">
+          <End Type="Streameus.Models.User" Role="User" Multiplicity="1" />
+          <End Type="Streameus.Models.Post" Role="Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ConferenceOwner">
+          <End Type="Streameus.Models.Conference" Role="Conference" Multiplicity="*" />
+          <End Type="Streameus.Models.User" Role="User" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Conference">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ConferenceMembers">
+          <End Type="Streameus.Models.Conference" Role="Conference" Multiplicity="*" />
+          <End Type="Streameus.Models.User" Role="User" Multiplicity="*" />
+        </Association>
+        <Association Name="ConferenceDocument">
+          <End Type="Streameus.Models.Conference" Role="Conference" Multiplicity="1" />
+          <End Type="Streameus.Models.Document" Role="Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Conference">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="ConferenceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ConferenceToConferenceParameters">
+          <End Type="Streameus.Models.Conference" Role="Conference" Multiplicity="1" />
+          <End Type="Streameus.Models.ConferenceParameters" Role="ConferenceParameters" Multiplicity="1" />
+        </Association>
+        <Association Name="UserParameters">
+          <End Type="Streameus.Models.User" Role="User" Multiplicity="1" />
+          <End Type="Streameus.Models.Parameters" Role="Parameters" Multiplicity="1" />
+        </Association>
+        <Association Name="FollowingAssociation">
+          <End Type="Streameus.Models.User" Role="User" Multiplicity="*" />
+          <End Type="Streameus.Models.User" Role="User1" Multiplicity="*" />
+        </Association>
+        <Association Name="PostComment">
+          <End Type="Streameus.Models.Post" Role="Post" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Streameus.Models.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserComment">
+          <End Type="Streameus.Models.User" Role="User" Multiplicity="1" />
+          <End Type="Streameus.Models.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Streameus1ModelStoreContainer" CdmEntityContainer="StreameusContext">
+          <EntitySetMapping Name="Comment">
+            <EntityTypeMapping TypeName="Streameus.Models.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Conference">
+            <EntityTypeMapping TypeName="Streameus.Models.Conference">
+              <MappingFragment StoreEntitySet="Conference">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="ScheduledDuration" ColumnName="ScheduledDuration" />
+                <ScalarProperty Name="FinalDuration" ColumnName="FinalDuration" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConferenceParameters">
+            <EntityTypeMapping TypeName="Streameus.Models.ConferenceParameters">
+              <MappingFragment StoreEntitySet="ConferenceParameters">
+                <ScalarProperty Name="Id" ColumnName="ConferenceId" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="FreeTime" ColumnName="FreeTime" />
+                <ScalarProperty Name="CanAskQuestions" ColumnName="CanAskQuestions" />
+                <ScalarProperty Name="CanAskVoiceQuestions" ColumnName="CanAskVoiceQuestions" />
+                <ScalarProperty Name="Visibility" ColumnName="Visibility" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Document">
+            <EntityTypeMapping TypeName="Streameus.Models.Document">
+              <MappingFragment StoreEntitySet="Document">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Filename" ColumnName="Filename" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="NumberDownloads" ColumnName="NumberDownloads" />
+                <ScalarProperty Name="DateUploaded" ColumnName="DateUploaded" />
+                <ScalarProperty Name="DateLastDownload" ColumnName="DateLastDownload" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Parameters">
+            <EntityTypeMapping TypeName="Streameus.Models.Parameters">
+              <MappingFragment StoreEntitySet="Parameters">
+                <ScalarProperty Name="Id" ColumnName="UserId" />
+                <ScalarProperty Name="Notifmail" ColumnName="Notifmail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Post">
+            <EntityTypeMapping TypeName="Streameus.Models.Post">
+              <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Visibility" ColumnName="Visibility" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="PostDate" ColumnName="PostDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="Streameus.Models.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Pseudo" ColumnName="Pseudo" />
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Reputation" ColumnName="Reputation" />
+                <ScalarProperty Name="FollowerNumber" ColumnName="FollowerNumber" />
+                <ScalarProperty Name="FollowedNumber" ColumnName="FollowedNumber" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="Profession" ColumnName="Profession" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

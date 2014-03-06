@@ -12,6 +12,7 @@ using Autofac;
 using Autofac.Integration.WebApi;
 using AutoMapper;
 using Streameus.DataAbstractionLayer;
+using Streameus.DataAbstractionLayer.Initializers;
 using Streameus.DataBaseAccess;
 using Streameus.Models;
 using Streameus.ViewModels;
@@ -27,7 +28,12 @@ namespace Streameus
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            //Un initializer de db different est requis pour appHarbor, cf doc de la classe.
+#if APPHARBOR
+            System.Data.Entity.Database.SetInitializer(new StreameusInitializerForAppHarbor());
+#else
             System.Data.Entity.Database.SetInitializer(new StreameusInitializer());
+#endif
             this.RegisterIoC();
             this.RegisterAutoMapping();
         }

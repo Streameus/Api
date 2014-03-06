@@ -74,7 +74,7 @@ namespace Streameus.DataAbstractionLayer.Services
                 var followers = this.GetDbSet<User>().Single(u => u.Id == id).Followers.AsQueryable();
                 return followers;
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 throw new NoResultException("No such user");
             }
@@ -85,14 +85,12 @@ namespace Streameus.DataAbstractionLayer.Services
             try
             {
                 var user = this.GetDbSet<User>().Single(u => u.Id == id);
-                if (user.AbonnementsVisibility)
-                {
-                    var abonnements = user.Followers.AsQueryable();
-                    return abonnements;
-                }
-                return Enumerable.Empty<User>().AsQueryable();
+                if (!user.AbonnementsVisibility)
+                    return Enumerable.Empty<User>().AsQueryable();
+                var abonnements = user.Followers.AsQueryable();
+                return abonnements;
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 throw new NoResultException("No such user");
             }

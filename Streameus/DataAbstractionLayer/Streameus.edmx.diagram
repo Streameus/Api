@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="46a489f45e2e422e845e231b7892ba7c" Name="Diagram1" >
+      <Diagram DiagramId="46a489f45e2e422e845e231b7892ba7c" Name="Diagram1" ZoomLevel="74" >
         <EntityTypeShape EntityType="Streameus.DataAbstractionLayer.Associations.Comment" Width="1.5" PointX="3" PointY="6" />
         <EntityTypeShape EntityType="Streameus.DataAbstractionLayer.Associations.Conference" Width="1.5" PointX="8.375" PointY="4.375" />
         <EntityTypeShape EntityType="Streameus.DataAbstractionLayer.Associations.Document" Width="1.5" PointX="10.625" PointY="6.5" />

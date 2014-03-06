@@ -72,6 +72,7 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -184,6 +185,9 @@
     <Compile Include="DataAbstractionLayer\Document.cs">
       <DependentUpon>Streameus.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAbstractionLayer\Initializers\DropCreateDatabaseTables.cs" />
+    <Compile Include="DataAbstractionLayer\Initializers\StreameusInitializerForAppHarbor.cs" />
+    <Compile Include="DataAbstractionLayer\Initializers\StreameusSeed.cs" />
     <Compile Include="DataAbstractionLayer\Parameters.cs">
       <DependentUpon>Streameus.tt</DependentUpon>
     </Compile>
@@ -192,7 +196,7 @@
     </Compile>
     <Compile Include="DataAbstractionLayer\Services\BaseServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\ConferenceServices.cs" />
-    <Compile Include="DataAbstractionLayer\Services\IConferenceParametersServices.cs" />
+    <Compile Include="DataAbstractionLayer\Services\ConferenceParametersServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\ParametersServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\UserServices.cs" />
     <Compile Include="DataAbstractionLayer\Streameus.Context.cs">
@@ -210,7 +214,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Streameus.edmx</DependentUpon>
     </Compile>
-    <Compile Include="DataAbstractionLayer\StreameusInitializer.cs" />
+    <Compile Include="DataAbstractionLayer\Initializers\StreameusInitializer.cs" />
     <Compile Include="DataAbstractionLayer\User.cs">
       <DependentUpon>Streameus.tt</DependentUpon>
     </Compile>
@@ -303,6 +307,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <None Include="Web.AppHarbor.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -317,6 +324,15 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppHarbor|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;APPHARBOR</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

@@ -139,7 +139,9 @@ _Pvt_Extensions/
 ModelManifest.xml
 
 #Nuget Packages files
-/[Pp]ackages
+/packages
+packages/
+
 
 # =========================
 # Windows detritus

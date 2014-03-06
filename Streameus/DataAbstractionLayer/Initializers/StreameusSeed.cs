@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Data.Entity;
 using Streameus.Models;
 
-namespace Streameus.DataAbstractionLayer
+namespace Streameus.DataAbstractionLayer.Initializers
 {
-    public class StreameusInitializer : System.Data.Entity.DropCreateDatabaseAlways<StreameusContainer>
+    public static class StreameusSeeder
     {
-        protected override void Seed(StreameusContainer context)
+        public static void Seed(StreameusContainer context)
         {
             if (context.Users.Any()) return;
             var users = new List<User>

@@ -29,11 +29,11 @@ namespace Streameus
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             //Un initializer de db different est requis pour appHarbor, cf doc de la classe.
-#if APPHARBOR
-            System.Data.Entity.Database.SetInitializer(new StreameusInitializerForAppHarbor());
-#else
-            System.Data.Entity.Database.SetInitializer(new StreameusInitializer());
-#endif
+            var appHarbor = ConfigurationManager.AppSettings.AllKeys.Contains("AppHarbor");
+            if (appHarbor)
+                System.Data.Entity.Database.SetInitializer(new StreameusInitializerForAppHarbor());
+            else
+                System.Data.Entity.Database.SetInitializer(new StreameusInitializer());
             this.RegisterIoC();
             this.RegisterAutoMapping();
         }

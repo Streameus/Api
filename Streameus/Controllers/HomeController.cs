@@ -14,10 +14,7 @@ namespace Streameus.Controllers
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";
-
-            var users = db.Users.ToList();
-
-            return View(users);
+            return this.Redirect("/swagger");
         }
     }
 }

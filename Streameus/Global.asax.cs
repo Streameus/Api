@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Description;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -28,15 +29,17 @@ namespace Streameus
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            //Un initializer de db different est requis pour appHarbor, cf doc de la classe.
-            var appHarbor = ConfigurationManager.AppSettings["Environment"] == "AppHarbor";
-            if (appHarbor)
-                System.Data.Entity.Database.SetInitializer(new StreameusInitializerForAppHarbor());
-            else
-                System.Data.Entity.Database.SetInitializer(new StreameusInitializer());
             this.RegisterIoC();
+            this.SetInitializer();
             this.RegisterAutoMapping();
+//            this.SwaggerParameters();
         }
+
+//        private void SwaggerParameters()
+//        {
+//            var config = GlobalConfiguration.Configuration;
+//            config.Services.Replace(typeof (IDocumentationProvider), new ExtractXmlComments());
+//        }
 
         private void RegisterIoC()
         {
@@ -64,6 +67,16 @@ namespace Streameus
         private void RegisterAutoMapping()
         {
             Mapper.CreateMap<UserViewModel, User>();
+        }
+
+        private void SetInitializer()
+        {
+            //Un initializer de db different est requis pour appHarbor, cf doc de la classe.
+            var appHarbor = ConfigurationManager.AppSettings["Environment"] == "AppHarbor";
+            if (appHarbor)
+                System.Data.Entity.Database.SetInitializer(new StreameusInitializerForAppHarbor());
+            else
+                System.Data.Entity.Database.SetInitializer(new StreameusInitializer());
         }
     }
 }

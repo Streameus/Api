@@ -220,6 +220,7 @@
     </Compile>
     <Compile Include="DataBaseAccess\IUnitOfWork.cs" />
     <Compile Include="DataBaseAccess\UnitOfWork.cs" />
+    <Compile Include="Documentation\ExtractXmlComments.cs" />
     <Compile Include="Enums\DataBaseEnums.cs" />
     <Compile Include="Exceptions\HttpErrors.cs" />
     <Compile Include="Global.asax.cs">

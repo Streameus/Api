@@ -58,7 +58,16 @@ namespace Streameus.Controllers
             return new UserViewModel(user);
         }
 
-        //TODO implementer le /me
+        /// <summary>
+        /// Return the currently connected user
+        /// </summary>
+        /// <returns></returns>
+        [Route("User/me")]
+        public UserViewModel GetMe()
+        {
+            //todo modifier une fois l'auth faite
+			return Get(1);
+        }
 
         // POST api/user
         /// <summary>
@@ -113,6 +122,20 @@ namespace Streameus.Controllers
         public void Delete(int id)
         {
             this._userServices.Delete(id);
+        }
+
+        /// <summary>
+        /// Get all conferences created by a user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Route("User/{id}/conferences")]
+        public IEnumerable<ConferenceViewModel> GetConferencesOfUser(int id)
+        {
+            var conferences = this._userServices.GetById(id).ConferencesCreated;
+            var conferencesListe = new List<ConferenceViewModel>();
+            conferences.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c)));
+            return conferencesListe;
         }
     }
 }

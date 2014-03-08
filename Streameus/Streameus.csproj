@@ -31,6 +31,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>App_Data\StreameusDocumentation.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -220,12 +221,14 @@
     </Compile>
     <Compile Include="DataBaseAccess\IUnitOfWork.cs" />
     <Compile Include="DataBaseAccess\UnitOfWork.cs" />
-    <Compile Include="Documentation\ExtractXmlComments.cs" />
+    <Compile Include="Documentation\SwaggerOperationFilters.cs" />
+    <Compile Include="Documentation\XmlDocumentationProvider.cs" />
     <Compile Include="Enums\DataBaseEnums.cs" />
     <Compile Include="Exceptions\HttpErrors.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Hooks\ValidateModelAttribute.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Conference.cs" />
     <Compile Include="Exceptions\NoResultException.cs" />

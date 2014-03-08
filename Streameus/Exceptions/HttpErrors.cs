@@ -66,6 +66,7 @@ namespace Streameus.Exceptions
         /// </summary>
         /// <param name="reason">Explanation text, also added to the body.</param>
         /// <param name="code">The HTTP status code.</param>
+        /// <exception cref="HttpResponseException">L'rxception designee par le code d'erreur</exception>
         /// <returns>A new <see cref="HttpResponseException"/></returns>
         private static HttpResponseException CreateHttpResponseException(string reason, HttpStatusCode code)
         {

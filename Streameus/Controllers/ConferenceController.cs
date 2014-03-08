@@ -23,6 +23,11 @@ namespace Streameus.Controllers
         }
 
         // GET api/conference
+        /// <summary>
+        /// Retourne toutes les conferences
+        /// </summary>
+        /// <returns></returns>
+        /// <responseCode></responseCode>
         public IEnumerable<ConferenceViewModel> Get()
         {
             var conferences = new List<ConferenceViewModel>();
@@ -45,10 +50,6 @@ namespace Streameus.Controllers
         //Utiliser un VM different pour pouvoir selectionner les champs obligatoires.
         public ConferenceViewModel Post([FromBody] ConferenceFormViewModel conference)
         {
-            if (!ModelState.IsValid)
-            {
-                HttpErrors.ValidationError(ModelState);
-            }
             var newConf = new Conference()
             {
                 Name = conference.Name,
@@ -65,8 +66,6 @@ namespace Streameus.Controllers
         // PUT api/conference/5
         public ConferenceViewModel Put([FromBody] ConferenceFormViewModel conference)
         {
-            if (!ModelState.IsValid)
-                HttpErrors.ValidationError(ModelState);
             var updatedConf = this._conferenceServices.GetById(conference.Id);
             if (updatedConf == null)
                 HttpErrors.NotFound("Conference not found");

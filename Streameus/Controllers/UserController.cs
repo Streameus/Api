@@ -44,8 +44,6 @@ namespace Streameus.Controllers
         // POST api/user
         public UserViewModel Post([FromBody] UserViewModel userViewModel)
         {
-            if (!ModelState.IsValid)
-                HttpErrors.ValidationError(ModelState);
             userViewModel.Id = 0;
             var newUser = Mapper.Map<User>(userViewModel);
             try
@@ -62,8 +60,6 @@ namespace Streameus.Controllers
         // PUT api/user/5
         public UserViewModel Put(int id, [FromBody] UserViewModel userViewModel)
         {
-            if (!ModelState.IsValid)
-                HttpErrors.ValidationError(ModelState);
             var newUser = Mapper.Map<User>(userViewModel);
             try
             {

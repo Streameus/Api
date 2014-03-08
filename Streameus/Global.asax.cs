@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
@@ -15,8 +16,10 @@ using AutoMapper;
 using Streameus.DataAbstractionLayer;
 using Streameus.DataAbstractionLayer.Initializers;
 using Streameus.DataBaseAccess;
+using Streameus.Documentation;
 using Streameus.Models;
 using Streameus.ViewModels;
+using Swashbuckle.Models;
 
 namespace Streameus
 {
@@ -32,14 +35,18 @@ namespace Streameus
             this.RegisterIoC();
             this.SetInitializer();
             this.RegisterAutoMapping();
-//            this.SwaggerParameters();
+            this.SwaggerParameters();
         }
 
-//        private void SwaggerParameters()
-//        {
-//            var config = GlobalConfiguration.Configuration;
-//            config.Services.Replace(typeof (IDocumentationProvider), new ExtractXmlComments());
-//        }
+        private void SwaggerParameters()
+        {
+//            SwaggerSpecConfig.Customize(
+//                c =>
+//                {
+//                    c.OperationFilter<AddStandardResponseMessages>();
+//                    c.OperationFilter<AddAuthorizationResponseMessages>();
+//                });
+        }
 
         private void RegisterIoC()
         {

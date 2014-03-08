@@ -35,8 +35,6 @@ namespace Streameus.Controllers
         // Put api/privacy
         public void Put(int id, [FromBody] PrivacyViewModel privacy)
         {
-            if (!ModelState.IsValid)
-                HttpErrors.ValidationError(ModelState);
             var user = this._userServices.GetById(id);
             privacy.SetUserPrivacySettings(ref user);
             this._userServices.UpdateUser(user);

@@ -32,7 +32,7 @@ namespace Streameus
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
-                defaults: new {id = RouteParameter.Optional}
+                defaults: new { Controller = "ApiHome", id = RouteParameter.Optional }
                 );
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
         }

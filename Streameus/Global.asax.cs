@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using Newtonsoft.Json;
 #pragma warning disable 1591
 using System;
 using System.Collections.Generic;
@@ -38,16 +39,28 @@ namespace Streameus
             this.SetInitializer();
             this.RegisterAutoMapping();
             this.SwaggerParameters();
+//            this.SetJsonSerializerProperties();
+        }
+
+        //Balance le json en CamelCase
+        private void SetJsonSerializerProperties()
+        {
+            var formatters = GlobalConfiguration.Configuration.Formatters;
+            var jsonFormatter = formatters.JsonFormatter;
+            var settings = jsonFormatter.SerializerSettings;
+            settings.Formatting = Formatting.Indented;
+            settings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
         }
 
         private void SwaggerParameters()
         {
-//            SwaggerSpecConfig.Customize(
-//                c =>
-//                {
-//                    c.OperationFilter<AddStandardResponseMessages>();
-//                    c.OperationFilter<AddAuthorizationResponseMessages>();
-//                });
+            SwaggerSpecConfig.Customize(
+                c =>
+                {
+                    c.IgnoreObsoleteActions = true;
+                    c.OperationFilter<AddStandardResponseMessages>();
+                    c.OperationFilter<AddAuthorizationResponseMessages>();
+                });
         }
 
         private void RegisterIoC()

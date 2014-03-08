@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using Swashbuckle.Controllers;
 
 namespace Streameus.Controllers
@@ -13,6 +14,7 @@ namespace Streameus.Controllers
         /// Return the default swagger api-docs view
         /// </summary>
         /// <returns>Json doc</returns>
+        [Obsolete]
         public HttpResponseMessage Get()
         {
             var apiDocsController = new ApiDocsController();

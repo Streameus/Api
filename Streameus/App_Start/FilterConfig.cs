@@ -1,4 +1,4 @@
-﻿using System.Web;
+﻿#pragma warning disable 1591
 using System.Web.Mvc;
 
 namespace Streameus
@@ -11,3 +11,5 @@ namespace Streameus
         }
     }
 }
+
+#pragma warning restore 1591

@@ -17,6 +17,10 @@ namespace Streameus.DataAbstractionLayer.Initializers
     {
         #region IDatabaseInitializer<Context> Members
 
+        /// <summary>
+        /// Executes the strategy to initialize the database for the given context.
+        /// </summary>
+        /// <param name="context">The context. </param>
         public void InitializeDatabase(TContext context)
         {
             bool dbExists;

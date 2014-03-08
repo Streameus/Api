@@ -1,3 +1,6 @@
+
+#pragma warning disable 1591
+
 namespace Streameus.Areas.HelpPage
 {
     /// <summary>
@@ -9,3 +12,5 @@ namespace Streameus.Areas.HelpPage
         Response
     }
 }
+
+#pragma warning restore 1591

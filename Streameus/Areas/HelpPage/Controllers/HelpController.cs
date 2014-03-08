@@ -1,3 +1,4 @@
+#pragma warning disable 1591
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -43,3 +44,5 @@ namespace Streameus.Areas.HelpPage.Controllers
         }
     }
 }
+
+#pragma warning restore 1591

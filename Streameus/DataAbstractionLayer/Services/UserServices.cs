@@ -10,15 +10,27 @@ using Streameus.Models;
 
 namespace Streameus.DataAbstractionLayer.Services
 {
+    /// <summary>
+    /// User services
+    /// </summary>
     public class UserServices : BaseServices<User>, IUserServices
     {
         private readonly IParametersServices _parametersServices;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="unitOfWork"></param>
+        /// <param name="parametersServices"></param>
         public UserServices(IUnitOfWork unitOfWork, IParametersServices parametersServices) : base(unitOfWork)
         {
             this._parametersServices = parametersServices;
         }
 
+        /// <summary>
+        /// Save user
+        /// </summary>
+        /// <param name="user"></param>
         protected override void Save(User user)
         {
             if (user.Id > 0)
@@ -43,6 +55,11 @@ namespace Streameus.DataAbstractionLayer.Services
             this.Save(newUser);
         }
 
+        /// <summary>
+        /// Update an user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <exception cref="DuplicateEntryException"></exception>
         public void UpdateUser(User user)
         {
             if (!this.IsUserEmailUnique(user))
@@ -52,6 +69,10 @@ namespace Streameus.DataAbstractionLayer.Services
             this.Save(user);
         }
 
+        /// <summary>
+        /// Delete an user
+        /// </summary>
+        /// <param name="id">Id of the user to be deleted</param>
         public new void Delete(int id)
         {
             var userToDelete = this.GetById(id);
@@ -66,12 +87,15 @@ namespace Streameus.DataAbstractionLayer.Services
         /// </summary>
         /// <param name="id">userId</param>
         /// <exception cref="NoResultException">If user doesnt exists</exception>
+        /// <exception cref="EmptyResultException">If user doesnt have any followers</exception>
         /// <returns>A list containing all the followers for the selected user</returns>
         public IQueryable<User> GetFollowersForUser(int id)
         {
             try
             {
                 var followers = this.GetDbSet<User>().Single(u => u.Id == id).Followers.AsQueryable();
+                if (!followers.Any())
+                    throw new EmptyResultException("No followers");
                 return followers;
             }
             catch (InvalidOperationException)
@@ -80,14 +104,25 @@ namespace Streameus.DataAbstractionLayer.Services
             }
         }
 
+        /// <summary>
+        /// Get all the abonnements for a user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <exception cref="EmptyResultException">No followings</exception>
+        /// <exception cref="NoResultException">The user wasn't found</exception>
+        /// <returns></returns>
         public IQueryable<User> GetAbonnementsForUser(int id)
         {
             try
             {
                 var user = this.GetDbSet<User>().Single(u => u.Id == id);
                 if (!user.AbonnementsVisibility)
+                {
                     return Enumerable.Empty<User>().AsQueryable();
+                }
                 var abonnements = user.Followers.AsQueryable();
+                if (!abonnements.Any())
+                    throw new EmptyResultException("This user is not following anobody");
                 return abonnements;
             }
             catch (InvalidOperationException)

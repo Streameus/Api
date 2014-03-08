@@ -15,6 +15,10 @@ namespace Streameus.Hooks
     /// </summary>
     public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
+        /// <summary>
+        /// Raises the exception event.
+        /// </summary>
+        /// <param name="context">The context for the action.</param>
         public override void OnException(HttpActionExecutedContext context)
         {
             var exception = context.Exception as ApiException;

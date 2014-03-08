@@ -14,10 +14,17 @@ using WebGrease.Css.Extensions;
 
 namespace Streameus.Controllers
 {
+    /// <summary>
+    /// Conference controller
+    /// </summary>
     public class ConferenceController : BaseController
     {
         private readonly IConferenceServices _conferenceServices;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="conferenceServices"></param>
         public ConferenceController(IConferenceServices conferenceServices)
         {
             this._conferenceServices = conferenceServices;
@@ -37,18 +44,28 @@ namespace Streameus.Controllers
         }
 
         // GET api/conference/5
+        /// <summary>
+        /// Get one conference
+        /// </summary>
+        /// <param name="id">the id of the conference</param>
+        /// <returns></returns>
+        /// <exception cref="NotFoundException"></exception>
         public ConferenceViewModel Get(int id)
         {
             ConferenceViewModel conference;
             var conf = this._conferenceServices.GetById(id);
             if (conf == null)
-                throw new NotFoundException("User not found!");
+                throw new NotFoundException("Confernce not found!");
             conference = new ConferenceViewModel(conf);
             return conference;
         }
 
         // POST api/conference
-        //Utiliser un VM different pour pouvoir selectionner les champs obligatoires.
+        /// <summary>
+        /// Create a new conference
+        /// </summary>
+        /// <param name="conference">the infos for the new conference</param>
+        /// <returns></returns>
         public ConferenceViewModel Post([FromBody] ConferenceFormViewModel conference)
         {
             var newConf = new Conference()
@@ -65,6 +82,12 @@ namespace Streameus.Controllers
         }
 
         // PUT api/conference/5
+        /// <summary>
+        /// Update a conference
+        /// </summary>
+        /// <param name="conference"></param>
+        /// <returns></returns>
+        /// <exception cref="NotFoundException"></exception>
         public ConferenceViewModel Put([FromBody] ConferenceFormViewModel conference)
         {
             var updatedConf = this._conferenceServices.GetById(conference.Id);
@@ -82,6 +105,10 @@ namespace Streameus.Controllers
         }
 
         // DELETE api/conference/5
+        /// <summary>
+        /// Delete a conference
+        /// </summary>
+        /// <param name="id"></param>
         public void Delete(int id)
         {
             this._conferenceServices.Delete(id);

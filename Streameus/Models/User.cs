@@ -7,8 +7,14 @@ using Streameus.Exceptions;
 
 namespace Streameus.Models
 {
+    /// <summary>
+    /// An user
+    /// </summary>
     public partial class User
     {
+        /// <summary>
+        /// Return an user full name
+        /// </summary>
         public string FullName
         {
             get { return this.FirstName + " " + this.LastName; }

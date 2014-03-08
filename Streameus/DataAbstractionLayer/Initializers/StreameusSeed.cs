@@ -6,8 +6,15 @@ using Streameus.Models;
 
 namespace Streameus.DataAbstractionLayer.Initializers
 {
+    /// <summary>
+    /// This class is used to seed Streameus Db
+    /// </summary>
     public static class StreameusSeeder
     {
+        /// <summary>
+        /// This methods fills the database with dummy datas
+        /// </summary>
+        /// <param name="context">The dbcontext to be seeded</param>
         public static void Seed(StreameusContainer context)
         {
             if (context.Users.Any()) return;

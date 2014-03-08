@@ -4,8 +4,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Microsoft.Ajax.Utilities;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataAbstractionLayer.Services;
+using Streameus.Exceptions;
 using Streameus.Exceptions.HttpErrors;
 using Streameus.Models;
 using Streameus.ViewModels;
@@ -14,16 +16,29 @@ using NoResultException = Streameus.Exceptions.NoResultException;
 
 namespace Streameus.Controllers
 {
+    /// <summary>
+    /// The controller to see/set an users abonnements
+    /// </summary>
     public class FollowingController : BaseController
     {
         private readonly IUserServices _userServices;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="userServices"></param>
         public FollowingController(IUserServices userServices)
         {
             this._userServices = userServices;
         }
 
         // GET api/following/5
+        /// <summary>
+        /// Get all the person's this user is following
+        /// </summary>
+        /// <param name="id">the user id</param>
+        /// <returns></returns>
+        /// <exception cref="NotFoundException"></exception>
         public List<UserViewModel> Get(int id)
         {
             var abonnementsViewModels = new List<UserViewModel>();
@@ -36,17 +51,31 @@ namespace Streameus.Controllers
             {
                 throw new NotFoundException(e.Message);
             }
+            catch (EmptyResultException e)
+            {
+                throw new Exceptions.HttpErrors.NoResultException(e.Message);
+            }
             return abonnementsViewModels;
         }
 
         // POST api/following
-        public void Post([FromBody] string value)
+        /// <summary>
+        /// Follow somebody
+        /// </summary>
+        /// <param name="id">the id of the user to follow</param>
+        /// <exception cref="NotImplementedException"></exception>
+        public void Post(int id)
         {
             //Todo implementer apres l'auth
             throw new NotImplementedException("Revenez quand l'auth marchera");
         }
 
         // DELETE api/following/5
+        /// <summary>
+        /// Stop following somebody
+        /// </summary>
+        /// <param name="id">the id of the user to stop following</param>
+        /// <exception cref="NotImplementedException"></exception>
         public void Delete(int id)
         {
             //Todo implementer apres l'auth

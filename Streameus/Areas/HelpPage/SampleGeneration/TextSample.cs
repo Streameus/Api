@@ -1,3 +1,4 @@
+#pragma warning disable 1591
 using System;
 
 namespace Streameus.Areas.HelpPage
@@ -35,3 +36,5 @@ namespace Streameus.Areas.HelpPage
         }
     }
 }
+
+#pragma warning restore 1591

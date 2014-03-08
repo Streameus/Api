@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Data.Entity;
+#pragma warning disable 1591
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -23,7 +25,7 @@ using Swashbuckle.Models;
 
 namespace Streameus
 {
-    public class WebApiApplication : System.Web.HttpApplication
+    public class WebApiApplication : HttpApplication
     {
         protected void Application_Start()
         {
@@ -81,9 +83,11 @@ namespace Streameus
             //Un initializer de db different est requis pour appHarbor, cf doc de la classe.
             var appHarbor = ConfigurationManager.AppSettings["Environment"] == "AppHarbor";
             if (appHarbor)
-                System.Data.Entity.Database.SetInitializer(new StreameusInitializerForAppHarbor());
+                Database.SetInitializer(new StreameusInitializerForAppHarbor());
             else
-                System.Data.Entity.Database.SetInitializer(new StreameusInitializer());
+                Database.SetInitializer(new StreameusInitializer());
         }
     }
 }
+
+#pragma warning restore 1591

@@ -8,12 +8,23 @@ using Streameus.Models;
 
 namespace Streameus.DataAbstractionLayer.Services
 {
+    /// <summary>
+    /// Parameters services
+    /// </summary>
     public class ParametersServices : BaseServices<Parameters>, IParametersServices
     {
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="unitOfWork">The unit of work</param>
         public ParametersServices(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
 
+        /// <summary>
+        /// Save the parameters
+        /// </summary>
+        /// <param name="parameters"></param>
         protected override void Save(Parameters parameters)
         {
             if (parameters.Id > 0)

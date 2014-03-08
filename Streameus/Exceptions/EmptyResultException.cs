@@ -3,15 +3,15 @@
 namespace Streameus.Exceptions
 {
     /// <summary>
-    /// Exception thrown when no results are found (wrong id for example)
+    /// Exception thrown when the result is an empty list or empty array
     /// </summary>
-    public class NoResultException : Exception
+    public class EmptyResultException : Exception
     {
         /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="message">Specific error message</param>
-        public NoResultException(string message)
+        public EmptyResultException(string message)
             : base(message)
         {
         }

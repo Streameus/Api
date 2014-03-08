@@ -9,6 +9,7 @@ using Swashbuckle.Models;
 
 namespace Streameus.Documentation
 {
+
     public class AddStandardResponseMessages : IOperationFilter
     {
         public void Apply(ApiDescription apiDescription, OperationSpec operationSpec,

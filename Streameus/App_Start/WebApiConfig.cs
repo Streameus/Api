@@ -1,4 +1,5 @@
-﻿using System;
+﻿#pragma warning disable 1591
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -23,6 +24,7 @@ namespace Streameus
 
             //Verifier automatiquement le model a chaque requete
             config.Filters.Add(new ValidateModelAttribute());
+            config.Filters.Add(new ApiExceptionFilterAttribute());
 
             // Web API routes
             config.MapHttpAttributeRoutes();
@@ -36,3 +38,5 @@ namespace Streameus
         }
     }
 }
+
+#pragma warning restore 1591

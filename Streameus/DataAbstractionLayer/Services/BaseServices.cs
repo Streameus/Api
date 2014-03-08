@@ -6,6 +6,7 @@ using System.Web;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataBaseAccess;
 using Streameus.Exceptions;
+using Streameus.Exceptions.HttpErrors;
 using Streameus.ViewModels;
 
 namespace Streameus.DataAbstractionLayer.Services
@@ -37,7 +38,7 @@ namespace Streameus.DataAbstractionLayer.Services
         {
             var entity = this.GetDbSet<TEntity>().Find(id);
             if (entity == null)
-                HttpErrors.NotFound("No such " + typeof (TEntity).Name);
+                throw new NotFoundException("No such " + typeof (TEntity).Name);
             return entity;
         }
 

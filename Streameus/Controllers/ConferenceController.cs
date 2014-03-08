@@ -7,6 +7,7 @@ using System.Web.Http;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.Enums;
 using Streameus.Exceptions;
+using Streameus.Exceptions.HttpErrors;
 using Streameus.Models;
 using Streameus.ViewModels;
 using WebGrease.Css.Extensions;
@@ -41,7 +42,7 @@ namespace Streameus.Controllers
             ConferenceViewModel conference;
             var conf = this._conferenceServices.GetById(id);
             if (conf == null)
-                HttpErrors.NotFound("User not found!");
+                throw new NotFoundException("User not found!");
             conference = new ConferenceViewModel(conf);
             return conference;
         }
@@ -68,7 +69,7 @@ namespace Streameus.Controllers
         {
             var updatedConf = this._conferenceServices.GetById(conference.Id);
             if (updatedConf == null)
-                HttpErrors.NotFound("Conference not found");
+                throw new NotFoundException("Conference not found");
             else
             {
                 updatedConf.Name = conference.Name;

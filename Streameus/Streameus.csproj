@@ -224,10 +224,15 @@
     <Compile Include="Documentation\SwaggerOperationFilters.cs" />
     <Compile Include="Documentation\XmlDocumentationProvider.cs" />
     <Compile Include="Enums\DataBaseEnums.cs" />
-    <Compile Include="Exceptions\HttpErrors.cs" />
+    <Compile Include="Exceptions\HttpErrors\BadRequestException.cs" />
+    <Compile Include="Exceptions\HttpErrors\ConflictdException.cs" />
+    <Compile Include="Exceptions\HttpErrors\ApiException.cs" />
+    <Compile Include="Exceptions\HttpErrors\NoResultException.cs" />
+    <Compile Include="Exceptions\HttpErrors\NotFoundException.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Hooks\ApiExceptionFilterAttribute.cs" />
     <Compile Include="Hooks\ValidateModelAttribute.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Conference.cs" />

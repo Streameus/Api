@@ -5,6 +5,7 @@ using System.Web;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataBaseAccess;
 using Streameus.Exceptions;
+using Streameus.Exceptions.HttpErrors;
 using Streameus.Models;
 
 namespace Streameus.DataAbstractionLayer.Services
@@ -32,7 +33,7 @@ namespace Streameus.DataAbstractionLayer.Services
         {
             var conference = this.GetById(id);
             if (conference == null)
-                HttpErrors.NotFound("No such conference");
+                throw new NotFoundException("No such conference");
             var param = conference.ConferenceParameter;
             base.Delete(conference);
             this._conferenceParametersServices.Delete(param);

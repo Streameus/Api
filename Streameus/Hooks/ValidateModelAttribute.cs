@@ -19,7 +19,7 @@ namespace Streameus.Hooks
             if (actionContext.ModelState.IsValid == false)
             {
                 actionContext.Response = actionContext.Request.CreateErrorResponse(
-                    HttpStatusCode.BadRequest, actionContext.ModelState);
+                    (HttpStatusCode) 422, actionContext.ModelState);
             }
         }
     }

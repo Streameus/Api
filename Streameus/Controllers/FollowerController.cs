@@ -5,9 +5,10 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Streameus.DataAbstractionLayer.Contracts;
-using Streameus.Exceptions;
+using Streameus.Exceptions.HttpErrors;
 using Streameus.ViewModels;
 using WebGrease.Css.Extensions;
+using NoResultException = Streameus.Exceptions.NoResultException;
 
 namespace Streameus.Controllers
 {
@@ -31,7 +32,7 @@ namespace Streameus.Controllers
             }
             catch (NoResultException e)
             {
-                HttpErrors.NotFound(e.Message);
+                throw new NotFoundException(e.Message);
             }
             return followersViewModels;
         }

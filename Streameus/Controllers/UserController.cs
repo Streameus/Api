@@ -7,9 +7,11 @@ using System.Web.Http;
 using AutoMapper;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.Exceptions;
+using Streameus.Exceptions.HttpErrors;
 using Streameus.Models;
 using Streameus.ViewModels;
 using WebGrease.Css.Extensions;
+using NoResultException = Streameus.Exceptions.NoResultException;
 
 namespace Streameus.Controllers
 {
@@ -28,7 +30,7 @@ namespace Streameus.Controllers
             var userList = new List<UserViewModel>();
             this._userServices.GetAll().ForEach(u => userList.Add(new UserViewModel(u)));
             if (!userList.Any())
-                HttpErrors.NoResult("Empty Set");
+                throw new NoResultException("Empty Set");
             return userList;
         }
 
@@ -52,7 +54,7 @@ namespace Streameus.Controllers
             }
             catch (DuplicateEntryException entryException)
             {
-                HttpErrors.Conflict(entryException.Message);
+                throw new ConflictdException(entryException.Message);
             }
             return new UserViewModel(newUser);
         }
@@ -67,7 +69,7 @@ namespace Streameus.Controllers
             }
             catch (DuplicateEntryException entryException)
             {
-                HttpErrors.Conflict(entryException.Message);
+                throw new ConflictdException(entryException.Message);
             }
             return new UserViewModel(newUser);
         }

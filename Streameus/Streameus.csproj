@@ -31,7 +31,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin/StreameusDocumentation.xml</DocumentationFile>
+    <DocumentationFile>App_Data\StreameusDocumentation.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -40,6 +40,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\StreameusDocumentation.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
@@ -142,6 +143,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="AutofacMapping\" />
+    <Folder Include="XMLDocumentation\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -375,6 +377,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>start /MIN xcopy /F /R /I /y "$(TargetPath)\..\StreameusDocumentation.xml" "$(TargetDir)_PublishedWebsites\Streameus\App_Data\"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

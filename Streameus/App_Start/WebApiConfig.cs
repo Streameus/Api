@@ -19,7 +19,7 @@ namespace Streameus
             // Web API configuration and services
             //Permet de controler la generation de la doc XML, est utilise pour swagger
             config.SetDocumentationProvider(new XmlDocumentationProvider(
-                HttpContext.Current.Server.MapPath("~/bin/StreameusDocumentation.xml")));
+                HttpContext.Current.Server.MapPath("~/App_Data/StreameusDocumentation.xml")));
 
 
             //Verifier automatiquement le model a chaque requete

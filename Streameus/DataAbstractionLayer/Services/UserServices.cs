@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.Ajax.Utilities;
+using Streameus.App_GlobalResources;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataBaseAccess;
 using Streameus.Exceptions;
@@ -48,7 +49,7 @@ namespace Streameus.DataAbstractionLayer.Services
         public void AddUser(User newUser)
         {
             if (!this.IsUserEmailUnique(newUser))
-                throw new DuplicateEntryException("User with the same email already exists");
+                throw new DuplicateEntryException(Translation.UserWithSameEmailAlreadyExists);
             if (!this.IsUserPseudoUnique(newUser))
                 throw new DuplicateEntryException("User with the same pseudo already exists");
             newUser.Parameter = new Parameters();
@@ -63,7 +64,7 @@ namespace Streameus.DataAbstractionLayer.Services
         public void UpdateUser(User user)
         {
             if (!this.IsUserEmailUnique(user))
-                throw new DuplicateEntryException("User with the same email already exists");
+                throw new DuplicateEntryException(Translation.UserWithSameEmailAlreadyExists);
             if (!this.IsUserPseudoUnique(user))
                 throw new DuplicateEntryException("User with the same pseudo already exists");
             this.Save(user);

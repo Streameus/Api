@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Streameus.App_GlobalResources;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.Enums;
 using Streameus.Exceptions;
@@ -52,11 +53,10 @@ namespace Streameus.Controllers
         /// <exception cref="NotFoundException"></exception>
         public ConferenceViewModel Get(int id)
         {
-            ConferenceViewModel conference;
             var conf = this._conferenceServices.GetById(id);
             if (conf == null)
-                throw new NotFoundException("Confernce not found!");
-            conference = new ConferenceViewModel(conf);
+                throw new NotFoundException(Translation.ConferenceNotFound);
+            ConferenceViewModel conference = new ConferenceViewModel(conf);
             return conference;
         }
 

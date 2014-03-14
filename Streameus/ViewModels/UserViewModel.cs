@@ -67,47 +67,57 @@ namespace Streameus.ViewModels
         /// User first name
         /// </summary>
         public string FirstName { get; set; }
+
         /// <summary>
         /// User last name
         /// </summary>
         public string LastName { get; set; }
+
         /// <summary>
         /// User gender, null if not said
         /// </summary>
         public bool? Gender { get; set; }
+
         /// <summary>
         /// reputation of the user
         /// </summary>
         public int Reputation { get; set; }
+
         /// <summary>
         /// User birth day
         /// </summary>
         public DateTime? BirthDay { get; set; }
+
         /// <summary>
         /// User phone
         /// </summary>
         public string Phone { get; set; }
+
         /// <summary>
         /// User address
         /// </summary>
         public string Address { get; set; }
+
         /// <summary>
         /// User city
         /// </summary>
         public string City { get; set; }
+
         /// <summary>
         /// User country
         /// </summary>
         public string Country { get; set; }
+
         /// <summary>
         /// User website
         /// </summary>
-        [Url]
         public string Website { get; set; }
+
         /// <summary>
         /// User job
         /// </summary>
         public string Profession { get; set; }
+
         /// <summary>
         /// User Description
         /// </summary>

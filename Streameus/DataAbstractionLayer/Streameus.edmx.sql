@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/03/2014 18:34:02
--- Generated from EDMX file: C:\Users\bruyer_k\documents\visual studio 2013\Projects\Streameus\Streameus\DataAbstractionLayer\Streameus.edmx
+-- Date Created: 03/13/2014 21:26:17
+-- Generated from EDMX file: C:\Users\bruyer_k\Documents\Visual Studio 2013\Projects\Streameus\Streameus\DataAbstractionLayer\Streameus.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -60,7 +60,7 @@ IF OBJECT_ID(N'[dbo].[FK_AbonnementsFollowers_User1]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[AbonnementsFollowers] DROP CONSTRAINT [FK_AbonnementsFollowers_User1];
 GO
 IF OBJECT_ID(N'[dbo].[FK_UserParameters]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Parameters] DROP CONSTRAINT [FK_UserParameters];
+    ALTER TABLE [dbo].[Users] DROP CONSTRAINT [FK_UserParameters];
 GO
 
 -- --------------------------------------------------

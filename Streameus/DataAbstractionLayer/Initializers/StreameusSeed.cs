@@ -37,6 +37,22 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 context.Users.Add(s);
             });
             context.SaveChanges();
+            users.First().Followers.Add(users[2]);
+            users.First().Followers.Add(users[4]);
+            users.First().Followers.Add(users[3]);
+            users.First().Followers.Add(users[5]);
+            users.First().Followers.Add(users[1]);
+
+            users[1].Followers.Add(users[0]);
+            users[1].Followers.Add(users[3]);
+            users[1].Followers.Add(users[4]);
+
+            users[4].Followers.Add(users[6]);
+            users[4].Followers.Add(users[5]);
+            users[4].Followers.Add(users[1]);
+            context.SaveChanges();
+
+
             var conference = new List<Conference>
             {
                 new Conference

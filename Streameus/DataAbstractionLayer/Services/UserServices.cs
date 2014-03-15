@@ -121,7 +121,7 @@ namespace Streameus.DataAbstractionLayer.Services
                 {
                     return Enumerable.Empty<User>().AsQueryable();
                 }
-                var abonnements = user.Followers.AsQueryable();
+                var abonnements = user.Abonnements.AsQueryable();
                 if (!abonnements.Any())
                     throw new EmptyResultException("This user is not following anobody");
                 return abonnements;

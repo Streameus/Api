@@ -4,13 +4,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Mvc;
 
 namespace Streameus.Controllers
 {
     /// <summary>
     /// Resource controller
     /// </summary>
-    [RoutePrefix("api/Resource")]
+    [System.Web.Http.RoutePrefix("api/Resource")]
     public class ResourceController : ApiController
     {
         // GET api/Resource/about
@@ -18,11 +19,15 @@ namespace Streameus.Controllers
         /// Get about content in html format
         /// </summary>
         /// <returns></returns>
-        [Route("about")]
-        [HttpGet]
+        [System.Web.Http.Route("about")]
+        [System.Web.Http.HttpGet]
         public string GetAbout()
         {
-            return "about"; //todo read about.html from Resources and return it.
+            //Retourne l'Url complete
+            return Url.Link("Default", new {Controller = "Ressource", Action = "About"});
+            //Retourne l'Url relative
+            return Url.Route("Default", new {Controller = "Ressource", Action = "About"});
+            //            return "about"; //todo read about.html from Resources and return it.
         }
 
         // GET api/Resource/faq
@@ -30,11 +35,11 @@ namespace Streameus.Controllers
         /// Get faq content in html format
         /// </summary>
         /// <returns></returns>
-        [Route("faq")]
-        [HttpGet]
+        [System.Web.Http.Route("faq")]
+        [System.Web.Http.HttpGet]
         public string GetFaq()
         {
-            return "faq";//todo read faq.html from Resources and return it. Or maybe return a list in json.
+            return "faq"; //todo read faq.html from Resources and return it. Or maybe return a list in json.
         }
 
         // GET api/Resource/team
@@ -42,12 +47,11 @@ namespace Streameus.Controllers
         /// Get team content in html format
         /// </summary>
         /// <returns></returns>
-        [Route("team")]
-        [HttpGet]
+        [System.Web.Http.Route("team")]
+        [System.Web.Http.HttpGet]
         public string GetTeam()
         {
-            return "team";//todo read team.html from Resources and return it. Or maybe return a list in json.
+            return "team"; //todo read team.html from Resources and return it. Or maybe return a list in json.
         }
-
     }
 }

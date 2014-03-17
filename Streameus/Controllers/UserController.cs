@@ -18,7 +18,7 @@ namespace Streameus.Controllers
     /// <summary>
     /// User controller
     /// </summary>
-    [RoutePrefix("api/user")]
+    [RoutePrefix("api/User")]
     public class UserController : BaseController
     {
         private readonly IUserServices _userServices;
@@ -130,7 +130,7 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [Route("User/{id}/conferences")]
+        [Route("{id}/conferences")]
         public IEnumerable<ConferenceViewModel> GetConferencesOfUser(int id)
         {
             var conferences = this._userServices.GetById(id).ConferencesCreated;

@@ -67,7 +67,7 @@ namespace Streameus.Controllers
         public UserViewModel GetMe()
         {
             //todo modifier une fois l'auth faite
-			return Get(1);
+            return Get(1);
         }
 
         // POST api/user

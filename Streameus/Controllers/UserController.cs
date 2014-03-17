@@ -18,6 +18,7 @@ namespace Streameus.Controllers
     /// <summary>
     /// User controller
     /// </summary>
+    [RoutePrefix("api/user")]
     public class UserController : BaseController
     {
         private readonly IUserServices _userServices;
@@ -62,7 +63,7 @@ namespace Streameus.Controllers
         /// Return the currently connected user
         /// </summary>
         /// <returns></returns>
-        [Route("User/me")]
+        [Route("me")]
         public UserViewModel GetMe()
         {
             //todo modifier une fois l'auth faite

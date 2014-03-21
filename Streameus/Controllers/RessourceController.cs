@@ -20,8 +20,6 @@ namespace Streameus.Controllers
         /// <returns>The about page</returns>
         public ActionResult About()
         {
-            //Le viewbag est un tableau dynamique, tu set le title et on le recupere dans le layout pour mettre entre les balise title
-            ViewBag.Title = "About";
             return View();
         }
 
@@ -31,7 +29,15 @@ namespace Streameus.Controllers
         /// <returns>the Faq</returns>
         public ActionResult Faq()
         {
-            ViewBag.Title = "FAQ";
+            return View();
+        }
+
+        /// <summary>
+        /// Get the team
+        /// </summary>
+        /// <returns>the Faq</returns>
+        public ActionResult Team()
+        {
             return View();
         }
     }

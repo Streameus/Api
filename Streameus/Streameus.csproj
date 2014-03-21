@@ -145,6 +145,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="AutofacMapping\" />
+    <Folder Include="Resources\" />
     <Folder Include="XMLDocumentation\" />
   </ItemGroup>
   <ItemGroup>
@@ -281,7 +282,6 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Resources\about.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -343,6 +343,7 @@
     <Content Include="Views\Ressource\About.cshtml" />
     <Content Include="Views\Shared\_LayoutApi.cshtml" />
     <Content Include="Views\Ressource\Faq.cshtml" />
+    <Content Include="Views\Ressource\Team.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

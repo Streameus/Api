@@ -27,22 +27,19 @@ namespace Streameus.ViewModels
         {
             this.Id = user.Id;
             this.Pseudo = user.Pseudo;
-            if (user.EmailVisibility)
-                this.Email = user.Email;
-            if (user.FirstNameVisibility)
-                this.FirstName = user.FirstName;
-            if (user.LastNameVisibility)
-                this.LastName = user.LastName;
+            this.Email = user.EmailVisibility ? user.Email : null;
+            this.FirstName = user.FirstNameVisibility ? user.FirstName : null;
+            this.LastName = user.LastNameVisibility ? user.LastName : null;
             this.Gender = user.GenderVisibility ? user.Gender : null;
             this.Reputation = user.Reputation;
-            this.BirthDay = user.BirthDay;
-            this.Phone = user.Phone;
-            this.Address = user.Address;
-            this.City = user.City;
-            this.Country = user.Country;
-            this.Website = user.Website;
-            this.Profession = user.Profession;
-            this.Description = user.Description;
+            this.BirthDay = user.BirthDayVisibility ? user.BirthDay : null;
+            this.Phone = user.PhoneVisibility ? user.Phone : null;
+            this.Address = user.AddressVisibility ? user.Address : null;
+            this.City = user.CityVisibility ? user.City : null;
+            this.Country = user.CountryVisibility ? user.Country : null;
+            this.Website = user.WebsiteVisibility ? user.Website : null;
+            this.Profession = user.ProfessionVisibility ? user.Profession : null;
+            this.Description = user.DescriptionVisibility ? user.Description : null;
         }
 
         /// <summary>
@@ -64,9 +61,19 @@ namespace Streameus.ViewModels
         public string Email { get; set; }
 
         /// <summary>
+        /// User email visibility
+        /// </summary>
+        public Boolean EmailVisibility { get; set; }
+
+        /// <summary>
         /// User first name
         /// </summary>
         public string FirstName { get; set; }
+
+        /// <summary>
+        /// User first name visibility
+        /// </summary>
+        public Boolean FirstNameVisibility { get; set; }
 
         /// <summary>
         /// User last name
@@ -74,9 +81,19 @@ namespace Streameus.ViewModels
         public string LastName { get; set; }
 
         /// <summary>
+        /// User last name visibility
+        /// </summary>
+        public Boolean LastNameVisibility { get; set; }
+
+        /// <summary>
         /// User gender, null if not said
         /// </summary>
         public bool? Gender { get; set; }
+
+        /// <summary>
+        /// User gender, null if not said
+        /// </summary>
+        public Boolean GenderVisibility { get; set; }
 
         /// <summary>
         /// reputation of the user
@@ -89,9 +106,19 @@ namespace Streameus.ViewModels
         public DateTime? BirthDay { get; set; }
 
         /// <summary>
+        /// User birth day
+        /// </summary>
+        public Boolean BirthDayVisibility { get; set; }
+
+        /// <summary>
         /// User phone
         /// </summary>
         public string Phone { get; set; }
+
+        /// <summary>
+        /// User phone
+        /// </summary>
+        public Boolean PhoneVisibility { get; set; }
 
         /// <summary>
         /// User address
@@ -99,9 +126,19 @@ namespace Streameus.ViewModels
         public string Address { get; set; }
 
         /// <summary>
+        /// User address
+        /// </summary>
+        public Boolean AddressVisibility { get; set; }
+
+        /// <summary>
         /// User city
         /// </summary>
         public string City { get; set; }
+
+        /// <summary>
+        /// User city
+        /// </summary>
+        public Boolean CityVisibility { get; set; }
 
         /// <summary>
         /// User country
@@ -109,9 +146,19 @@ namespace Streameus.ViewModels
         public string Country { get; set; }
 
         /// <summary>
+        /// User country visibility
+        /// </summary>
+        public Boolean CountryVisibility { get; set; }
+
+        /// <summary>
         /// User website
         /// </summary>
         public string Website { get; set; }
+
+        /// <summary>
+        /// User website Visibility
+        /// </summary>
+        public Boolean WebsiteVisibility { get; set; }
 
         /// <summary>
         /// User job
@@ -119,8 +166,18 @@ namespace Streameus.ViewModels
         public string Profession { get; set; }
 
         /// <summary>
+        /// User job visibility
+        /// </summary>
+        public Boolean ProfessionVisibility { get; set; }
+
+        /// <summary>
         /// User Description
         /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// User DescriptionVisibility
+        /// </summary>
+        public Boolean DescriptionVisibility { get; set; }
     }
 }

@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/13/2014 21:26:17
--- Generated from EDMX file: C:\Users\bruyer_k\Documents\Visual Studio 2013\Projects\Streameus\Streameus\DataAbstractionLayer\Streameus.edmx
+-- Date Created: 03/24/2014 12:31:18
+-- Generated from EDMX file: C:\Users\Leo\streameus\Streameus\DataAbstractionLayer\Streameus.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -17,14 +17,17 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_PostComment]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Comments] DROP CONSTRAINT [FK_PostComment];
+IF OBJECT_ID(N'[dbo].[FK_ConferenceConferenceParameters]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Conferences] DROP CONSTRAINT [FK_ConferenceConferenceParameters];
 GO
-IF OBJECT_ID(N'[dbo].[FK_UserComment]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Comments] DROP CONSTRAINT [FK_UserComment];
+IF OBJECT_ID(N'[dbo].[FK_ConferenceDocument]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_ConferenceDocument];
 GO
-IF OBJECT_ID(N'[dbo].[FK_OwnerConference]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Conferences] DROP CONSTRAINT [FK_OwnerConference];
+IF OBJECT_ID(N'[dbo].[FK_AbonnementsFollowers_User]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[AbonnementsFollowers] DROP CONSTRAINT [FK_AbonnementsFollowers_User];
+GO
+IF OBJECT_ID(N'[dbo].[FK_AbonnementsFollowers_User1]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[AbonnementsFollowers] DROP CONSTRAINT [FK_AbonnementsFollowers_User1];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ConferenceMembers_Conference]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ConferenceMembers] DROP CONSTRAINT [FK_ConferenceMembers_Conference];
@@ -32,11 +35,11 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ConferenceMembers_User]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ConferenceMembers] DROP CONSTRAINT [FK_ConferenceMembers_User];
 GO
-IF OBJECT_ID(N'[dbo].[FK_ConferenceDocument]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_ConferenceDocument];
+IF OBJECT_ID(N'[dbo].[FK_ConferenceParametersIntervenants_ConferenceParameters]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ConferenceParametersIntervenants] DROP CONSTRAINT [FK_ConferenceParametersIntervenants_ConferenceParameters];
 GO
-IF OBJECT_ID(N'[dbo].[FK_ConferenceConferenceParameters]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Conferences] DROP CONSTRAINT [FK_ConferenceConferenceParameters];
+IF OBJECT_ID(N'[dbo].[FK_ConferenceParametersIntervenants_User]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ConferenceParametersIntervenants] DROP CONSTRAINT [FK_ConferenceParametersIntervenants_User];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ConferenceParametersUser_ConferenceParameters]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ConferenceParametersUser] DROP CONSTRAINT [FK_ConferenceParametersUser_ConferenceParameters];
@@ -44,20 +47,17 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ConferenceParametersUser_User]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ConferenceParametersUser] DROP CONSTRAINT [FK_ConferenceParametersUser_User];
 GO
-IF OBJECT_ID(N'[dbo].[FK_ConferenceParametersIntervenants_ConferenceParameters]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ConferenceParametersIntervenants] DROP CONSTRAINT [FK_ConferenceParametersIntervenants_ConferenceParameters];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ConferenceParametersIntervenants_User]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ConferenceParametersIntervenants] DROP CONSTRAINT [FK_ConferenceParametersIntervenants_User];
+IF OBJECT_ID(N'[dbo].[FK_OwnerConference]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Conferences] DROP CONSTRAINT [FK_OwnerConference];
 GO
 IF OBJECT_ID(N'[dbo].[FK_PostAuthor]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Posts] DROP CONSTRAINT [FK_PostAuthor];
 GO
-IF OBJECT_ID(N'[dbo].[FK_AbonnementsFollowers_User]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[AbonnementsFollowers] DROP CONSTRAINT [FK_AbonnementsFollowers_User];
+IF OBJECT_ID(N'[dbo].[FK_PostComment]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Comments] DROP CONSTRAINT [FK_PostComment];
 GO
-IF OBJECT_ID(N'[dbo].[FK_AbonnementsFollowers_User1]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[AbonnementsFollowers] DROP CONSTRAINT [FK_AbonnementsFollowers_User1];
+IF OBJECT_ID(N'[dbo].[FK_UserComment]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Comments] DROP CONSTRAINT [FK_UserComment];
 GO
 IF OBJECT_ID(N'[dbo].[FK_UserParameters]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Users] DROP CONSTRAINT [FK_UserParameters];
@@ -67,17 +67,29 @@ GO
 -- Dropping existing tables
 -- --------------------------------------------------
 
+IF OBJECT_ID(N'[dbo].[AbonnementsFollowers]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[AbonnementsFollowers];
+GO
 IF OBJECT_ID(N'[dbo].[Comments]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Comments];
+GO
+IF OBJECT_ID(N'[dbo].[ConferenceMembers]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ConferenceMembers];
+GO
+IF OBJECT_ID(N'[dbo].[ConferenceParameters]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ConferenceParameters];
+GO
+IF OBJECT_ID(N'[dbo].[ConferenceParametersIntervenants]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ConferenceParametersIntervenants];
+GO
+IF OBJECT_ID(N'[dbo].[ConferenceParametersUser]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ConferenceParametersUser];
 GO
 IF OBJECT_ID(N'[dbo].[Conferences]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Conferences];
 GO
 IF OBJECT_ID(N'[dbo].[Documents]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Documents];
-GO
-IF OBJECT_ID(N'[dbo].[ConferenceParameters]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ConferenceParameters];
 GO
 IF OBJECT_ID(N'[dbo].[Parameters]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Parameters];
@@ -87,18 +99,6 @@ IF OBJECT_ID(N'[dbo].[Posts]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Users]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Users];
-GO
-IF OBJECT_ID(N'[dbo].[ConferenceMembers]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ConferenceMembers];
-GO
-IF OBJECT_ID(N'[dbo].[ConferenceParametersUser]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ConferenceParametersUser];
-GO
-IF OBJECT_ID(N'[dbo].[ConferenceParametersIntervenants]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ConferenceParametersIntervenants];
-GO
-IF OBJECT_ID(N'[dbo].[AbonnementsFollowers]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[AbonnementsFollowers];
 GO
 
 -- --------------------------------------------------
@@ -186,6 +186,14 @@ CREATE TABLE [dbo].[Users] (
     [GenderVisibility] bit  NOT NULL,
     [Reputation] int  NOT NULL,
     [AbonnementsVisibility] bit  NOT NULL,
+    [BirthDayVisibility] bit  NOT NULL,
+    [PhoneVisibility] bit  NOT NULL,
+    [AddressVisibility] bit  NOT NULL,
+    [CityVisibility] bit  NOT NULL,
+    [CountryVisibility] bit  NOT NULL,
+    [WebsiteVisibility] bit  NOT NULL,
+    [ProfessionVisibility] bit  NOT NULL,
+    [DescriptionVisibility] bit  NOT NULL,
     [BirthDay] datetime  NULL,
     [Phone] nvarchar(max)  NOT NULL,
     [Address] nvarchar(max)  NOT NULL,

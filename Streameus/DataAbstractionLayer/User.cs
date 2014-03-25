@@ -19,7 +19,7 @@ namespace Streameus.Models
     {
         public User()
         {
-            this.Language = "FR-fr";
+            this.Language = 0;
             this.EmailVisibility = true;
             this.FirstName = "";
             this.FirstNameVisibility = true;
@@ -53,7 +53,7 @@ namespace Streameus.Models
     
         public int Id { get; set; }
         public string Pseudo { get; set; }
-        public string Language { get; set; }
+        public int Language { get; set; }
         public string Email { get; set; }
         public bool EmailVisibility { get; set; }
         public string FirstName { get; set; }

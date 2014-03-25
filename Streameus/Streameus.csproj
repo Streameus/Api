@@ -145,6 +145,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="AutofacMapping\" />
+    <Folder Include="Views\Parameters\" />
     <Folder Include="XMLDocumentation\" />
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +173,7 @@
     <Compile Include="Controllers\FollowerController.cs" />
     <Compile Include="Controllers\FollowingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ParametersController.cs" />
     <Compile Include="Controllers\PrivacyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DataAbstractionLayer\Comment.cs">
@@ -260,6 +262,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Translation.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ParametersViewModel.cs" />
     <Compile Include="ViewModels\ConferenceFormViewModel.cs" />
     <Compile Include="ViewModels\ConferenceViewModel.cs" />
     <Compile Include="ViewModels\PrivacyViewModel.cs" />

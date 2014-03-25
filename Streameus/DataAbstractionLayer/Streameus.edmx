@@ -149,7 +149,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Pseudo" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Language" Type="nvarchar(max)" Nullable="false" DefaultValue="FR-fr" />
+    <Property Name="Language" Type="int" Nullable="false" DefaultValue="0" />
     <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
     <Property Name="EmailVisibility" Type="bit" Nullable="false" DefaultValue="true" />
     <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" DefaultValue="" />
@@ -537,7 +537,7 @@
           <NavigationProperty Name="Abonnements" Relationship="Streameus.DataAbstractionLayer.Associations.AbonnementsFollowers" FromRole="User" ToRole="User1" />
           <NavigationProperty Name="Followers" Relationship="Streameus.DataAbstractionLayer.Associations.AbonnementsFollowers" FromRole="User1" ToRole="User" />
           <Property Name="Pseudo" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="Language" Type="String" Nullable="false" DefaultValue="FR-fr" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Language" Type="Int32" Nullable="false" DefaultValue="0" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="EmailVisibility" Type="Boolean" Nullable="false" DefaultValue="true" />
           <Property Name="FirstName" Type="String" Nullable="false" DefaultValue="" MaxLength="Max" Unicode="true" FixedLength="false" />

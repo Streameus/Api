@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/24/2014 12:31:18
+-- Date Created: 03/25/2014 17:37:33
 -- Generated from EDMX file: C:\Users\Leo\streameus\Streameus\DataAbstractionLayer\Streameus.edmx
 -- --------------------------------------------------
 

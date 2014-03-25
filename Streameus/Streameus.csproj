@@ -312,6 +312,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Translation.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ParametersViewModel.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />

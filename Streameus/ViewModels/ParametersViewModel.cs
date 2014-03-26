@@ -27,7 +27,7 @@ namespace Streameus.ViewModels
         public ParametersViewModel(User user)
         {
             this.NotifMail = user.Parameter.NotifMail;
-            this.Language = user.Language;
+            this.Language = (Enums.DataBaseEnums.Language)user.Language;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Streameus.ViewModels
         public void SetUserParameters(ref User user)
         {
             user.Parameter.NotifMail = this.NotifMail;
-            user.Language = this.Language;
+            user.Language = Convert.ToInt32(this.Language);
         }
 
         /// <summary>
@@ -48,6 +48,6 @@ namespace Streameus.ViewModels
         /// <summary>
         /// Language
         /// </summary>
-        public int Language { get; set; }
+        public Enums.DataBaseEnums.Language Language { get; set; }
     }
 }

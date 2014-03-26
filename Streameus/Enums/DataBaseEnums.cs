@@ -29,5 +29,21 @@ namespace Streameus.Enums
             /// </summary>
             Finie = 3,
         }
+
+        /// <summary>
+        /// Used to describe the language of the user.
+        /// </summary>
+        public enum Language
+        {
+            /// <summary>
+            /// French language
+            /// </summary>
+            Francais = 0,
+            /// <summary>
+            /// English language
+            /// </summary>
+            Anglais = 1,
+        }
     }
+
 }

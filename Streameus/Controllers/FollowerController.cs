@@ -26,6 +26,7 @@ namespace Streameus.Controllers
         /// <param name="userServices"></param>
         public FollowerController(IUserServices userServices)
         {
+            if (userServices == null) throw new ArgumentNullException("userServices");
             this._userServices = userServices;
         }
 

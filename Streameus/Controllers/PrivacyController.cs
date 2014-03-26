@@ -24,6 +24,7 @@ namespace Streameus.Controllers
         /// <param name="userServices"></param>
         public PrivacyController(IUserServices userServices)
         {
+            if (userServices == null) throw new ArgumentNullException("userServices");
             this._userServices = userServices;
         }
 

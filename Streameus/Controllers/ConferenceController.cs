@@ -28,6 +28,7 @@ namespace Streameus.Controllers
         /// <param name="conferenceServices"></param>
         public ConferenceController(IConferenceServices conferenceServices)
         {
+            if (conferenceServices == null) throw new ArgumentNullException("conferenceServices");
             this._conferenceServices = conferenceServices;
         }
 

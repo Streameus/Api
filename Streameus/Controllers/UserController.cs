@@ -29,6 +29,7 @@ namespace Streameus.Controllers
         /// <param name="userServices"></param>
         public UserController(IUserServices userServices)
         {
+            if (userServices == null) throw new ArgumentNullException("userServices");
             this._userServices = userServices;
         }
 

@@ -15,5 +15,14 @@ namespace Streameus.Exceptions
             : base(message)
         {
         }
+
+        /// <summary>
+        /// Parameterless constructor for the exception
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
+        public NoResultException()
+            : base()
+        {
+        }
     }
 }

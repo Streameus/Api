@@ -231,6 +231,7 @@
     <Compile Include="Documentation\SwaggerOperationFilters.cs" />
     <Compile Include="Documentation\XmlDocumentationProvider.cs" />
     <Compile Include="Enums\DataBaseEnums.cs" />
+    <Compile Include="Enums\ModelEnums.cs" />
     <Compile Include="Exceptions\EmptyResultException.cs" />
     <Compile Include="Exceptions\HttpErrors\BadRequestException.cs" />
     <Compile Include="Exceptions\HttpErrors\ConflictdException.cs" />

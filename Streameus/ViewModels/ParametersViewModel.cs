@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
+using Streameus.Enums;
 using Streameus.Models;
 
 namespace Streameus.ViewModels
@@ -13,6 +14,16 @@ namespace Streameus.ViewModels
     /// </summary>
     public class ParametersViewModel
     {
+        /// <summary>
+        /// NotifMail, to know if a user wants to recieve mails.
+        /// </summary>
+        public bool NotifMail { get; set; }
+
+        /// <summary>
+        /// Language
+        /// </summary>
+        public ModelEnums.Language Language { get; set; }
+
         /// <summary>
         /// default constructor
         /// </summary>
@@ -27,7 +38,7 @@ namespace Streameus.ViewModels
         public ParametersViewModel(User user)
         {
             this.NotifMail = user.Parameter.NotifMail;
-            this.Language = (Enums.DataBaseEnums.Language)user.Language;
+            this.Language = (ModelEnums.Language) user.Language;
         }
 
         /// <summary>
@@ -39,15 +50,5 @@ namespace Streameus.ViewModels
             user.Parameter.NotifMail = this.NotifMail;
             user.Language = Convert.ToInt32(this.Language);
         }
-
-        /// <summary>
-        /// NotifMail, to know if a user wants to recieve mails.
-        /// </summary>
-        public bool NotifMail { get; set; }
-
-        /// <summary>
-        /// Language
-        /// </summary>
-        public Enums.DataBaseEnums.Language Language { get; set; }
     }
 }

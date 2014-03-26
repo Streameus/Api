@@ -39,6 +39,46 @@ namespace Streameus.ViewModels
         public bool? AbonnementsList { get; set; }
 
         /// <summary>
+        /// is the User birth day visible?
+        /// </summary>
+        public Boolean? BirthDay { get; set; }
+
+        /// <summary>
+        /// is the User phone visible?
+        /// </summary>
+        public Boolean? Phone { get; set; }
+
+        /// <summary>
+        /// is the User address visible?
+        /// </summary>
+        public Boolean? Address { get; set; }
+
+        /// <summary>
+        /// is the User city visible?
+        /// </summary>
+        public Boolean? City { get; set; }
+
+        /// <summary>
+        /// is the User country visible?
+        /// </summary>
+        public Boolean? Country { get; set; }
+
+        /// <summary>
+        /// is the User website Visible?
+        /// </summary>
+        public Boolean? Website { get; set; }
+
+        /// <summary>
+        /// is the User job visible?
+        /// </summary>
+        public Boolean? Profession { get; set; }
+
+        /// <summary>
+        /// is the User Description Visible ?
+        /// </summary>
+        public Boolean? Description { get; set; }
+
+        /// <summary>
         /// Default constructor
         /// </summary>
         public PrivacyViewModel()
@@ -56,6 +96,14 @@ namespace Streameus.ViewModels
             this.FirstName = user.FirstNameVisibility;
             this.LastName = user.LastNameVisibility;
             this.Gender = user.GenderVisibility;
+            this.BirthDay = user.BirthDayVisibility;
+            this.Phone = user.PhoneVisibility;
+            this.Address = user.AddressVisibility;
+            this.City = user.CityVisibility;
+            this.Country = user.CountryVisibility;
+            this.Website = user.WebsiteVisibility;
+            this.Profession = user.ProfessionVisibility;
+            this.Description = user.DescriptionVisibility;
         }
 
         /// <summary>
@@ -71,6 +119,14 @@ namespace Streameus.ViewModels
             user.FirstNameVisibility = this.FirstName.HasValue ? this.FirstName.Value : user.FirstNameVisibility;
             user.LastNameVisibility = this.LastName.HasValue ? this.LastName.Value : user.LastNameVisibility;
             user.GenderVisibility = this.Gender.HasValue ? this.Gender.Value : user.GenderVisibility;
+            user.BirthDayVisibility = this.BirthDay.HasValue ? this.BirthDay.Value : user.BirthDayVisibility;
+            user.PhoneVisibility = this.Phone.HasValue ? this.Phone.Value : user.PhoneVisibility;
+            user.AddressVisibility = this.Address.HasValue ? this.Address.Value : user.AddressVisibility;
+            user.CityVisibility = this.City.HasValue ? this.City.Value : user.CityVisibility;
+            user.CountryVisibility = this.Country.HasValue ? this.Country.Value : user.CountryVisibility;
+            user.WebsiteVisibility = this.Website.HasValue ? this.Website.Value : user.WebsiteVisibility;
+            user.ProfessionVisibility = this.Profession.HasValue ? this.Profession.Value : user.ProfessionVisibility;
+            user.DescriptionVisibility = this.Description.HasValue ? this.Description.Value : user.DescriptionVisibility;
         }
     }
 }

@@ -1,12 +1,17 @@
+using System;
 using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
 using Streameus.DataAbstractionLayer.Initializers;
 using Streameus.Models.Mapping;
 
 namespace Streameus.Models
 {
-    public partial class StreameusContext : DbContext
+    public partial class StreameusContext :
+        IdentityDbContext<User, CustomRole, int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         static StreameusContext()
         {
@@ -29,7 +34,7 @@ namespace Streameus.Models
         public DbSet<Conference> Conferences { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<User> Users { get; set; }
+//        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -39,6 +44,11 @@ namespace Streameus.Models
             modelBuilder.Configurations.Add(new PostMap());
             modelBuilder.Configurations.Add(new UserMap());
             modelBuilder.Configurations.Add(new ConferenceMap());
+        }
+
+        public static StreameusContext Create(IdentityFactoryOptions<StreameusContext> options, IOwinContext context)
+        {
+            return new StreameusContext();
         }
     }
 }

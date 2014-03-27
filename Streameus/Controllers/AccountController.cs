@@ -8,9 +8,11 @@ using System.Web;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
+using Streameus.Models;
 using Streameus.Providers;
 using Streameus.Results;
 using Streameus.ViewModels;
@@ -24,18 +26,17 @@ namespace Streameus.Controllers
         private const string LocalLoginProvider = "Local";
 
         public AccountController()
-            : this(Startup.UserManagerFactory(), Startup.OAuthOptions.AccessTokenFormat)
+            : this(Startup.OAuthOptions.AccessTokenFormat)
         {
         }
 
-        public AccountController(UserManager<IdentityUser> userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
+        public AccountController(ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
         {
-            this.UserManager = userManager;
+            this.UserManager = HttpContext.Current.GetOwinContext().GetUserManager<StreameusUserManager>();
             this.AccessTokenFormat = accessTokenFormat;
         }
 
-        public UserManager<IdentityUser> UserManager { get; private set; }
+        public StreameusUserManager UserManager { get; private set; }
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
         // GET api/Account/UserInfo
@@ -65,7 +66,7 @@ namespace Streameus.Controllers
         [Route("ManageInfo")]
         public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false)
         {
-            IdentityUser user = await this.UserManager.FindByIdAsync(this.User.Identity.GetUserId());
+            User user = await this.UserManager.FindByIdAsync(Convert.ToInt32(this.User.Identity.GetUserId()));
 
             if (user == null)
             {
@@ -74,7 +75,7 @@ namespace Streameus.Controllers
 
             List<UserLoginInfoViewModel> logins = new List<UserLoginInfoViewModel>();
 
-            foreach (IdentityUserLogin linkedAccount in user.Logins)
+            foreach (var linkedAccount in user.Logins)
             {
                 logins.Add(new UserLoginInfoViewModel
                 {
@@ -129,8 +130,9 @@ namespace Streameus.Controllers
                 return this.BadRequest("The external login is already associated with an account.");
             }
 
-            IdentityResult result = await this.UserManager.AddLoginAsync(this.User.Identity.GetUserId(),
-                new UserLoginInfo(externalData.LoginProvider, externalData.ProviderKey));
+            IdentityResult result =
+                await this.UserManager.AddLoginAsync(Convert.ToInt32(this.User.Identity.GetUserId()),
+                    new UserLoginInfo(externalData.LoginProvider, externalData.ProviderKey));
 
             IHttpActionResult errorResult = this.GetErrorResult(result);
 
@@ -155,11 +157,11 @@ namespace Streameus.Controllers
 
             if (model.LoginProvider == LocalLoginProvider)
             {
-                result = await this.UserManager.RemovePasswordAsync(this.User.Identity.GetUserId());
+                result = await this.UserManager.RemovePasswordAsync(Convert.ToInt32(this.User.Identity.GetUserId()));
             }
             else
             {
-                result = await this.UserManager.RemoveLoginAsync(this.User.Identity.GetUserId(),
+                result = await this.UserManager.RemoveLoginAsync(Convert.ToInt32(this.User.Identity.GetUserId()),
                     new UserLoginInfo(model.LoginProvider, model.ProviderKey));
             }
 
@@ -209,7 +211,7 @@ namespace Streameus.Controllers
                 return new ChallengeResult(provider, this);
             }
 
-            IdentityUser user = await this.UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
+            User user = await this.UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
                 externalLogin.ProviderKey));
 
             bool hasRegistered = user != null;
@@ -299,11 +301,12 @@ namespace Streameus.Controllers
                 return this.InternalServerError();
             }
 
-            IdentityUser user = new IdentityUser
+            User user = new User
             {
-                UserName = model.UserName
+                UserName = model.UserName,
+                Email = model.Email,
             };
-            user.Logins.Add(new IdentityUserLogin
+            user.Logins.Add(new CustomUserLogin
             {
                 LoginProvider = externalLogin.LoginProvider,
                 ProviderKey = externalLogin.ProviderKey

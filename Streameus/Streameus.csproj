@@ -297,6 +297,12 @@
     <Compile Include="Exceptions\NoResultException.cs" />
     <Compile Include="Models\ConferenceParameters.cs" />
     <Compile Include="Models\Document.cs" />
+    <Compile Include="Models\Mapping\CommentMap.cs" />
+    <Compile Include="Models\Mapping\ConferenceMap.cs" />
+    <Compile Include="Models\Mapping\ConferenceParameterMap.cs" />
+    <Compile Include="Models\Mapping\DocumentMap.cs" />
+    <Compile Include="Models\Mapping\PostMap.cs" />
+    <Compile Include="Models\Mapping\UserMap.cs" />
     <Compile Include="Models\Parameters.cs" />
     <Compile Include="Models\Post.cs" />
     <Compile Include="Models\User.cs" />

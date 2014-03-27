@@ -253,6 +253,7 @@
     </Compile>
     <Compile Include="Hooks\ApiExceptionFilterAttribute.cs" />
     <Compile Include="Hooks\ValidateModelAttribute.cs" />
+    <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Conference.cs" />
     <Compile Include="Exceptions\NoResultException.cs" />
@@ -266,6 +267,7 @@
     <Compile Include="Models\Mapping\UserMap.cs" />
     <Compile Include="Models\Parameters.cs" />
     <Compile Include="Models\Post.cs" />
+    <Compile Include="Models\Stores.cs" />
     <Compile Include="Models\StreameusContext.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

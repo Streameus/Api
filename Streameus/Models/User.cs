@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Streameus.Models
 {
-    public partial class User
+    public partial class User : IdentityUser<int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         public User()
         {
@@ -40,10 +41,10 @@ namespace Streameus.Models
             this.Parameters = new Parameters();
         }
 
-        public int Id { get; set; }
+        public override int Id { get; set; }
         public string Pseudo { get; set; }
         public int Language { get; set; }
-        public string Email { get; set; }
+        public override string Email { get; set; }
         public bool EmailVisibility { get; set; }
         public string FirstName { get; set; }
         public bool FirstNameVisibility { get; set; }
@@ -85,6 +86,12 @@ namespace Streameus.Models
                 return (this.FirstNameVisibility ? this.FirstName : "") + " " +
                        (this.LastNameVisibility ? this.LastName : "");
             }
+        }
+
+        public override string UserName
+        {
+            get { return Pseudo; }
+            set { Pseudo = value; }
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using AutoMapper;
+using Microsoft.AspNet.Identity;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.Exceptions;
 using Streameus.Exceptions.HttpErrors;
@@ -64,10 +65,11 @@ namespace Streameus.Controllers
         /// </summary>
         /// <returns></returns>
         [Route("me")]
+        [Authorize]
         public UserViewModel GetMe()
         {
             //todo modifier une fois l'auth faite
-            return Get(1);
+            return Get(Convert.ToInt32(this.User.Identity.GetUserId()));
         }
 
         // POST api/user

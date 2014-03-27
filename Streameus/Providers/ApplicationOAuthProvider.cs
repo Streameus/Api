@@ -1,41 +1,37 @@
 ﻿//using Microsoft.Owin.Security.Cookies;
+
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
+using Streameus.Models;
 
 namespace Streameus.Providers
 {
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
         private readonly string _publicClientId;
-        private readonly Func<UserManager<IdentityUser>> _userManagerFactory;
 
-        public ApplicationOAuthProvider(string publicClientId, Func<UserManager<IdentityUser>> userManagerFactory)
+        public ApplicationOAuthProvider(string publicClientId)
         {
             if (publicClientId == null)
             {
                 throw new ArgumentNullException("publicClientId");
             }
-
-            if (userManagerFactory == null)
-            {
-                throw new ArgumentNullException("userManagerFactory");
-            }
-
             this._publicClientId = publicClientId;
-            this._userManagerFactory = userManagerFactory;
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            using (UserManager<IdentityUser> userManager = this._userManagerFactory())
+            using (StreameusUserManager userManager = context.OwinContext.GetUserManager<StreameusUserManager>())
             {
-                IdentityUser user = await userManager.FindAsync(context.UserName, context.Password);
+                User user = await userManager.FindAsync(context.UserName, context.Password);
 
                 if (user == null)
                 {
@@ -45,12 +41,12 @@ namespace Streameus.Providers
 
                 ClaimsIdentity oAuthIdentity = await userManager.CreateIdentityAsync(user,
                     context.Options.AuthenticationType);
-//                ClaimsIdentity cookiesIdentity = await userManager.CreateIdentityAsync(user,
-//                    CookieAuthenticationDefaults.AuthenticationType);
+                ClaimsIdentity cookiesIdentity = await userManager.CreateIdentityAsync(user,
+                    CookieAuthenticationDefaults.AuthenticationType);
                 AuthenticationProperties properties = CreateProperties(user.UserName);
                 AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
                 context.Validated(ticket);
-//                context.Request.Context.Authentication.SignIn(cookiesIdentity);
+                context.Request.Context.Authentication.SignIn(cookiesIdentity);
             }
         }
 

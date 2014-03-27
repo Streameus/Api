@@ -28,7 +28,6 @@ namespace Streameus.Models
         public DbSet<ConferenceParameters> ConferenceParameters { get; set; }
         public DbSet<Conference> Conferences { get; set; }
         public DbSet<Document> Documents { get; set; }
-//        public DbSet<Parameters> Parameters { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<User> Users { get; set; }
 
@@ -37,7 +36,6 @@ namespace Streameus.Models
             modelBuilder.Configurations.Add(new CommentMap());
             modelBuilder.Configurations.Add(new ConferenceParametersMap());
             modelBuilder.Configurations.Add(new DocumentMap());
-//            modelBuilder.Configurations.Add(new ParametersMap());
             modelBuilder.Configurations.Add(new PostMap());
             modelBuilder.Configurations.Add(new UserMap());
             modelBuilder.Configurations.Add(new ConferenceMap());

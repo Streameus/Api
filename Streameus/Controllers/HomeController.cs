@@ -1,4 +1,5 @@
-﻿#pragma warning disable 1591
+﻿using Streameus.Models;
+#pragma warning disable 1591
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Streameus.Controllers
 {
     public class HomeController : Controller
     {
-        private StreameusContainer db = new StreameusContainer();
+        private StreameusContext db = new StreameusContext();
 
         public ActionResult Index()
         {

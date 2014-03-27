@@ -21,17 +21,18 @@ namespace Streameus.DataAbstractionLayer.Services
         {
         }
 
+
         /// <summary>
         /// Save the parameters
         /// </summary>
         /// <param name="parameters"></param>
         protected override void Save(Parameters parameters)
         {
-            if (parameters.Id > 0)
-                this.Update(parameters);
-            else
-                this.Insert(parameters);
-            this.SaveChanges();
+//            if (parameters.UserId > 0)
+//                this.Update(parameters);
+//            else
+//                this.Insert(parameters);
+//            this.SaveChanges();
         }
 
         /// <summary>
@@ -40,8 +41,8 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="parameters"></param>
         public new void Delete(Parameters parameters)
         {
-            base.Delete(parameters);
-            this.SaveChanges();
+//            base.Delete(parameters);
+//            this.SaveChanges();
         }
     }
 }

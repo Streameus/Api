@@ -52,7 +52,7 @@ namespace Streameus.DataAbstractionLayer.Services
                 throw new DuplicateEntryException(Translation.UserWithSameEmailAlreadyExists);
             if (!this.IsUserPseudoUnique(newUser))
                 throw new DuplicateEntryException("User with the same pseudo already exists");
-            newUser.Parameter = new Parameters();
+            newUser.Parameters = new Parameters();
             this.Save(newUser);
         }
 
@@ -77,7 +77,7 @@ namespace Streameus.DataAbstractionLayer.Services
         public new void Delete(int id)
         {
             var userToDelete = this.GetById(id);
-            var parameters = userToDelete.Parameter;
+            var parameters = userToDelete.Parameters;
             base.Delete(userToDelete);
             this._parametersServices.Delete(parameters);
             this.SaveChanges();

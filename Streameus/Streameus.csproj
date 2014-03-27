@@ -222,56 +222,20 @@
     <Compile Include="Controllers\ParametersController.cs" />
     <Compile Include="Controllers\PrivacyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="DataAbstractionLayer\Comment.cs">
-      <DependentUpon>Streameus.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAbstractionLayer\Conference.cs">
-      <DependentUpon>Streameus.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAbstractionLayer\ConferenceParameters.cs">
-      <DependentUpon>Streameus.tt</DependentUpon>
-    </Compile>
     <Compile Include="DataAbstractionLayer\Contracts\IBaseServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IConferenceParametersServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IConferenceServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IParametersServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IUserServices.cs" />
-    <Compile Include="DataAbstractionLayer\Document.cs">
-      <DependentUpon>Streameus.tt</DependentUpon>
-    </Compile>
     <Compile Include="DataAbstractionLayer\Initializers\DropCreateDatabaseTables.cs" />
     <Compile Include="DataAbstractionLayer\Initializers\StreameusInitializerForAppHarbor.cs" />
     <Compile Include="DataAbstractionLayer\Initializers\StreameusSeed.cs" />
-    <Compile Include="DataAbstractionLayer\Parameters.cs">
-      <DependentUpon>Streameus.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAbstractionLayer\Post.cs">
-      <DependentUpon>Streameus.tt</DependentUpon>
-    </Compile>
     <Compile Include="DataAbstractionLayer\Services\BaseServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\ConferenceServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\ConferenceParametersServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\ParametersServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\UserServices.cs" />
-    <Compile Include="DataAbstractionLayer\Streameus.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Streameus.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAbstractionLayer\Streameus.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Streameus.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAbstractionLayer\Streameus.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Streameus.edmx</DependentUpon>
-    </Compile>
     <Compile Include="DataAbstractionLayer\Initializers\StreameusInitializer.cs" />
-    <Compile Include="DataAbstractionLayer\User.cs">
-      <DependentUpon>Streameus.tt</DependentUpon>
-    </Compile>
     <Compile Include="DataBaseAccess\IUnitOfWork.cs" />
     <Compile Include="DataBaseAccess\UnitOfWork.cs" />
     <Compile Include="Documentation\SwaggerOperationFilters.cs" />
@@ -294,8 +258,16 @@
     <Compile Include="Exceptions\NoResultException.cs" />
     <Compile Include="Models\ConferenceParameters.cs" />
     <Compile Include="Models\Document.cs" />
+    <Compile Include="Models\Mapping\CommentMap.cs" />
+    <Compile Include="Models\Mapping\ConferenceMap.cs" />
+    <Compile Include="Models\Mapping\ConferenceParameterMap.cs" />
+    <Compile Include="Models\Mapping\DocumentMap.cs" />
+    <Compile Include="Models\Mapping\ParameterMap.cs" />
+    <Compile Include="Models\Mapping\PostMap.cs" />
+    <Compile Include="Models\Mapping\UserMap.cs" />
     <Compile Include="Models\Parameters.cs" />
     <Compile Include="Models\Post.cs" />
+    <Compile Include="Models\StreameusContext.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exceptions\DuplicateEntryException.cs" />
@@ -321,10 +293,6 @@
     <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll">
-      <Link>AutoMapper.Net4.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css">
@@ -347,24 +315,6 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\HelpPageApiModel.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
-    <EntityDeploy Include="DataAbstractionLayer\Streameus.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Streameus.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="DataAbstractionLayer\Streameus.edmx.diagram">
-      <DependentUpon>Streameus.edmx</DependentUpon>
-    </Content>
-    <Content Include="DataAbstractionLayer\Streameus.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Streameus.Context.cs</LastGenOutput>
-      <DependentUpon>Streameus.edmx</DependentUpon>
-    </Content>
-    <Content Include="DataAbstractionLayer\Streameus.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Streameus.cs</LastGenOutput>
-      <DependentUpon>Streameus.edmx</DependentUpon>
-      <CustomToolNamespace>Streameus.Models</CustomToolNamespace>
-    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

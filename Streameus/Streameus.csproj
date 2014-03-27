@@ -262,7 +262,6 @@
     <Compile Include="Models\Mapping\ConferenceMap.cs" />
     <Compile Include="Models\Mapping\ConferenceParameterMap.cs" />
     <Compile Include="Models\Mapping\DocumentMap.cs" />
-    <Compile Include="Models\Mapping\ParameterMap.cs" />
     <Compile Include="Models\Mapping\PostMap.cs" />
     <Compile Include="Models\Mapping\UserMap.cs" />
     <Compile Include="Models\Parameters.cs" />

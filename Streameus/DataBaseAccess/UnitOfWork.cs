@@ -5,6 +5,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using Streameus.DataAbstractionLayer;
+using Streameus.Models;
 
 namespace Streameus.DataBaseAccess
 {

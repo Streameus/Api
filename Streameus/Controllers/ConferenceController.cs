@@ -21,15 +21,19 @@ namespace Streameus.Controllers
     public class ConferenceController : BaseController
     {
         private readonly IConferenceServices _conferenceServices;
+        private readonly IUserServices _userServices;
 
         /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="conferenceServices"></param>
-        public ConferenceController(IConferenceServices conferenceServices)
+        /// <param name="userServices"></param>
+        public ConferenceController(IConferenceServices conferenceServices, IUserServices userServices)
         {
             if (conferenceServices == null) throw new ArgumentNullException("conferenceServices");
+            if (userServices == null) throw new ArgumentNullException("userServices");
             this._conferenceServices = conferenceServices;
+            this._userServices = userServices;
         }
 
         // GET api/conference
@@ -76,7 +80,7 @@ namespace Streameus.Controllers
                 ScheduledDuration = conference.ScheduledDuration,
                 Time = conference.Time.Value,
                 Status = DataBaseEnums.ConfStatus.AVenir,
-                OwnerId = 1 //TODO changer une fois l'Auth implementee.
+                Owner = this._userServices.GetAll().First(), //TODO changer une fois l'Auth implementee.
             };
             this._conferenceServices.AddConference(newConf);
             return this.Get(newConf.Id);

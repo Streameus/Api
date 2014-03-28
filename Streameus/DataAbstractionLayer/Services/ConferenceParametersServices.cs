@@ -27,11 +27,11 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="confParam">Entity</param>
         protected override void Save(ConferenceParameters confParam)
         {
-            if (confParam.Id > 0)
-                this.Update(confParam);
-            else
-                this.Insert(confParam);
-            this.SaveChanges();
+//            if (confParam.Id > 0)
+//                this.Update(confParam);
+//            else
+//                this.Insert(confParam);
+//            this.SaveChanges();
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="conferenceParameters"></param>
         public new void Delete(ConferenceParameters conferenceParameters)
         {
-            base.Delete(conferenceParameters);
+//            base.Delete(conferenceParameters);
         }
     }
 }

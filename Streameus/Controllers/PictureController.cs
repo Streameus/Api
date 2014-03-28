@@ -17,7 +17,7 @@ namespace Streameus.Controllers
     public class PictureController : BaseController
     {
         private readonly IUserServices _userServices;
-        
+
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -30,7 +30,7 @@ namespace Streameus.Controllers
         /// <summary>
         /// Affichage du form
         /// </summary>
-        public void Index()
+        public void Get()
         {
         }
 

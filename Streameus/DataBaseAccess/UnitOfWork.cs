@@ -20,7 +20,7 @@ namespace Streameus.DataBaseAccess
         /// Default constructor
         /// </summary>
         /// <param name="context">The context to be used </param>
-        public UnitOfWork(StreameusContainer context)
+        public UnitOfWork(StreameusContext context)
         {
             _context = context;
         }

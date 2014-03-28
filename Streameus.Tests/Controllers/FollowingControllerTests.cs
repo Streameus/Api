@@ -72,15 +72,22 @@ namespace Streameus.Tests.Controllers
         {
             return new List<User>()
             {
-                new User {Id = 1, Parameter = new Parameters(), FirstName = "Carson", LastName = "Alexander"},
-                new User {Id = 2, Parameter = new Parameters(), FirstName = "Meredith", LastName = "Alonso"},
-                new User {Id = 3, Parameter = new Parameters(), FirstName = "Arturo", LastName = "Anand", Gender = true},
-                new User {Id = 4, Parameter = new Parameters(), FirstName = "Gytis", LastName = "Barzdukas"},
-                new User {Id = 5, Parameter = new Parameters(), FirstName = "Yan", LastName = "Li"},
+                new User {Id = 1, Parameters = new Parameters(), FirstName = "Carson", LastName = "Alexander"},
+                new User {Id = 2, Parameters = new Parameters(), FirstName = "Meredith", LastName = "Alonso"},
+                new User
+                {
+                    Id = 3,
+                    Parameters = new Parameters(),
+                    FirstName = "Arturo",
+                    LastName = "Anand",
+                    Gender = true
+                },
+                new User {Id = 4, Parameters = new Parameters(), FirstName = "Gytis", LastName = "Barzdukas"},
+                new User {Id = 5, Parameters = new Parameters(), FirstName = "Yan", LastName = "Li"},
                 new User
                 {
                     Id = 6,
-                    Parameter = new Parameters(),
+                    Parameters = new Parameters(),
                     FirstName = "Peggy",
                     LastName = "Justice",
                     Gender = false
@@ -88,7 +95,7 @@ namespace Streameus.Tests.Controllers
                 new User
                 {
                     Id = 7,
-                    Parameter = new Parameters(),
+                    Parameters = new Parameters(),
                     FirstName = "Laura",
                     LastName = "Norman",
                     Gender = false
@@ -96,7 +103,7 @@ namespace Streameus.Tests.Controllers
                 new User
                 {
                     Id = 8,
-                    Parameter = new Parameters(),
+                    Parameters = new Parameters(),
                     FirstName = "Nino",
                     LastName = "Olivetto",
                     Gender = true

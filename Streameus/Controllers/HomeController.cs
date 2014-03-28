@@ -10,8 +10,6 @@ namespace Streameus.Controllers
 {
     public class HomeController : Controller
     {
-        private StreameusContainer db = new StreameusContainer();
-
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";

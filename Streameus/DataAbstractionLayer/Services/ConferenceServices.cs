@@ -51,7 +51,7 @@ namespace Streameus.DataAbstractionLayer.Services
             var conference = this.GetById(id);
             if (conference == null)
                 throw new NotFoundException("No such conference");
-            var param = conference.ConferenceParameter;
+            var param = conference.ConferenceParameters;
             base.Delete(conference);
             this._conferenceParametersServices.Delete(param);
             this.SaveChanges();
@@ -64,7 +64,7 @@ namespace Streameus.DataAbstractionLayer.Services
         public void AddConference(Conference newConf)
         {
             newConf.Id = 0;
-            newConf.ConferenceParameter = new ConferenceParameters();
+            newConf.ConferenceParameters = new ConferenceParameters();
             this.Save(newConf);
         }
 

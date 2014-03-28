@@ -8,13 +8,13 @@ namespace Streameus.DataAbstractionLayer.Initializers
     /// <summary>
     /// This class is used to initialize Streameus Db with appharbor's constraints
     /// </summary>
-    public class StreameusInitializerForAppHarbor : DropCreateDatabaseTables<StreameusContainer>
+    public class StreameusInitializerForAppHarbor : DropCreateDatabaseTables<StreameusContext>
     {
         /// <summary>
         /// Call the default seed method <see cref="StreameusSeeder"/>
         /// </summary>
         /// <param name="context"></param>
-        protected override void Seed(StreameusContainer context)
+        protected override void Seed(StreameusContext context)
         {
             StreameusSeeder.Seed(context);
         }

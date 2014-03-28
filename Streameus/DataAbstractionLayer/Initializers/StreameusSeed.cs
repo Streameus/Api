@@ -15,19 +15,19 @@ namespace Streameus.DataAbstractionLayer.Initializers
         /// This methods fills the database with dummy datas
         /// </summary>
         /// <param name="context">The dbcontext to be seeded</param>
-        public static void Seed(StreameusContainer context)
+        public static void Seed(StreameusContext context)
         {
             if (context.Users.Any()) return;
             var users = new List<User>
             {
-                new User {Parameter = new Parameters(), FirstName = "Carson", LastName = "Alexander"},
-                new User {Parameter = new Parameters(), FirstName = "Meredith", LastName = "Alonso"},
-                new User {Parameter = new Parameters(), FirstName = "Arturo", LastName = "Anand", Gender = true},
-                new User {Parameter = new Parameters(), FirstName = "Gytis", LastName = "Barzdukas"},
-                new User {Parameter = new Parameters(), FirstName = "Yan", LastName = "Li"},
-                new User {Parameter = new Parameters(), FirstName = "Peggy", LastName = "Justice", Gender = false},
-                new User {Parameter = new Parameters(), FirstName = "Laura", LastName = "Norman", Gender = false},
-                new User {Parameter = new Parameters(), FirstName = "Nino", LastName = "Olivetto", Gender = true}
+                new User {Parameters = new Parameters(), FirstName = "Carson", LastName = "Alexander"},
+                new User {Parameters = new Parameters(), FirstName = "Meredith", LastName = "Alonso"},
+                new User {Parameters = new Parameters(), FirstName = "Arturo", LastName = "Anand", Gender = true},
+                new User {Parameters = new Parameters(), FirstName = "Gytis", LastName = "Barzdukas"},
+                new User {Parameters = new Parameters(), FirstName = "Yan", LastName = "Li"},
+                new User {Parameters = new Parameters(), FirstName = "Peggy", LastName = "Justice", Gender = false},
+                new User {Parameters = new Parameters(), FirstName = "Laura", LastName = "Norman", Gender = false},
+                new User {Parameters = new Parameters(), FirstName = "Nino", LastName = "Olivetto", Gender = true}
             };
 
             users.ForEach(s =>
@@ -58,56 +58,55 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 new Conference
                 {
                     Owner = users[0],
-                    ConferenceParameter = new ConferenceParameters(),
+                    ConferenceParameters = new ConferenceParameters(),
                     Name = "Chemistry",
                     ScheduledDuration = 3,
                 },
                 new Conference
                 {
                     Owner = users[1],
-                    ConferenceParameter = new ConferenceParameters(),
+                    ConferenceParameters = new ConferenceParameters(),
                     Name = "Microeconomics",
                     ScheduledDuration = 3,
                 },
                 new Conference
                 {
                     Owner = users[2],
-                    ConferenceParameter = new ConferenceParameters(),
+                    ConferenceParameters = new ConferenceParameters(),
                     Name = "Macroeconomics",
                     ScheduledDuration = 3,
                 },
                 new Conference
                 {
                     Owner = users[3],
-                    ConferenceParameter = new ConferenceParameters(),
+                    ConferenceParameters = new ConferenceParameters(),
                     Name = "Calculus",
                     ScheduledDuration = 4,
                 },
                 new Conference
                 {
                     Owner = users[4],
-                    ConferenceParameter = new ConferenceParameters(),
+                    ConferenceParameters = new ConferenceParameters(),
                     Name = "Trigonometry",
                     ScheduledDuration = 4,
                 },
                 new Conference
                 {
                     Owner = users[5],
-                    ConferenceParameter = new ConferenceParameters(),
+                    ConferenceParameters = new ConferenceParameters(),
                     Name = "Composition",
                     ScheduledDuration = 3,
                 },
                 new Conference
                 {
                     Owner = users[6],
-                    ConferenceParameter = new ConferenceParameters(),
+                    ConferenceParameters = new ConferenceParameters(),
                     Name = "Literature",
                     ScheduledDuration = 4,
                 }
             };
             conference.ForEach(s =>
             {
-                s.ConferenceParameter.Conference = s;
                 s.OwnerId = s.Owner.Id;
                 s.Description = "Description de " + s.Name;
                 s.Time = DateTime.Now;

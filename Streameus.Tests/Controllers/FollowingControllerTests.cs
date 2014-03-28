@@ -58,13 +58,13 @@ namespace Streameus.Tests.Controllers
         [TestMethod()]
         public void PostTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("Non implemente");
         }
 
         [TestMethod()]
         public void DeleteTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("Non implemente");
         }
 
 

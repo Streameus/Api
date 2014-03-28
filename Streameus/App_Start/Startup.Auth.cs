@@ -7,11 +7,15 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
+using Streameus.DataAbstractionLayer;
 using Streameus.Models;
 using Streameus.Providers;
 
 namespace Streameus
 {
+    /// <summary>
+    /// This class is used to initialize Owin. It's called only once when the app starts
+    /// </summary>
     public partial class Startup
     {
         static Startup()
@@ -28,11 +32,21 @@ namespace Streameus
             };
         }
 
+        /// <summary>
+        /// Oauth Options
+        /// </summary>
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
 
+        /// <summary>
+        /// The public client id
+        /// </summary>
         public static string PublicClientId { get; private set; }
 
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
+        /// <summary>
+        /// This method sets up the Auth for the whole API
+        /// </summary>
+        /// <param name="app"></param>
         public void ConfigureAuth(IAppBuilder app)
         {
             app.CreatePerOwinContext<StreameusContext>(StreameusContext.Create);

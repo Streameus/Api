@@ -3,8 +3,14 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Streameus.Models.Mapping
 {
+    /// <summary>
+    /// Mapping for the User class
+    /// </summary>
     public class UserMap : EntityTypeConfiguration<User>
     {
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public UserMap()
         {
             // Primary Key

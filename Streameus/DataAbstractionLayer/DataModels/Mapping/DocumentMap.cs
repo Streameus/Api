@@ -3,8 +3,14 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Streameus.Models.Mapping
 {
+    /// <summary>
+    /// Mappings for Documents
+    /// </summary>
     public class DocumentMap : EntityTypeConfiguration<Document>
     {
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public DocumentMap()
         {
             // Primary Key

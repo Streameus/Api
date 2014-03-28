@@ -3,8 +3,14 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Streameus.Models.Mapping
 {
+    /// <summary>
+    /// Mapping for the comments
+    /// </summary>
     public class CommentMap : EntityTypeConfiguration<Comment>
     {
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public CommentMap()
         {
             // Primary Key

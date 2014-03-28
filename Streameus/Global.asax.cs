@@ -77,7 +77,7 @@ namespace Streameus
                 .Where(t => t.Name.EndsWith("Services"))
                 .AsImplementedInterfaces();
 
-            // Build the container.
+            // Build the IOC container.
             var container = builder.Build();
 
             // Create the depenedency resolver.

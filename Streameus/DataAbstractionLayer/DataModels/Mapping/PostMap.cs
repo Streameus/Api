@@ -3,8 +3,14 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Streameus.Models.Mapping
 {
+    /// <summary>
+    /// Mapping for posts
+    /// </summary>
     public class PostMap : EntityTypeConfiguration<Post>
     {
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public PostMap()
         {
             // Primary Key
@@ -22,7 +28,6 @@ namespace Streameus.Models.Mapping
             this.HasRequired(t => t.Author)
                 .WithMany(t => t.Posts)
                 .HasForeignKey(d => d.AuthorId);
-
         }
     }
 }

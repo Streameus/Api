@@ -3,8 +3,14 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Streameus.Models.Mapping
 {
+    /// <summary>
+    /// Mapping for Conference
+    /// </summary>
     public class ConferenceMap : EntityTypeConfiguration<Conference>
     {
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public ConferenceMap()
         {
             // Primary Key

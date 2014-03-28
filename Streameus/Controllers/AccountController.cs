@@ -19,27 +19,48 @@ using Streameus.ViewModels;
 
 namespace Streameus.Controllers
 {
+    /// <summary>
+    /// Controller responsible for the autnentication
+    /// </summary>
     [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public AccountController()
             : this(Startup.OAuthOptions.AccessTokenFormat)
         {
         }
 
+        /// <summary>
+        /// Constructor called by the default constructor
+        /// </summary>
+        /// <param name="accessTokenFormat"></param>
         public AccountController(ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
         {
             this.UserManager = HttpContext.Current.GetOwinContext().GetUserManager<StreameusUserManager>();
             this.AccessTokenFormat = accessTokenFormat;
         }
 
+        /// <summary>
+        /// Streameus user manager used for all the auth stuff
+        /// </summary>
         public StreameusUserManager UserManager { get; private set; }
+
+        /// <summary>
+        /// Params for the OAuth
+        /// </summary>
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
         // GET api/Account/UserInfo
+        /// <summary>
+        /// Return the info available on the logged in user
+        /// </summary>
+        /// <returns></returns>
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("UserInfo")]
         public UserInfoViewModel GetUserInfo()
@@ -55,6 +76,10 @@ namespace Streameus.Controllers
         }
 
         // POST api/Account/Logout
+        /// <summary>
+        /// Log the user out if he's using cookies
+        /// </summary>
+        /// <returns></returns>
         [Route("Logout")]
         public IHttpActionResult Logout()
         {
@@ -63,6 +88,12 @@ namespace Streameus.Controllers
         }
 
         // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
+        /// <summary>
+        /// ?
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <param name="generateState"></param>
+        /// <returns></returns>
         [Route("ManageInfo")]
         public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false)
         {
@@ -103,6 +134,11 @@ namespace Streameus.Controllers
         }
 
         // POST api/Account/AddExternalLogin
+        /// <summary>
+        /// Add an external login to an already existing account
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [Route("AddExternalLogin")]
         public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginBindingModel model)
         {
@@ -145,6 +181,11 @@ namespace Streameus.Controllers
         }
 
         // POST api/Account/RemoveLogin
+        /// <summary>
+        /// Delete user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [Route("RemoveLogin")]
         public async Task<IHttpActionResult> RemoveLogin(RemoveLoginBindingModel model)
         {
@@ -284,6 +325,11 @@ namespace Streameus.Controllers
         }
 
         // POST api/Account/RegisterExternal
+        /// <summary>
+        /// Method to call after the first call to GetExternalLogin to persist the user in db
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("RegisterExternal")]
@@ -322,6 +368,10 @@ namespace Streameus.Controllers
             return this.Ok();
         }
 
+        /// <summary>
+        /// Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)

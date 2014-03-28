@@ -43,11 +43,17 @@
     <DocumentationFile>bin\StreameusDocumentation.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac">
-      <HintPath>..\packages\Autofac.3.3.0\lib\net40\Autofac.dll</HintPath>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Autofac.Integration.WebApi">
-      <HintPath>..\packages\Autofac.WebApi2.3.2.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
+    <Reference Include="Autofac, Version=3.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Autofac.3.3.1\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.WebApi, Version=3.2.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Autofac.WebApi2.3.2.1\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.dll</HintPath>
@@ -105,7 +111,7 @@
     </Reference>
     <Reference Include="Swashbuckle, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Swashbuckle.3.3.2\lib\net40\Swashbuckle.dll</HintPath>
+      <HintPath>..\packages\Swashbuckle.3.3.3\lib\net40\Swashbuckle.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -181,10 +187,6 @@
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
     </Reference>
-    <Reference Include="Antlr3.Runtime">
-      <Private>True</Private>
-      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -253,22 +255,23 @@
     </Compile>
     <Compile Include="Hooks\ApiExceptionFilterAttribute.cs" />
     <Compile Include="Hooks\ValidateModelAttribute.cs" />
-    <Compile Include="Models\ApplicationUser.cs" />
-    <Compile Include="Models\Comment.cs" />
-    <Compile Include="Models\Conference.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\ApplicationUser.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Comment.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Conference.cs" />
     <Compile Include="Exceptions\NoResultException.cs" />
-    <Compile Include="Models\ConferenceParameters.cs" />
-    <Compile Include="Models\Document.cs" />
-    <Compile Include="Models\Mapping\CommentMap.cs" />
-    <Compile Include="Models\Mapping\ConferenceMap.cs" />
-    <Compile Include="Models\Mapping\ConferenceParameterMap.cs" />
-    <Compile Include="Models\Mapping\DocumentMap.cs" />
-    <Compile Include="Models\Mapping\PostMap.cs" />
-    <Compile Include="Models\Mapping\UserMap.cs" />
-    <Compile Include="Models\Parameters.cs" />
-    <Compile Include="Models\Post.cs" />
-    <Compile Include="Models\Stores.cs" />
-    <Compile Include="Models\StreameusContext.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\ConferenceParameters.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Document.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Mapping\CommentMap.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Mapping\ConferenceMap.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Mapping\ConferenceParameterMap.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Mapping\DocumentMap.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Mapping\PostMap.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Mapping\UserMap.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Parameters.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Post.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Stores.cs" />
+    <Compile Include="DataAbstractionLayer\StreameusContext.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\User.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exceptions\DuplicateEntryException.cs" />
@@ -282,15 +285,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Translation.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\AddExternalLoginBindingModel.cs" />
+    <Compile Include="ViewModels\ExternalLoginViewModel.cs" />
+    <Compile Include="ViewModels\ManageInfoViewModel.cs" />
     <Compile Include="ViewModels\ParametersViewModel.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\AccountBindingModels.cs" />
-    <Compile Include="ViewModels\AccountViewModels.cs" />
+    <Compile Include="ViewModels\RemoveLoginBindingModel.cs" />
+    <Compile Include="ViewModels\RegisterExternalBindingModel.cs" />
+    <Compile Include="ViewModels\UserLoginInfoViewModel.cs" />
     <Compile Include="ViewModels\ConferenceFormViewModel.cs" />
     <Compile Include="ViewModels\ConferenceViewModel.cs" />
     <Compile Include="ViewModels\PrivacyViewModel.cs" />
+    <Compile Include="ViewModels\UserInfoViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -30,6 +30,29 @@ namespace Streameus.Controllers
             this._userServices = userServices;
         }
 
+        // DELETE api/picture/{id}
+        /// <summary>
+        /// Delete Picture from id
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="ApiController.NotFound">Picture not found</exception>
+        public HttpResponseMessage DeletePicture(int id)
+        {
+            var root = HttpContext.Current.Server.MapPath("~/App_Data/Picture/");
+            var file = root + id;
+            var path = "";
+
+            if (File.Exists(file + ".jpg"))
+                path = file + ".jpg";
+            else if (File.Exists(file + ".png"))
+                path = file + ".png";
+            else
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            File.Delete(path);
+            return new HttpResponseMessage(HttpStatusCode.OK);
+        }
+
+
         // GET api/picture/{id}
         /// <summary>
         /// Get Picture from id

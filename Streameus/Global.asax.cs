@@ -61,6 +61,14 @@ namespace Streameus
                     c.OperationFilter<AddStandardResponseMessages>();
                     c.OperationFilter<AddAuthorizationResponseMessages>();
                 });
+            SwaggerUiConfig.Customize(c =>
+            {
+//                c.SupportHeaderParams = true;
+//                c.DocExpansion = DocExpansion.List;
+//                c.SupportedSubmitMethods = new[] { HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Head };
+                c.AddOnCompleteScript(Assembly.GetExecutingAssembly(), "Streameus.Scripts.swagger.js");
+                c.AddStylesheet(Assembly.GetExecutingAssembly(), "Streameus.Content.swagger.css");
+            });
         }
 
         private void RegisterIoC()

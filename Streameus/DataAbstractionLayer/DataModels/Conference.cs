@@ -76,5 +76,4 @@ namespace Streameus.Models
         /// </summary>
         public virtual ICollection<User> Members { get; set; }
     }
-
 }

@@ -12,6 +12,22 @@ namespace Streameus.Controllers
     [RoutePrefix("api/Resource")]
     public class ResourceController : ApiController
     {
+        /// GET api/Resource
+        /// <summary>
+        /// Get all resources
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public Dictionary<string, string> GetAllResources()
+        {
+            return new Dictionary<string, string>()
+            {
+                {"about", this.GetAbout()},
+                {"faq", this.GetFaq()},
+                {"team", this.GetTeam()}
+            };
+        }
+
         // GET api/Resource/about
         /// <summary>
         /// Get about link to content in html format

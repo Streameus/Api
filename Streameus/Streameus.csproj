@@ -111,7 +111,7 @@
     </Reference>
     <Reference Include="Swashbuckle, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Swashbuckle.3.3.3\lib\net40\Swashbuckle.dll</HintPath>
+      <HintPath>..\packages\Swashbuckle.3.3.4\lib\net40\Swashbuckle.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

@@ -19,6 +19,9 @@ namespace Streameus.Models
     [ComplexType]
     public partial class Parameters
     {
+        /// <summary>
+        /// Does the user accepts email notifications?
+        /// </summary>
         public bool NotifMail { get; set; }
     }
 }

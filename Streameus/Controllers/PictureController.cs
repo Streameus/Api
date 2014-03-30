@@ -39,17 +39,13 @@ namespace Streameus.Controllers
         /// <exception cref="InternalServerError">Internal Server Error</exception>
         public Task<HttpResponseMessage> PostFormData()
         {
-            string oldfileName;
-            string filetype;
-            string fileExtension;
-
             // Check if the request contains multipart/form-data.
             if (!Request.Content.IsMimeMultipartContent())
             {
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
 
-            string root = HttpContext.Current.Server.MapPath("~/App_Data/Picture/");
+            var root = HttpContext.Current.Server.MapPath("~/App_Data/Picture/");
             var provider = new MultipartFormDataStreamProvider(root);
 
             // Read the form data and return an async task.
@@ -64,19 +60,33 @@ namespace Streameus.Controllers
                     // This illustrates how to get the file names.
                     foreach (MultipartFileData file in provider.FileData)
                     {
-                        oldfileName = file.LocalFileName;
-                        
-                        //Debug.WriteLine("Type {0}", file.Headers.ContentType);
-                        filetype = file.Headers.ContentType.MediaType;
+
+                        var oldfileName = file.LocalFileName;
+                        // recup le userId
+                        int userId = 1;
+                        string fileExtension = null;
+
+                        // Recup l'extension de fichier
+                        switch (file.Headers.ContentType.MediaType)
+                        {
+                            case "image/png":
+                                fileExtension = ".png";
+                                break;
+                            case "image/jpeg":
+                                fileExtension = ".jpg";
+                                break;
+                            default:
+                                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+                        }
+                        // Si le fichier existe
+                        if (File.Exists(root + userId + ".png"))
+                            File.Delete(root + userId + ".png");
+                        if (File.Exists(root + userId + ".jpg"))
+                            File.Delete(root + userId + ".jpg");
+                        // renomme le fichier temporaire en path + id + .extension
                         try
                         {
-                            if (filetype == "image/png")
-                                fileExtension = ".png";
-                            else if (filetype == "image/jpeg")
-                                fileExtension = ".jpg";
-                            else
-                                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
-                            File.Move(oldfileName, root + "1" + fileExtension);
+                            File.Move(oldfileName, root + userId + fileExtension);
                             //File.Delete(oldfileName);
                         }
                         catch (FileNotFoundException e)
@@ -91,8 +101,8 @@ namespace Streameus.Controllers
                         {
                             throw new HttpResponseException(HttpStatusCode.InternalServerError);
                         }
-                        Trace.WriteLine(file.Headers.ContentDisposition.FileName);
-                        Trace.WriteLine("Server file path: " + file.LocalFileName);
+                        //Trace.WriteLine(file.Headers.ContentDisposition.FileName);
+                        //Trace.WriteLine("Server file path: " + file.LocalFileName);
                     }
                     return Request.CreateResponse(HttpStatusCode.OK);
                 });

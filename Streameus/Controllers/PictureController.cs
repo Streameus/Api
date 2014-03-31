@@ -64,23 +64,24 @@ namespace Streameus.Controllers
             var root = HttpContext.Current.Server.MapPath("~/App_Data/Picture/");
             var file = root + id;
             var path = "";
-            var img = new Image();
             var type = "";
 
             if (File.Exists(file + ".jpg"))
             {
-                img.ImageUrl = file + ".jpg";
                 path = file + ".jpg";
                 type = "jpeg";
             }
             else if (File.Exists(file + ".png"))
             {
-                img.ImageUrl = file + ".png";
                 path = file + ".png";
                 type = "png";
             }
             else
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+            {
+                var defaultPicture = HttpContext.Current.Server.MapPath("~/Content/defaultUser.png");
+                path = defaultPicture;
+                type = "png";
+            }
 
             var fileStream = new FileStream(path, FileMode.Open);
 
@@ -127,7 +128,6 @@ namespace Streameus.Controllers
                     // This illustrates how to get the file names.
                     foreach (MultipartFileData file in provider.FileData)
                     {
-
                         var oldfileName = file.LocalFileName;
                         // recup le userId
                         int userId = 1;
@@ -178,4 +178,3 @@ namespace Streameus.Controllers
         }
     }
 }
-

@@ -12,18 +12,19 @@ using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using Microsoft.Ajax.Utilities;
 using Streameus.DataAbstractionLayer.Contracts;
+using Streameus.Exceptions.HttpErrors;
 
 namespace Streameus.Controllers
 {
     /// <summary>
-    /// Picture controller
+    ///     Picture controller
     /// </summary>
     public class PictureController : BaseController
     {
         private readonly IUserServices _userServices;
 
         /// <summary>
-        /// Default constructor
+        ///     Default constructor
         /// </summary>
         public PictureController(IUserServices userServices)
         {
@@ -32,11 +33,10 @@ namespace Streameus.Controllers
 
         // DELETE api/picture/{id}
         /// <summary>
-        /// Delete Picture from id
+        ///     Delete User Picture
         /// </summary>
-        /// <returns></returns>
-        /// <exception cref="ApiController.NotFound">Picture not found</exception>
-        public HttpResponseMessage DeletePicture(int id)
+        /// <exception cref="NotFoundException">Picture not found</exception>
+        public void DeletePicture(int id)
         {
             var root = HttpContext.Current.Server.MapPath("~/App_Data/Picture/");
             var file = root + id;
@@ -47,15 +47,14 @@ namespace Streameus.Controllers
             else if (File.Exists(file + ".png"))
                 path = file + ".png";
             else
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                throw new NotFoundException();
             File.Delete(path);
-            return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
 
         // GET api/picture/{id}
         /// <summary>
-        /// Get Picture from id
+        ///     Get Picture from id
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ApiController.NotFound">Picture not found</exception>
@@ -63,8 +62,8 @@ namespace Streameus.Controllers
         {
             var root = HttpContext.Current.Server.MapPath("~/App_Data/Picture/");
             var file = root + id;
-            var path = "";
-            var type = "";
+            string path;
+            string type;
 
             if (File.Exists(file + ".jpg"))
             {
@@ -98,14 +97,14 @@ namespace Streameus.Controllers
 
         // POST api/picture
         /// <summary>
-        /// PostFormData
+        ///     PostFormData
         /// </summary>
         /// <returns></returns>
         /// <exception cref="UnsupportedMediaType">This type of media is not supported</exception>
         /// <exception cref="InternalServerError">Internal Server Error</exception>
         /// <exception cref="FileNotFoundException">File Not Found</exception>
         /// <exception cref="IOException">File Not Found</exception>
-        public Task<HttpResponseMessage> PostFormData()
+        public async Task<HttpResponseMessage> PostFormData()
         {
             // Check if the request contains multipart/form-data.
             if (!Request.Content.IsMimeMultipartContent())
@@ -117,7 +116,7 @@ namespace Streameus.Controllers
             var provider = new MultipartFormDataStreamProvider(root);
 
             // Read the form data and return an async task.
-            var task = Request.Content.ReadAsMultipartAsync(provider).
+            var task = await Request.Content.ReadAsMultipartAsync(provider).
                 ContinueWith<HttpResponseMessage>(t =>
                 {
                     if (t.IsFaulted || t.IsCanceled)

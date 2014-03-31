@@ -1,46 +1,110 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Mvc;
+using System.Web.UI.WebControls;
+using Microsoft.Ajax.Utilities;
 using Streameus.DataAbstractionLayer.Contracts;
+using Streameus.Exceptions.HttpErrors;
 
 namespace Streameus.Controllers
 {
     /// <summary>
-    /// Picture controller
+    ///     Picture controller
     /// </summary>
     public class PictureController : BaseController
     {
         private readonly IUserServices _userServices;
 
         /// <summary>
-        /// Default constructor
+        ///     Default constructor
         /// </summary>
         public PictureController(IUserServices userServices)
         {
             this._userServices = userServices;
         }
 
-        // GET api/picture
+        // DELETE api/picture/{id}
         /// <summary>
-        /// Affichage du form
+        ///     Delete User Picture
         /// </summary>
-        public void Get()
+        /// <exception cref="NotFoundException">Picture not found</exception>
+        public void DeletePicture(int id)
         {
+            var root = HttpContext.Current.Server.MapPath("~/App_Data/Picture/");
+            var file = root + id;
+            var path = "";
+
+            if (File.Exists(file + ".jpg"))
+                path = file + ".jpg";
+            else if (File.Exists(file + ".png"))
+                path = file + ".png";
+            else
+                throw new NotFoundException();
+            File.Delete(path);
         }
 
+
+        // GET api/picture/{id}
         /// <summary>
-        /// PostFormData
+        ///     Get Picture from id
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="ApiController.NotFound">Picture not found</exception>
+        public HttpResponseMessage Get(int id)
+        {
+            var root = HttpContext.Current.Server.MapPath("~/App_Data/Picture/");
+            var file = root + id;
+            string path;
+            string type;
+
+            if (File.Exists(file + ".jpg"))
+            {
+                path = file + ".jpg";
+                type = "jpeg";
+            }
+            else if (File.Exists(file + ".png"))
+            {
+                path = file + ".png";
+                type = "png";
+            }
+            else
+            {
+                var defaultPicture = HttpContext.Current.Server.MapPath("~/Content/defaultUser.png");
+                path = defaultPicture;
+                type = "png";
+            }
+
+            var fileStream = new FileStream(path, FileMode.Open);
+
+
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content =
+                    new StreamContent(fileStream)
+                    {
+                        Headers = {ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/" + type)}
+                    }
+            };
+        }
+
+        // POST api/picture
+        /// <summary>
+        ///     PostFormData
         /// </summary>
         /// <returns></returns>
         /// <exception cref="UnsupportedMediaType">This type of media is not supported</exception>
         /// <exception cref="InternalServerError">Internal Server Error</exception>
-        public Task<HttpResponseMessage> PostFormData()
+        /// <exception cref="FileNotFoundException">File Not Found</exception>
+        /// <exception cref="IOException">File Not Found</exception>
+        public async Task<HttpResponseMessage> PostFormData()
         {
             // Check if the request contains multipart/form-data.
             if (!Request.Content.IsMimeMultipartContent())
@@ -48,11 +112,11 @@ namespace Streameus.Controllers
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
 
-            string root = HttpContext.Current.Server.MapPath("~/App_Data");
+            var root = HttpContext.Current.Server.MapPath("~/App_Data/Picture/");
             var provider = new MultipartFormDataStreamProvider(root);
 
             // Read the form data and return an async task.
-            var task = Request.Content.ReadAsMultipartAsync(provider).
+            var task = await Request.Content.ReadAsMultipartAsync(provider).
                 ContinueWith<HttpResponseMessage>(t =>
                 {
                     if (t.IsFaulted || t.IsCanceled)
@@ -63,8 +127,48 @@ namespace Streameus.Controllers
                     // This illustrates how to get the file names.
                     foreach (MultipartFileData file in provider.FileData)
                     {
-                        Trace.WriteLine(file.Headers.ContentDisposition.FileName);
-                        Trace.WriteLine("Server file path: " + file.LocalFileName);
+                        var oldfileName = file.LocalFileName;
+                        // recup le userId
+                        int userId = 1;
+
+                        // Recup l'extension de fichier
+                        string fileExtension = null;
+                        switch (file.Headers.ContentType.MediaType)
+                        {
+                            case "image/png":
+                                fileExtension = ".png";
+                                break;
+                            case "image/jpeg":
+                                fileExtension = ".jpg";
+                                break;
+                            default:
+                                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+                        }
+                        // Si le fichier existe
+                        if (File.Exists(root + userId + ".png"))
+                            File.Delete(root + userId + ".png");
+                        if (File.Exists(root + userId + ".jpg"))
+                            File.Delete(root + userId + ".jpg");
+                        // renomme le fichier temporaire en path + id + .extension
+                        try
+                        {
+                            File.Move(oldfileName, root + userId + fileExtension);
+                            //File.Delete(oldfileName);
+                        }
+                        catch (FileNotFoundException e)
+                        {
+                            throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                        }
+                        catch (IOException e)
+                        {
+                            throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                        }
+                        catch (HttpResponseException e)
+                        {
+                            throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                        }
+                        //Trace.WriteLine(file.Headers.ContentDisposition.FileName);
+                        //Trace.WriteLine("Server file path: " + file.LocalFileName);
                     }
                     return Request.CreateResponse(HttpStatusCode.OK);
                 });

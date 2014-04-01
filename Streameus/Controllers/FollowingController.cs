@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataAbstractionLayer.Services;
 using Streameus.Exceptions;
@@ -34,7 +37,7 @@ namespace Streameus.Controllers
 
         // GET api/following/5
         /// <summary>
-        /// Get all the person's this user is following
+        /// Get all the people this user is following
         /// </summary>
         /// <param name="id">the user id</param>
         /// <returns></returns>
@@ -64,10 +67,11 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="id">the id of the user to follow</param>
         /// <exception cref="NotImplementedException"></exception>
+        [Authorize]
         public void Post(int id)
         {
-            //Todo implementer apres l'auth
-            throw new NotImplementedException("Revenez quand l'auth marchera");
+            var userId = Convert.ToInt32(this.User.Identity.GetUserId());
+            this._userServices.AddFollowing(this._userServices.GetById(userId), this._userServices.GetById(id));
         }
 
         // DELETE api/following/5
@@ -76,10 +80,11 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="id">the id of the user to stop following</param>
         /// <exception cref="NotImplementedException"></exception>
+        [Authorize]
         public void Delete(int id)
         {
-            //Todo implementer apres l'auth
-            throw new NotImplementedException("Revenez quand l'auth marchera");
+            var userId = Convert.ToInt32(this.User.Identity.GetUserId());
+            this._userServices.RemoveFollowing(this._userServices.GetById(userId), this._userServices.GetById(id));
         }
     }
 }

@@ -57,6 +57,28 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
+        /// Add a following to a user
+        /// </summary>
+        /// <param name="user">The user who wants a following</param>
+        /// <param name="userWanted">The who is followed</param>
+        public void AddFollowing(User user, User userWanted)
+        {
+            user.Abonnements.Add(userWanted);
+            this.Save(user);
+        }
+
+        /// <summary>
+        /// Remove a following of an user
+        /// </summary>
+        /// <param name="user">The user who wants remove following</param>
+        /// <param name="userUnwanted">The who is deleted</param>
+        public void RemoveFollowing(User user, User userUnwanted)
+        {
+            user.Abonnements.Remove(userUnwanted);
+            this.Save(user);
+        }
+
+        /// <summary>
         /// Update an user
         /// </summary>
         /// <param name="user"></param>

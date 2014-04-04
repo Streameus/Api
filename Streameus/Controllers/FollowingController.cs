@@ -71,7 +71,7 @@ namespace Streameus.Controllers
         public void Post(int id)
         {
             var userId = Convert.ToInt32(this.User.Identity.GetUserId());
-            this._userServices.AddFollowing(this._userServices.GetById(userId), this._userServices.GetById(id));
+            this._userServices.AddFollowing(userId, id);
         }
 
         // DELETE api/following/5
@@ -84,7 +84,7 @@ namespace Streameus.Controllers
         public void Delete(int id)
         {
             var userId = Convert.ToInt32(this.User.Identity.GetUserId());
-            this._userServices.RemoveFollowing(this._userServices.GetById(userId), this._userServices.GetById(id));
+            this._userServices.RemoveFollowing(userId, id);
         }
     }
 }

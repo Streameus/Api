@@ -130,6 +130,28 @@ namespace Streameus.DataAbstractionLayer.Initializers
             };
             posts.ForEach(s => context.Posts.Add(s));
             context.SaveChanges();
+
+            var messagesGroups = new List<MessageGroup>();
+            users.Where(u => u.Id > 0).ToList().ForEach(u => messagesGroups.Add(new MessageGroup { Members = { users[0], u } }));
+            context.MessagesGroups.AddRange(messagesGroups);
+            context.SaveChanges();
+            foreach (var group in messagesGroups)
+            {
+                foreach (var user in group.Members)
+                {
+                    var content = String.Format("Message from '{0}' to group with Id '{1}'", user.UserName, group.Id);
+                    var message = new Message { Content = content, Date = DateTime.Now.AddHours(group.Id), Sender = user };
+                    group.Messages.Add(message);
+                }
+                foreach (var user in group.Members)
+                {
+                    var content = String.Format("Answer from '{0}' to group with Id '{1}'", user.UserName, group.Id);
+                    var message = new Message { Content = content, Date = DateTime.Now.AddHours(group.Id), Sender = user };
+                    group.Messages.Add(message);
+                }
+            }
+            context.SaveChanges();
+
         }
     }
 }

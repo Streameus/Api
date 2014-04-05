@@ -141,5 +141,19 @@ namespace Streameus.Controllers
             conferences.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c)));
             return conferencesListe;
         }
+
+        /// <summary>
+        /// Get all messages group of a user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Route("{id}/messagesGroups")]
+        public IEnumerable<MessageGroupViewModel> GetMessagesGroupOfUser(int id)
+        {
+            var groups = this._userServices.GetById(id).MessageGroups;
+            var groupsList = new List<MessageGroupViewModel>();
+            groups.ForEach(g => groupsList.Add(new MessageGroupViewModel(g)));
+            return groupsList;
+        }
     }
 }

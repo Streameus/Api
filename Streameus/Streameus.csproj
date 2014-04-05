@@ -219,6 +219,8 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ConferenceController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\MessageGroupController.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\FollowerController.cs" />
     <Compile Include="Controllers\FollowingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -228,17 +230,25 @@
     <Compile Include="Controllers\ResourceController.cs" />
     <Compile Include="Controllers\RessourceController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="DataAbstractionLayer\Contracts\IMessageGroupServices.cs" />
+    <Compile Include="DataAbstractionLayer\Contracts\IMessageServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IBaseServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IConferenceParametersServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IConferenceServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IParametersServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IUserServices.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\MessageGroup.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Mapping\MessageGroupMap.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Message.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Mapping\MessageMap.cs" />
     <Compile Include="DataAbstractionLayer\Initializers\DropCreateDatabaseTables.cs" />
     <Compile Include="DataAbstractionLayer\Initializers\StreameusInitializerForAppHarbor.cs" />
     <Compile Include="DataAbstractionLayer\Initializers\StreameusSeed.cs" />
     <Compile Include="DataAbstractionLayer\Services\BaseServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\ConferenceServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\ConferenceParametersServices.cs" />
+    <Compile Include="DataAbstractionLayer\Services\MessageGroupServices.cs" />
+    <Compile Include="DataAbstractionLayer\Services\MessageServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\ParametersServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\UserServices.cs" />
     <Compile Include="DataAbstractionLayer\Initializers\StreameusInitializer.cs" />
@@ -290,6 +300,8 @@
       <DependentUpon>Translation.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\AddExternalLoginBindingModel.cs" />
+    <Compile Include="ViewModels\MessageGroupViewModel.cs" />
+    <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\ExternalLoginViewModel.cs" />
     <Compile Include="ViewModels\ManageInfoViewModel.cs" />
     <Compile Include="ViewModels\ParametersViewModel.cs" />

@@ -55,6 +55,16 @@ namespace Streameus.DataAbstractionLayer
         public DbSet<Post> Posts { get; set; }
 
         /// <summary>
+        /// Messages Groups Set
+        /// </summary>
+        public DbSet<MessageGroup> MessagesGroups { get; set; }
+
+        /// <summary>
+        /// Posts Set
+        /// </summary>
+        public DbSet<Message> Messages { get; set; }
+
+        /// <summary>
         /// Maps table names, and sets up relationships between the various user entities
         /// </summary>
         /// <param name="modelBuilder"/>
@@ -66,6 +76,8 @@ namespace Streameus.DataAbstractionLayer
             modelBuilder.Configurations.Add(new PostMap());
             modelBuilder.Configurations.Add(new UserMap());
             modelBuilder.Configurations.Add(new ConferenceMap());
+            modelBuilder.Configurations.Add(new MessageMap());
+            modelBuilder.Configurations.Add(new MessageGroupMap());
         }
 
         /// <summary>

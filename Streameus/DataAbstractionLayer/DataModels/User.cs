@@ -50,6 +50,8 @@ namespace Streameus.Models
             this.Posts = new HashSet<Post>();
             this.Abonnements = new HashSet<User>();
             this.Followers = new HashSet<User>();
+            this.MessageGroups = new HashSet<MessageGroup>();
+            this.SentMessages = new HashSet<Message>();
             this.Parameters = new Parameters();
         }
 
@@ -190,6 +192,14 @@ namespace Streameus.Models
         /// User followers
         /// </summary>
         public virtual ICollection<User> Followers { get; set; }
+        /// <summary>
+        /// User sent messages
+        /// </summary>
+        public virtual ICollection<Message> SentMessages { get; set; }
+        /// <summary>
+        /// User group messages
+        /// </summary>
+        public virtual ICollection<MessageGroup> MessageGroups { get; set; }
         /// <summary>
         /// User parameters
         /// </summary>

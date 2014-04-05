@@ -44,8 +44,23 @@ namespace Streameus.Controllers
         {
             var messageGroupList = new List<MessageGroupViewModel>();
             this._messageGroupServices.GetAll().ForEach(u => messageGroupList.Add(new MessageGroupViewModel(u)));
-            if (!messageGroupList.Any())
-                throw new NoResultException("Empty Set");
+            return messageGroupList;
+        }
+
+        /// <summary>
+        /// Return the currently connected user
+        /// </summary>
+        /// <returns></returns>
+        [Route("my")]
+        [Authorize]
+        public IEnumerable<MessageGroupViewModel> GetMy()
+        {
+            var userId = Convert.ToInt32(this.User.Identity.GetUserId());
+            // Debug
+            userId = 1;
+            var userGroups = this._messageGroupServices.GetAll().Where(g => g.Members.Any(m => m.Id == userId));
+            var messageGroupList = new List<MessageGroupViewModel>();
+            userGroups.ForEach(u => messageGroupList.Add(new MessageGroupViewModel(u)));
             return messageGroupList;
         }
 

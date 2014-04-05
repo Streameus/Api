@@ -18,6 +18,26 @@ namespace Streameus.ViewModels
         public int Id { get; set; }
 
         /// <summary>
+        /// MessageGroup members
+        /// </summary>
+        public string[] Members { get; set; }
+
+        /// <summary>
+        /// MessageGroup last message content
+        /// </summary>
+        public string Message { get; set; }
+
+        /// <summary>
+        /// MessageGroup messages number
+        /// </summary>
+        public int Count { get; set; }
+
+        /// <summary>
+        /// MessageGroup last message date
+        /// </summary>
+        public DateTime Date { get; set; }
+
+        /// <summary>
         /// default constructor
         /// </summary>
         public MessageGroupViewModel()
@@ -31,6 +51,14 @@ namespace Streameus.ViewModels
         public MessageGroupViewModel(MessageGroup messageGroup)
         {
             this.Id = messageGroup.Id;
+            this.Members = messageGroup.Members.Select(member => member.Pseudo).ToArray();
+            var lastMessage = messageGroup.Messages.OrderByDescending(m => m.Date).First();
+            if (lastMessage.Content.Length > 144)
+                this.Message = lastMessage.Content.Substring(0, 144);
+            else
+                this.Message = lastMessage.Content;
+            this.Date = lastMessage.Date;
+            this.Count = messageGroup.Messages.Count;
         }
     }
 }

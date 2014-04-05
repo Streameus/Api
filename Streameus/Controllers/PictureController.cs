@@ -100,8 +100,8 @@ namespace Streameus.Controllers
         ///     PostFormData
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="UnsupportedMediaType">This type of media is not supported</exception>
-        /// <exception cref="InternalServerError">Internal Server Error</exception>
+        /// <exception cref="HttpStatusCode.UnsupportedMediaType">This type of media is not supported</exception>
+        /// <exception cref="HttpStatusCode.InternalServerError">Internal Server Error</exception>
         /// <exception cref="FileNotFoundException">File Not Found</exception>
         /// <exception cref="IOException">File Not Found</exception>
         public async Task<HttpResponseMessage> PostFormData()
@@ -155,15 +155,15 @@ namespace Streameus.Controllers
                             File.Move(oldfileName, root + userId + fileExtension);
                             //File.Delete(oldfileName);
                         }
-                        catch (FileNotFoundException e)
+                        catch (FileNotFoundException)
                         {
                             throw new HttpResponseException(HttpStatusCode.InternalServerError);
                         }
-                        catch (IOException e)
+                        catch (IOException)
                         {
                             throw new HttpResponseException(HttpStatusCode.InternalServerError);
                         }
-                        catch (HttpResponseException e)
+                        catch (HttpResponseException)
                         {
                             throw new HttpResponseException(HttpStatusCode.InternalServerError);
                         }

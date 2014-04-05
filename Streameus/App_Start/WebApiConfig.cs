@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin.Security.OAuth;
+﻿using System.Web.Http.Cors;
+using Microsoft.Owin.Security.OAuth;
 #pragma warning disable 1591
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,8 @@ namespace Streameus
     {
         public static void Register(HttpConfiguration config)
         {
+            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
+
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();

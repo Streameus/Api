@@ -10,8 +10,18 @@ using Swashbuckle.Models;
 namespace Streameus.Documentation
 {
 
+    /// <summary>
+    /// @TODO
+    /// </summary>
     public class AddStandardResponseMessages : IOperationFilter
     {
+        /// <summary>
+        /// @TODO
+        /// </summary>
+        /// <param name="apiDescription"></param>
+        /// <param name="operationSpec"></param>
+        /// <param name="modelSpecRegistrar"></param>
+        /// <param name="modelSpecGenerator"></param>
         public void Apply(ApiDescription apiDescription, OperationSpec operationSpec,
             ModelSpecRegistrar modelSpecRegistrar,
             ModelSpecGenerator modelSpecGenerator)
@@ -30,9 +40,18 @@ namespace Streameus.Documentation
         }
     }
 
-
+    /// <summary>
+    /// @TODO
+    /// </summary>
     public class AddAuthorizationResponseMessages : IOperationFilter
     {
+        /// <summary>
+        /// @TODO
+        /// </summary>
+        /// <param name="apiDescription"></param>
+        /// <param name="operationSpec"></param>
+        /// <param name="modelSpecRegistrar"></param>
+        /// <param name="modelSpecGenerator"></param>
         public void Apply(ApiDescription apiDescription, OperationSpec operationSpec,
             ModelSpecRegistrar modelSpecRegistrar,
             ModelSpecGenerator modelSpecGenerator)

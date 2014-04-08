@@ -61,6 +61,19 @@ namespace Streameus.Controllers
             return new UserViewModel(user);
         }
 
+        // GET api/user/AmI
+        /// <summary>
+        /// Check if the user connected follow the specified user
+        /// </summary>
+        /// <param name="id">the id of the user to be checked</param>
+        /// <returns></returns>
+        public Boolean AmI(int id)
+        {
+            var currentUserId = Convert.ToInt32(this.User.Identity.GetUserId());
+            var abonnements = this._userServices.GetAbonnementsForUser(currentUserId);
+            return Enumerable.Any(abonnements, abonnement => abonnement.Id == id);
+        }
+
         /// <summary>
         /// Return the currently connected user
         /// </summary>

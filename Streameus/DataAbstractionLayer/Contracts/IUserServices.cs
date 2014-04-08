@@ -34,6 +34,13 @@ namespace Streameus.DataAbstractionLayer.Contracts
         void Delete(int id);
 
         /// <summary>
+        /// Check if a pseudo exists in db
+        /// </summary>
+        /// <param name="pseudo">The pseudo to be checked</param>
+        /// <returns>Returns true if the pseudo exists</returns>
+        bool IsPseudoExist(string pseudo);
+
+        /// <summary>
         /// Returns all the user's followers
         /// </summary>
         /// <param name="id">userId</param>

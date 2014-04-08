@@ -143,6 +143,17 @@ namespace Streameus.DataAbstractionLayer.Services
             return !this.GetDbSet<User>().Any(u => u.Pseudo == user.Pseudo && u.Id != user.Id);
         }
 
+
+        /// <summary>
+        /// Check if a pseudo exists in db
+        /// </summary>
+        /// <param name="pseudo">The pseudo to be checked</param>
+        /// <returns>Returns true if the pseudo exists</returns>
+        public bool IsPseudoExist(string pseudo)
+        {
+            return !this.GetDbSet<User>().Any(u => u.Pseudo == pseudo);
+        }
+
         /// <summary>
         /// Check if user email exists in db
         /// </summary>

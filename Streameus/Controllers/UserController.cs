@@ -61,6 +61,17 @@ namespace Streameus.Controllers
             return new UserViewModel(user);
         }
 
+        // GET api/user/available
+        /// <summary>
+        /// Verify if a user pseudo is available 
+        /// </summary>
+        /// <param name="pseudo">the pseudo of the user to verify</param>
+        /// <returns></returns>
+        public Boolean Available(string pseudo)
+        {
+            return this._userServices.IsPseudoExist(pseudo);
+        }
+
         /// <summary>
         /// Return the currently connected user
         /// </summary>

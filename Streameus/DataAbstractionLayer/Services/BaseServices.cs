@@ -20,7 +20,7 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <summary>
         /// Unit of work
         /// </summary>
-        protected IUnitOfWork UnitOfWork;
+        private readonly IUnitOfWork UnitOfWork;
 
         /// <summary>
         /// Default constructor

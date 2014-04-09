@@ -78,11 +78,11 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="id">the id of the user to be checked</param>
         /// <returns></returns>
+        [Authorize]
         public Boolean AmI(int id)
         {
             var currentUserId = Convert.ToInt32(this.User.Identity.GetUserId());
-            var abonnements = this._userServices.GetAbonnementsForUser(currentUserId);
-            return Enumerable.Any(abonnements, abonnement => abonnement.Id == id);
+            return this._userServices.IsUserFollowing(currentUserId, id);
         }
 
         /// <summary>

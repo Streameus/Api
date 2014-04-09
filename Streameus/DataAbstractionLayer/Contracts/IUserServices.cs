@@ -71,5 +71,13 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <exception cref="EmptyResultException">No followings</exception>
         /// <exception cref="NoResultException">The user wasn't found</exception>
         IQueryable<User> GetAbonnementsForUser(int id);
+
+        /// <summary>
+        /// Check if the current user follows the target user
+        /// </summary>
+        /// <param name="currentUserId">The current user ID</param>
+        /// <param name="targetUserId">the target user ID</param>
+        /// <returns></returns>
+        bool IsUserFollowing(int currentUserId, int targetUserId);
     }
 }

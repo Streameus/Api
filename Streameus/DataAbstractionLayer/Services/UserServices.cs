@@ -158,6 +158,18 @@ namespace Streameus.DataAbstractionLayer.Services
             }
         }
 
+        /// <summary>
+        /// Check if the current user follows the target user
+        /// </summary>
+        /// <param name="currentUserId">The current user ID</param>
+        /// <param name="targetUserId">the target user ID</param>
+        /// <returns></returns>
+        public bool IsUserFollowing(int currentUserId, int targetUserId)
+        {
+            var currentUser = this.GetById(currentUserId);
+            return currentUser.Abonnements.Any(a => a.Id == targetUserId);
+        }
+
 
         /// <summary>
         /// Check if user pseudo exists in db

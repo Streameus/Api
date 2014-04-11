@@ -21,12 +21,6 @@ namespace Streameus.DataAbstractionLayer
         public StreameusContext()
             : base("Name=StreameusContext")
         {
-            //Un initializer de db different est requis pour appHarbor, cf doc de la classe.
-            var appHarbor = ConfigurationManager.AppSettings["Environment"] == "AppHarbor";
-            if (appHarbor)
-                Database.SetInitializer(new StreameusInitializerForAppHarbor());
-            else
-                Database.SetInitializer(new StreameusInitializer());
         }
 
         /// <summary>
@@ -60,6 +54,13 @@ namespace Streameus.DataAbstractionLayer
         /// <param name="modelBuilder"/>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            //Un initializer de db different est requis pour appHarbor, cf doc de la classe.
+            var appHarbor = ConfigurationManager.AppSettings["Environment"] == "AppHarbor";
+            if (appHarbor)
+                Database.SetInitializer(new StreameusInitializerForAppHarbor());
+            else
+                Database.SetInitializer(new StreameusInitializer());
+
             modelBuilder.Configurations.Add(new CommentMap());
             modelBuilder.Configurations.Add(new ConferenceParametersMap());
             modelBuilder.Configurations.Add(new DocumentMap());

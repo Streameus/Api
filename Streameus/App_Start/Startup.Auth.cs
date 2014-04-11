@@ -1,10 +1,14 @@
 ﻿//using Microsoft.Owin.Security.Cookies;
 
 using System;
+using System.Configuration;
+using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.Facebook;
+using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using Streameus.DataAbstractionLayer;
@@ -68,10 +72,29 @@ namespace Streameus
             //    consumerKey: "",
             //    consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //    appId: "",
-            //    appSecret: "");
-            app.UseGoogleAuthentication();
+//            var facebookOptions = new FacebookAuthenticationOptions()
+//            {
+//                AppId = "",
+//                AppSecret = "",
+//            };
+//            facebookOptions.Scope.Add("email");
+//            app.UseFacebookAuthentication(facebookOptions);
+            var googleOAuth2AuthenticationOptions = new GoogleOAuth2AuthenticationOptions
+            {
+                ClientId = ConfigurationManager.AppSettings.Get("googleClientId"),
+                ClientSecret = ConfigurationManager.AppSettings.Get("googleClientSecret"),
+                CallbackPath = new PathString("/signin-google"),
+                Provider = new GoogleOAuth2AuthenticationProvider()
+                {
+                    OnAuthenticated = async context =>
+                    {
+                        context.Identity.AddClaim(new Claim("picture", context.User.GetValue("picture").ToString()));
+                        context.Identity.AddClaim(new Claim("profile", context.User.GetValue("profile").ToString()));
+                    }
+                }
+            };
+            googleOAuth2AuthenticationOptions.Scope.Add("email");
+            app.UseGoogleAuthentication(googleOAuth2AuthenticationOptions);
         }
     }
 }

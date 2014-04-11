@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -22,6 +24,25 @@ namespace Streameus.Models
         public StreameusUserStore(StreameusContext context)
             : base(context)
         {
+        }
+
+        /// <summary>
+        /// Overload to delete the CustomUserLogin from the db (prevents ForeignKeyError)
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="login"></param>
+        /// <returns></returns>
+        public override Task RemoveLoginAsync(User user, UserLoginInfo login)
+        {
+            var provider = login.LoginProvider;
+            var key = login.ProviderKey;
+            var entry = user.Logins.SingleOrDefault(l => l.LoginProvider == provider && l.ProviderKey == key);
+            if (entry != null)
+            {
+                user.Logins.Remove(entry);
+                this.Context.Set<CustomUserLogin>().Remove(entry);
+            }
+            return Task.FromResult(0);
         }
     }
 

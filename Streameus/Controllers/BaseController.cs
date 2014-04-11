@@ -1,4 +1,8 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Security.Claims;
+using System.Web.Http;
+using Microsoft.AspNet.Identity;
+using Streameus.Models;
 
 namespace Streameus.Controllers
 {
@@ -7,5 +11,13 @@ namespace Streameus.Controllers
     /// </summary>
     public class BaseController : ApiController
     {
+        /// <summary>
+        /// Get the current user Id, already parsed in int format
+        /// </summary>
+        /// <returns></returns>
+        public int GetCurrentUserId()
+        {
+            return Convert.ToInt32(this.User.Identity.GetUserId());
+        }
     }
 }

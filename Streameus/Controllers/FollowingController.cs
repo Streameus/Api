@@ -68,10 +68,11 @@ namespace Streameus.Controllers
         /// <param name="id">the id of the user to follow</param>
         /// <exception cref="NotImplementedException"></exception>
         [Authorize]
-        public void Post(int id)
+        public Boolean Post(int id)
         {
             var userId = Convert.ToInt32(this.User.Identity.GetUserId());
             this._userServices.AddFollowing(userId, id);
+            return true;
         }
 
         // DELETE api/following/5

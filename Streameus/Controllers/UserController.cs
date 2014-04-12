@@ -67,7 +67,8 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="pseudo">the pseudo of the user to verify</param>
         /// <returns></returns>
-        public Boolean Available(string pseudo)
+        [Route("pseudoIsAvailable")]
+        public Boolean GetAvailable(string pseudo)
         {
             return this._userServices.IsPseudoExist(pseudo);
         }
@@ -79,6 +80,7 @@ namespace Streameus.Controllers
         /// <param name="id">the id of the user to be checked</param>
         /// <returns></returns>
         [Authorize]
+        [Route("AmIFollowing")]
         public Boolean AmI(int id)
         {
             var currentUserId = Convert.ToInt32(this.User.Identity.GetUserId());

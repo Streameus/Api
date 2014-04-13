@@ -61,6 +61,32 @@ namespace Streameus.Controllers
             return new UserViewModel(user);
         }
 
+        // GET api/user/available
+        /// <summary>
+        /// Verify if a user pseudo is available 
+        /// </summary>
+        /// <param name="pseudo">the pseudo of the user to verify</param>
+        /// <returns></returns>
+        [Route("pseudoIsAvailable")]
+        public Boolean GetAvailable(string pseudo)
+        {
+            return this._userServices.IsPseudoExist(pseudo);
+        }
+
+        // GET api/user/AmI
+        /// <summary>
+        /// Check if the user connected follow the specified user
+        /// </summary>
+        /// <param name="id">the id of the user to be checked</param>
+        /// <returns></returns>
+        [Authorize]
+        [Route("AmIFollowing")]
+        public Boolean AmI(int id)
+        {
+            var currentUserId = Convert.ToInt32(this.User.Identity.GetUserId());
+            return this._userServices.IsUserFollowing(currentUserId, id);
+        }
+
         /// <summary>
         /// Return the currently connected user
         /// </summary>

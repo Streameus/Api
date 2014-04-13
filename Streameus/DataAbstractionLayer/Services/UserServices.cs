@@ -57,6 +57,32 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
+        /// Add a following to an user
+        /// </summary>
+        /// <param name="userId">The user's id who wants a following</param>
+        /// <param name="userWantedId">The user's id who is followed</param>
+        public void AddFollowing(int userId, int userWantedId)
+        {
+            var user = this.GetById(userId);
+            var userWanted = this.GetById(userWantedId);
+            user.Abonnements.Add(userWanted);
+            this.Save(user);
+        }
+
+        /// <summary>
+        /// Remove a following of an user
+        /// </summary>
+        /// <param name="userId">The user's id who wants remove following</param>
+        /// <param name="userUnwantedId">The user's id who is deleted</param>
+        public void RemoveFollowing(int userId, int userUnwantedId)
+        {
+            var user = this.GetById(userId);
+            var userUnwanted = this.GetById(userUnwantedId);
+            user.Abonnements.Remove(userUnwanted);
+            this.Save(user);
+        }
+
+        /// <summary>
         /// Update an user
         /// </summary>
         /// <param name="user"></param>
@@ -132,6 +158,18 @@ namespace Streameus.DataAbstractionLayer.Services
             }
         }
 
+        /// <summary>
+        /// Check if the current user follows the target user
+        /// </summary>
+        /// <param name="currentUserId">The current user ID</param>
+        /// <param name="targetUserId">the target user ID</param>
+        /// <returns></returns>
+        public bool IsUserFollowing(int currentUserId, int targetUserId)
+        {
+            var currentUser = this.GetById(currentUserId);
+            return currentUser.Abonnements.Any(a => a.Id == targetUserId);
+        }
+
 
         /// <summary>
         /// Check if user pseudo exists in db
@@ -141,6 +179,17 @@ namespace Streameus.DataAbstractionLayer.Services
         private bool IsUserPseudoUnique(User user)
         {
             return !this.GetDbSet<User>().Any(u => u.Pseudo == user.Pseudo && u.Id != user.Id);
+        }
+
+
+        /// <summary>
+        /// Check if a pseudo exists in db
+        /// </summary>
+        /// <param name="pseudo">The pseudo to be checked</param>
+        /// <returns>Returns true if the pseudo exists</returns>
+        public bool IsPseudoExist(string pseudo)
+        {
+            return !this.GetDbSet<User>().Any(u => u.Pseudo == pseudo);
         }
 
         /// <summary>

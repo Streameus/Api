@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -24,7 +25,7 @@ namespace Streameus.Controllers
     /// </summary>
     [Authorize]
     [RoutePrefix("api/Account")]
-    public class AccountController : ApiController
+    public class AccountController : BaseController
     {
         private const string LocalLoginProvider = "Local";
 
@@ -238,10 +239,9 @@ namespace Streameus.Controllers
             {
                 return new ChallengeResult(provider, this);
             }
-
-            ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(this.User.Identity as ClaimsIdentity);
-
-            if (externalLogin == null)
+            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(claimsIdentity);
+            if (externalLogin == null || claimsIdentity == null)
             {
                 return this.InternalServerError();
             }
@@ -252,28 +252,49 @@ namespace Streameus.Controllers
                 return new ChallengeResult(provider, this);
             }
 
+            //look if the user exists
             User user = await this.UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
                 externalLogin.ProviderKey));
 
             bool hasRegistered = user != null;
-
-            if (hasRegistered)
+            if (hasRegistered) //if yes, we sign his cookie out
             {
                 this.Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                ClaimsIdentity oAuthIdentity = await this.UserManager.CreateIdentityAsync(user,
-                    OAuthDefaults.AuthenticationType);
-                ClaimsIdentity cookieIdentity = await this.UserManager.CreateIdentityAsync(user,
-                    CookieAuthenticationDefaults.AuthenticationType);
-                AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
-                this.Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
             }
-            else
+            else //if not, we create the user
             {
-                IEnumerable<Claim> claims = externalLogin.GetClaims();
-                ClaimsIdentity identity = new ClaimsIdentity(claims, OAuthDefaults.AuthenticationType);
-                this.Authentication.SignIn(identity);
-            }
+                var emailClaim = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+                string email = "";
+                if (emailClaim != null)
+                {
+                    email = emailClaim.Value;
+                }
+                user = new User
+                {
+                    UserName = externalLogin.UserName,
+                    Email = email,
+                };
 
+                user.Logins.Add(new CustomUserLogin
+                {
+                    LoginProvider = externalLogin.LoginProvider,
+                    ProviderKey = externalLogin.ProviderKey
+                });
+                IdentityResult result = await this.UserManager.CreateAsync(user);
+                IHttpActionResult errorResult = this.GetErrorResult(result);
+
+                if (errorResult != null)
+                {
+                    return errorResult;
+                }
+            }
+            //Log the new/found user in
+            ClaimsIdentity oAuthIdentity = await this.UserManager.CreateIdentityAsync(user,
+                OAuthDefaults.AuthenticationType);
+            ClaimsIdentity cookieIdentity = await this.UserManager.CreateIdentityAsync(user,
+                CookieAuthenticationDefaults.AuthenticationType);
+            AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
+            this.Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
             return this.Ok();
         }
 
@@ -325,11 +346,13 @@ namespace Streameus.Controllers
         }
 
         // POST api/Account/RegisterExternal
+        ///<remarks>Not used anymore since the first call to externalLogin register</remarks>
         /// <summary>
         /// Method to call after the first call to GetExternalLogin to persist the user in db
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
+        [Obsolete]
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("RegisterExternal")]

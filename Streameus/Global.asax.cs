@@ -36,7 +36,6 @@ namespace Streameus
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             this.RegisterIoC();
-            this.SetInitializer();
             this.RegisterAutoMapping();
             this.SwaggerParameters();
 //            this.SetJsonSerializerProperties();
@@ -97,16 +96,6 @@ namespace Streameus
         private void RegisterAutoMapping()
         {
             Mapper.CreateMap<UserViewModel, User>();
-        }
-
-        private void SetInitializer()
-        {
-            //Un initializer de db different est requis pour appHarbor, cf doc de la classe.
-            var appHarbor = ConfigurationManager.AppSettings["Environment"] == "AppHarbor";
-            if (appHarbor)
-                Database.SetInitializer(new StreameusInitializerForAppHarbor());
-            else
-                Database.SetInitializer(new StreameusInitializer());
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// Remove a following of an user
         /// </summary>
         /// <param name="userId">The user's id who wants remove following</param>
-        /// <param name="userWantedId">The user's id who is deleted</param>
+        /// <param name="userUnwantedId">The user's id who is deleted</param>
         void RemoveFollowing(int userId, int userUnwantedId);
 
         /// <summary>

@@ -346,7 +346,7 @@ namespace Streameus.Controllers
         }
 
         // POST api/Account/RegisterExternal
-        ///<remarks>Not used anymore since the first call to externalLogin register</remarks>
+        /// <remarks>Not used anymore since the first call to externalLogin register</remarks>
         /// <summary>
         /// Method to call after the first call to GetExternalLogin to persist the user in db
         /// </summary>
@@ -389,6 +389,89 @@ namespace Streameus.Controllers
             }
 
             return this.Ok();
+        }
+
+        // POST api/Account/Register
+        /// <summary>
+        /// Register a local account
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [Route("Register")]
+        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            User user = new User
+            {
+                Pseudo = model.UserName,
+                Email = model.UserName,
+            };
+
+            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+            IHttpActionResult errorResult = GetErrorResult(result);
+
+            if (errorResult != null)
+            {
+                return errorResult;
+            }
+
+            return Ok();
+        }
+
+        // POST api/Account/ChangePassword
+        /// <summary>
+        /// Change account password
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Route("ChangePassword")]
+        public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            IdentityResult result = await UserManager.ChangePasswordAsync(Convert.ToInt32(this.User.Identity.GetUserId()), model.OldPassword,
+                model.NewPassword);
+            IHttpActionResult errorResult = GetErrorResult(result);
+
+            if (errorResult != null)
+            {
+                return errorResult;
+            }
+
+            return Ok();
+        }
+
+        // POST api/Account/SetPassword
+        /// <summary>
+        /// Set account password
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Route("SetPassword")]
+        public async Task<IHttpActionResult> SetPassword(SetPasswordBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            IdentityResult result = await UserManager.AddPasswordAsync(Convert.ToInt32(User.Identity.GetUserId()), model.NewPassword);
+            IHttpActionResult errorResult = GetErrorResult(result);
+
+            if (errorResult != null)
+            {
+                return errorResult;
+            }
+
+            return Ok();
         }
 
         /// <summary>

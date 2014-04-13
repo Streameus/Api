@@ -206,12 +206,12 @@ namespace Streameus.Models
         public Parameters Parameters { get; set; }
 
         /// <summary>
-        /// User name, uses Pseudo to prevent duplication of content
+        /// User name, uses Email (lowercased) to prevent duplication of content
         /// </summary>
         public override string UserName
         {
-            get { return Pseudo; }
-            set { Pseudo = value; }
+            get { return Email; }
+            set { Email = value.ToLower(); }
         }
     }
 }

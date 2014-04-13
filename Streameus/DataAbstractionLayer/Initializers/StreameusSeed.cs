@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Streameus.Models;
 
 namespace Streameus.DataAbstractionLayer.Initializers
@@ -30,11 +32,18 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 new User {Parameters = new Parameters(), FirstName = "Nino", LastName = "Olivetto", Gender = true}
             };
 
+            var userManager = new StreameusUserManager(new StreameusUserStore(context));
+            //var userManager = HttpContext.Current.GetOwinContext().GetUserManager<StreameusUserManager>();
             users.ForEach(s =>
             {
-                s.Pseudo = s.FullName;
+                s.Pseudo = s.FullName.Replace(" ", "");
                 s.Email = s.FirstName + "." + s.LastName + "@epitech.eu";
-                context.Users.Add(s);
+                var result = userManager.Create(s, "123123");
+                //context.Users.Add(s);
+                if (result.Succeeded)
+                    Console.WriteLine("User added");
+                else
+                    Console.WriteLine("Seed user failed");
             });
             context.SaveChanges();
             users.First().Followers.Add(users[2]);
@@ -151,7 +160,6 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 }
             }
             context.SaveChanges();
-
         }
     }
 }

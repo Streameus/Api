@@ -92,7 +92,6 @@ namespace Streameus.Models
             manager.PasswordValidator = new PasswordValidator()
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true
             };
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)

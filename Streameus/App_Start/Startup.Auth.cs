@@ -6,6 +6,7 @@ using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
+using Microsoft.Owin.Cors;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Facebook;
 using Microsoft.Owin.Security.Google;
@@ -53,6 +54,8 @@ namespace Streameus
         /// <param name="app"></param>
         public void ConfigureAuth(IAppBuilder app)
         {
+            app.UseCors(CorsOptions.AllowAll);
+
             app.CreatePerOwinContext<StreameusContext>(StreameusContext.Create);
             app.CreatePerOwinContext<StreameusUserManager>(StreameusUserManager.Create);
 

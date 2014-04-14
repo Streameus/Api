@@ -141,7 +141,7 @@ namespace Streameus.DataAbstractionLayer.Initializers
             context.SaveChanges();
 
             var messagesGroups = new List<MessageGroup>();
-            users.Where(u => u.Id > 0).ToList().ForEach(u => messagesGroups.Add(new MessageGroup { Members = { users[0], u } }));
+            users.Where(u => u.Id > 1).ToList().ForEach(u => messagesGroups.Add(new MessageGroup { Members = { users[0], u } }));
             context.MessagesGroups.AddRange(messagesGroups);
             context.SaveChanges();
             foreach (var group in messagesGroups)

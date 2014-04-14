@@ -28,6 +28,11 @@ namespace Streameus.ViewModels
         public string Message { get; set; }
 
         /// <summary>
+        /// MessageGroup image id
+        /// </summary>
+        public int ImageId { get; set; }
+
+        /// <summary>
         /// MessageGroup messages number
         /// </summary>
         public int Count { get; set; }
@@ -35,7 +40,7 @@ namespace Streameus.ViewModels
         /// <summary>
         /// MessageGroup last message date
         /// </summary>
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
 
         /// <summary>
         /// default constructor
@@ -48,16 +53,25 @@ namespace Streameus.ViewModels
         /// Instantiate VM with a messageGroup's values
         /// </summary>
         /// <param name="messageGroup"></param>
-        public MessageGroupViewModel(MessageGroup messageGroup)
+        public MessageGroupViewModel(MessageGroup messageGroup, int userId = 0)
         {
             this.Id = messageGroup.Id;
-            this.Members = messageGroup.Members.Select(member => member.Pseudo).ToArray();
+            if (userId < 1)
+            {
+                this.Members = messageGroup.Members.Select(member => member.Pseudo).ToArray();
+                this.ImageId = messageGroup.Members.First().Id;
+            }
+            else
+            {
+                this.Members = messageGroup.Members.Where(i => i.Id != userId).Select(member => member.FullName).ToArray();
+                this.ImageId = messageGroup.Members.First(i => i.Id != userId).Id;                
+            }
             var lastMessage = messageGroup.Messages.OrderByDescending(m => m.Date).First();
             if (lastMessage.Content.Length > 144)
                 this.Message = lastMessage.Content.Substring(0, 144);
             else
                 this.Message = lastMessage.Content;
-            this.Date = lastMessage.Date;
+            this.Date = lastMessage.Date.ToShortDateString() + " " + lastMessage.Date.ToShortTimeString();
             this.Count = messageGroup.Messages.Count;
         }
     }

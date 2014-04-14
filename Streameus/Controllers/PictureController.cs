@@ -82,8 +82,7 @@ namespace Streameus.Controllers
                 type = "png";
             }
 
-            var fileStream = new FileStream(path, FileMode.Open);
-
+            var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
 
             return new HttpResponseMessage(HttpStatusCode.OK)
             {

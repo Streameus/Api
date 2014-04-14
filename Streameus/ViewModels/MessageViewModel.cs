@@ -25,7 +25,12 @@ namespace Streameus.ViewModels
         /// <summary>
         /// Date of this message
         /// </summary>
-        public System.DateTime Date { get; set; }
+        public string Date { get; set; }
+
+        /// <summary>
+        /// Name of the user who sent this message
+        /// </summary>
+        public string SenderName { get; set; }
 
         /// <summary>
         /// Id of the user who sent this message
@@ -51,10 +56,11 @@ namespace Streameus.ViewModels
         public MessageViewModel(Message message)
         {
             this.Id = message.Id;
-            this.Date = message.Date;
+            this.Date = message.Date.ToShortDateString() + " " + message.Date.ToShortTimeString();
             this.Content = message.Content;
             this.SenderId = message.SenderId;
             this.GroupId = message.GroupId;
+            this.SenderName = message.Sender.FullName;
         }
     }
 }

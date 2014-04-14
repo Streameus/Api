@@ -56,11 +56,9 @@ namespace Streameus.Controllers
         public IEnumerable<MessageGroupViewModel> GetMy()
         {
             var userId = Convert.ToInt32(this.User.Identity.GetUserId());
-            // Debug
-            userId = 1;
             var userGroups = this._messageGroupServices.GetAll().Where(g => g.Members.Any(m => m.Id == userId));
             var messageGroupList = new List<MessageGroupViewModel>();
-            userGroups.ForEach(u => messageGroupList.Add(new MessageGroupViewModel(u)));
+            userGroups.ForEach(u => messageGroupList.Add(new MessageGroupViewModel(u, userId)));
             return messageGroupList;
         }
 

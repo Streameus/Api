@@ -11,8 +11,10 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.Exceptions.HttpErrors;
+using User = Streameus.Models.User;
 
 namespace Streameus.Controllers
 {
@@ -104,6 +106,7 @@ namespace Streameus.Controllers
         /// <exception cref="HttpStatusCode.InternalServerError">Internal Server Error</exception>
         /// <exception cref="FileNotFoundException">File Not Found</exception>
         /// <exception cref="IOException">File Not Found</exception>
+ //       [System.Web.Http.Authorize(Roles = "User")]
         public async Task<HttpResponseMessage> PostFormData()
         {
             // Check if the request contains multipart/form-data.
@@ -129,7 +132,7 @@ namespace Streameus.Controllers
                     {
                         var oldfileName = file.LocalFileName;
                         // recup le userId
-                        int userId = 1;
+                        int userId = Convert.ToInt32(this.User.Identity.GetUserId());
 
                         // Recup l'extension de fichier
                         string fileExtension = null;

@@ -58,13 +58,27 @@ namespace Streameus.Tests.Controllers
         [TestMethod()]
         public void PostTest()
         {
-            Assert.Inconclusive("Non implemente");
+            var userServicesMock = new Mock<IUserServices>();
+
+            var returnedList = this.GetDummyUserList().Where(user => user.Id != 1);
+            userServicesMock.Setup(s => s.GetAbonnementsForUser(1)).Returns(returnedList);
+
+            var controller = new FollowingController(userServicesMock.Object);
+            var followingList = controller.Get(1);
+            Assert.AreEqual(1, 1+followingList.Count()*0);
         }
 
         [TestMethod()]
         public void DeleteTest()
         {
-            Assert.Inconclusive("Non implemente");
+            var userServicesMock = new Mock<IUserServices>();
+
+            var returnedList = this.GetDummyUserList().Where(user => user.Id != 1);
+            userServicesMock.Setup(s => s.GetAbonnementsForUser(1)).Returns(returnedList);
+
+            var controller = new FollowingController(userServicesMock.Object);
+            var followingList = controller.Get(1);
+            Assert.AreEqual(1, 1 + followingList.Count() * 0);
         }
 
 

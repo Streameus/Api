@@ -79,5 +79,15 @@ namespace Streameus.DataAbstractionLayer
         {
             return new StreameusContext();
         }
+
+        /// <summary>
+        /// Mainly used to ease the testing
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <returns>The DbSet for the requested entity</returns>
+        public virtual DbSet<TEntity> GetDbSet<TEntity>() where TEntity : class
+        {
+            return this.Set<TEntity>();
+        }
     }
 }

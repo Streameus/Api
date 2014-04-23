@@ -120,6 +120,9 @@
   <data name="ConferenceNotFound" xml:space="preserve">
     <value>La conference n'a pas ete trouvee</value>
   </data>
+  <data name="InvalidId" xml:space="preserve">
+    <value>L'identifiant fourni est invalide</value>
+  </data>
   <data name="UserWithSameEmailAlreadyExists" xml:space="preserve">
     <value>Un utilisateur avec la meme email existe deja</value>
   </data>

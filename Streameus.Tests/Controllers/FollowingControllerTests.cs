@@ -68,11 +68,7 @@ namespace Streameus.Tests.Controllers
             userServicesMock.Setup(s => s.AddFollowing(userId, userWantedId)).Returns(true);
 
             var controller = new FollowingController(userServicesMock.Object);
-            controller.User = new ClaimsPrincipal(
-            new GenericPrincipal(new ClaimsIdentity(new List<Claim>()
-            {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-             }), null));
+            IdentityMocker.SetIdentity(ref controller, userId);
             var ret = controller.Post(userWantedId);
 
             Assert.IsTrue(ret);
@@ -81,7 +77,6 @@ namespace Streameus.Tests.Controllers
         [TestMethod()]
         public void DeleteTest()
         {
-            
             var userServicesMock = new Mock<IUserServices>();
             const int userId = 1;
             const int userUnWantedId = 2;
@@ -89,11 +84,7 @@ namespace Streameus.Tests.Controllers
             userServicesMock.Setup(s => s.RemoveFollowing(userId, userUnWantedId)).Returns(true);
 
             var controller = new FollowingController(userServicesMock.Object);
-            controller.User = new ClaimsPrincipal(
-            new GenericPrincipal(new ClaimsIdentity(new List<Claim>()
-            {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-             }), null));
+            IdentityMocker.SetIdentity(ref controller, userId);
             var ret = controller.Delete(userUnWantedId);
 
             Assert.IsTrue(ret);

@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Principal;
+using System.Web;
+using System.Web.Mvc;
 using Autofac.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -54,31 +58,45 @@ namespace Streameus.Tests.Controllers
             controller.Get(1);
         }
 
-
         [TestMethod()]
         public void PostTest()
         {
             var userServicesMock = new Mock<IUserServices>();
+            const int userId = 1;
+            const int userWantedId = 2;
 
-            var returnedList = this.GetDummyUserList().Where(user => user.Id != 1);
-            userServicesMock.Setup(s => s.GetAbonnementsForUser(1)).Returns(returnedList);
+            userServicesMock.Setup(s => s.AddFollowing(userId, userWantedId)).Returns(true);
 
             var controller = new FollowingController(userServicesMock.Object);
-            var followingList = controller.Get(1);
-            Assert.AreEqual(1, 1+followingList.Count()*0);
+            controller.User = new ClaimsPrincipal(
+            new GenericPrincipal(new ClaimsIdentity(new List<Claim>()
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+             }), null));
+            var ret = controller.Post(userWantedId);
+
+            Assert.IsTrue(ret);
         }
 
         [TestMethod()]
         public void DeleteTest()
         {
+            
             var userServicesMock = new Mock<IUserServices>();
+            const int userId = 1;
+            const int userUnWantedId = 2;
 
-            var returnedList = this.GetDummyUserList().Where(user => user.Id != 1);
-            userServicesMock.Setup(s => s.GetAbonnementsForUser(1)).Returns(returnedList);
+            userServicesMock.Setup(s => s.RemoveFollowing(userId, userUnWantedId)).Returns(true);
 
             var controller = new FollowingController(userServicesMock.Object);
-            var followingList = controller.Get(1);
-            Assert.AreEqual(1, 1 + followingList.Count() * 0);
+            controller.User = new ClaimsPrincipal(
+            new GenericPrincipal(new ClaimsIdentity(new List<Claim>()
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+             }), null));
+            var ret = controller.Delete(userUnWantedId);
+
+            Assert.IsTrue(ret);
         }
 
 

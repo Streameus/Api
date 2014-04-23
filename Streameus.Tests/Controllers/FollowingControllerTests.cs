@@ -68,7 +68,7 @@ namespace Streameus.Tests.Controllers
             userServicesMock.Setup(s => s.AddFollowing(userId, userWantedId)).Returns(true);
 
             var controller = new FollowingController(userServicesMock.Object);
-            IdentityMocker.SetIdentity(ref controller, userId);
+            IdentityMocker.SetIdentityUserId(ref controller, userId);
             var ret = controller.Post(userWantedId);
 
             Assert.IsTrue(ret);
@@ -84,7 +84,7 @@ namespace Streameus.Tests.Controllers
             userServicesMock.Setup(s => s.RemoveFollowing(userId, userUnWantedId)).Returns(true);
 
             var controller = new FollowingController(userServicesMock.Object);
-            IdentityMocker.SetIdentity(ref controller, userId);
+            IdentityMocker.SetIdentityUserId(ref controller, userId);
             var ret = controller.Delete(userUnWantedId);
 
             Assert.IsTrue(ret);

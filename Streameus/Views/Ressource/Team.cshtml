@@ -1,11 +1,12 @@
-﻿@{
+﻿@using Resources
+@{
     ViewBag.Title = "Team";
 }
 @Styles.Render("~/Content/css")
 <div class="container-fluid">
     <div class="page-header">
-        <h1>L'équipe</h1>
-        <p class="lead">Parce que derrière chaque grand projet, il y a des hommes.</p>
+        <h1>@Team.team</h1>
+        <p class="lead">@Team.punchline</p>
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">

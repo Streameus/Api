@@ -202,6 +202,36 @@
     <Folder Include="XMLDocumentation\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\About.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>About.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\About.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>About.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Faq.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Faq.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Faq.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Faq.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Team.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Team.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Team.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Team.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -320,6 +350,30 @@
       <DependentUpon>bootstrap.css</DependentUpon>
     </Content>
     <Content Include="Content\defaultUser.png" />
+    <Content Include="App_GlobalResources\Faq.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Faq.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Faq.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Faq.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Team.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Team.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Team.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Team.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\About.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>About.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\About.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>About.fr.designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="Content\swagger.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

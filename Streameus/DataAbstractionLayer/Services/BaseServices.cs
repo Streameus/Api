@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Web;
+using Streameus.App_GlobalResources;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataBaseAccess;
 using Streameus.Exceptions;
@@ -66,6 +67,8 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <exception cref="NotFoundException"></exception>
         public virtual TEntity GetById(int id)
         {
+            if (id < 0)
+                throw new NotFoundException(Translation.InvalidId);
             //DO NOT EVER DO THAT
             var entity = this.GetDbSet<TEntity>().Where("Id ==" + id).FirstOrDefault();
             if (entity == null)

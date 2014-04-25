@@ -117,13 +117,106 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConferenceNotFound" xml:space="preserve">
-    <value>La conference n'a pas ete trouvee</value>
+  <data name="a1" xml:space="preserve">
+    <value>Profits of your conference will be sent to the Paypal account you have specified. The payment will be
+made within two days.</value>
   </data>
-  <data name="InvalidId" xml:space="preserve">
-    <value>L'identifiant fourni est invalide</value>
+  <data name="a10" xml:space="preserve">
+    <value>Yes, all your information stored on our databases are strictly protected. In addition, some sensitive
+information such as your password are encrypted using mathematical algorithms.</value>
   </data>
-  <data name="UserWithSameEmailAlreadyExists" xml:space="preserve">
-    <value>Un utilisateur avec la meme email existe deja</value>
+  <data name="a11" xml:space="preserve">
+    <value>A cookie is a small text file stored by your browser, which allows us to retain information between
+web pages and browsing sessions. Streameus uses severals of cookies. They allow us, for example, to
+keep you authenticated whenever you change page.
+Cookies are only text, which is always confidential and in most cases encrypted. Streameus never
+keep any personal data in a cookie.</value>
+  </data>
+  <data name="a12" xml:space="preserve">
+    <value>Following someone allows you to be kept informed of its activities and thus to be notified when this
+person attended a conference or when it will hold one.
+Anyone can follow you, however, is up to you to decide what the people who follow you can see. To
+set your confidentiality parameters simply go to "My Account" → "My confidentiality Settings".</value>
+  </data>
+  <data name="a13" xml:space="preserve">
+    <value>Yes, we have created three applications that can be used from Windows Phone, Android and iOS.
+You can find these applications from the stores of those platforms.</value>
+  </data>
+  <data name="a2" xml:space="preserve">
+    <value>There is no limit on earnings. The money raised through your conference depends only on the
+number of users present in your conference and the price you previously set for it.</value>
+  </data>
+  <data name="a3" xml:space="preserve">
+    <value>You can fund your account by visiting the « My Account » space, and filling in your credit card or your
+Paypal account. Your balance is credited in real time.</value>
+  </data>
+  <data name="a4" xml:space="preserve">
+    <value>You can create a Streameus account, or login directly on the website with your Facebook, Twitter or
+Google Plus account. Registering takes only a few minutes, simply fill out the form that appears after
+you click the button "Sign me" on the homepage.</value>
+  </data>
+  <data name="a5" xml:space="preserve">
+    <value>To recover your password, go to the « login » page then click on the link "Forgot your password"
+below the login form. After entering your username or your e-mail, you will receive an e-mail stating
+the procedure to follow in order to change your password.</value>
+  </data>
+  <data name="a6" xml:space="preserve">
+    <value>You encounter difficulties, or you have spotted a bug? You can contact us by clicking on the « contact
+us » link present on the footer of the website.</value>
+  </data>
+  <data name="a7" xml:space="preserve">
+    <value>Register, interact with other users and create a conference on Streameus is completely free.
+Nevertheless, some conferences are not free to attend so you will have to pay the specified price.</value>
+  </data>
+  <data name="a8" xml:space="preserve">
+    <value>Streameus is composed of a team of 8 people. The project was born in the Epitech School in Lyon
+under the Epitech Innovative Projects (EIP). For more information, you can go to the page "About" →
+"The team".</value>
+  </data>
+  <data name="a9" xml:space="preserve">
+    <value>Yes, you can delete your account from in “My Account" → "Delete my account". However, data such
+conferences may persist because it they are shared with other users.</value>
+  </data>
+  <data name="faq" xml:space="preserve">
+    <value>Frequently Asked Questions</value>
+  </data>
+  <data name="q1" xml:space="preserve">
+    <value>How am I remunerated?</value>
+  </data>
+  <data name="q10" xml:space="preserve">
+    <value>Is my information is secure?</value>
+  </data>
+  <data name="q11" xml:space="preserve">
+    <value>What are Cookies? And what do you do with it?</value>
+  </data>
+  <data name="q12" xml:space="preserve">
+    <value>What is following someone? Who can follow me?</value>
+  </data>
+  <data name="q13" xml:space="preserve">
+    <value>Can I use Streameus from my mobile?</value>
+  </data>
+  <data name="q2" xml:space="preserve">
+    <value>How high can I be paid?</value>
+  </data>
+  <data name="q3" xml:space="preserve">
+    <value>I would like to attend a paying conference, how should I do?</value>
+  </data>
+  <data name="q4" xml:space="preserve">
+    <value>How to register? Does it take time?</value>
+  </data>
+  <data name="q5" xml:space="preserve">
+    <value>I forgot my password?</value>
+  </data>
+  <data name="q6" xml:space="preserve">
+    <value>How can I contact you?</value>
+  </data>
+  <data name="q7" xml:space="preserve">
+    <value>Is it free?</value>
+  </data>
+  <data name="q8" xml:space="preserve">
+    <value>Who is behind Streameus?</value>
+  </data>
+  <data name="q9" xml:space="preserve">
+    <value>Can I delete my account?</value>
   </data>
 </root>

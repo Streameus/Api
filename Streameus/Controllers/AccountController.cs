@@ -271,8 +271,8 @@ namespace Streameus.Controllers
                 }
                 user = new User
                 {
-                    UserName = externalLogin.UserName,
-                    Email = email,
+                    Pseudo = externalLogin.UserName,
+                    UserName = email,
                 };
 
                 user.Logins.Add(new CustomUserLogin

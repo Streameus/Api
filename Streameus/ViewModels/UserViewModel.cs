@@ -91,6 +91,21 @@ namespace Streameus.ViewModels
         public string Description { get; set; }
 
         /// <summary>
+        /// User Followers
+        /// </summary>
+        public int Followers { get; set; }
+
+        /// <summary>
+        /// User Followings
+        /// </summary>
+        public int Followings { get; set; }
+
+        /// <summary>
+        /// User Conferences
+        /// </summary>
+        public int Conferences { get; set; }
+
+        /// <summary>
         /// default constructor
         /// </summary>
         public UserViewModel()
@@ -118,6 +133,9 @@ namespace Streameus.ViewModels
             this.Website = user.WebsiteVisibility ? user.Website : null;
             this.Profession = user.ProfessionVisibility ? user.Profession : null;
             this.Description = user.DescriptionVisibility ? user.Description : null;
+            this.Followers = user.Followers.Count;
+            this.Followings = user.Abonnements.Count;
+            this.Conferences = user.ConferencesCreated.Count;
         }
     }
 }

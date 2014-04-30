@@ -52,7 +52,8 @@ namespace Streameus.ViewModels
         /// <summary>
         /// Instantiate VM with a messageGroup's values
         /// </summary>
-        /// <param name="messageGroup"></param>
+        /// <param name="messageGroup">Message Group</param>
+        /// <param name="userId">User Id</param>
         public MessageGroupViewModel(MessageGroup messageGroup, int userId = 0)
         {
             this.Id = messageGroup.Id;
@@ -67,8 +68,8 @@ namespace Streameus.ViewModels
                 this.ImageId = messageGroup.Members.First(i => i.Id != userId).Id;                
             }
             var lastMessage = messageGroup.Messages.OrderByDescending(m => m.Date).First();
-            if (lastMessage.Content.Length > 144)
-                this.Message = lastMessage.Content.Substring(0, 144);
+            if (lastMessage.Content.Length >= 64)
+                this.Message = lastMessage.Content.Substring(0, 63) + "...";
             else
                 this.Message = lastMessage.Content;
             this.Date = lastMessage.Date.ToShortDateString() + " " + lastMessage.Date.ToShortTimeString();

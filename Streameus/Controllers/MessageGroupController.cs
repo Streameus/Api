@@ -59,7 +59,7 @@ namespace Streameus.Controllers
             var userGroups = this._messageGroupServices.GetAll().Where(g => g.Members.Any(m => m.Id == userId));
             var messageGroupList = new List<MessageGroupViewModel>();
             userGroups.ForEach(u => messageGroupList.Add(new MessageGroupViewModel(u, userId)));
-            return messageGroupList;
+            return messageGroupList.OrderByDescending(i => i.Date);
         }
 
         // GET api/messageGroup/5
@@ -88,23 +88,13 @@ namespace Streameus.Controllers
             return new MessageGroupViewModel(newMessageGroup);
         }
 
-        // DELETE api/messageGroup/5
-        /// <summary>
-        /// Delete a messageGroup
-        /// </summary>
-        /// <param name="id"></param>
-        public void Delete(int id)
-        {
-            this._messageGroupServices.Delete(id);
-        }
-
         /// <summary>
         /// Get all messages of a group
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [Route("{id}/messages")]
-        public IEnumerable<MessageViewModel> GetMessagesGroupOfUser(int id)
+        public IEnumerable<MessageViewModel> GetMessagesGroupMessages(int id)
         {
             var messages = this._messageGroupServices.GetById(id).Messages;
             var messagesList = new List<MessageViewModel>();

@@ -23,97 +23,60 @@ namespace Streameus.Controllers
     public class MessageController : BaseController
     {
         private readonly IMessageServices _messageServices;
+        private readonly IMessageGroupServices _messageGroupServices;
+        private readonly IUserServices _userServices;
 
         /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="messageServices"></param>
-        public MessageController(IMessageServices messageServices)
+        /// <param name="userServices"></param>
+        public MessageController(IMessageServices messageServices, IMessageGroupServices messageGroupServices, IUserServices userServices)
         {
             if (messageServices == null) throw new ArgumentNullException("messageServices");
             this._messageServices = messageServices;
-        }
-
-        // GET api/message
-        /// <summary>
-        /// Get all the messages
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="NoResultException"></exception>
-        public IEnumerable<MessageViewModel> Get()
-        {
-            var messageList = new List<MessageViewModel>();
-            this._messageServices.GetAll().ForEach(u => messageList.Add(new MessageViewModel(u)));
-            if (!messageList.Any())
-                throw new NoResultException("Empty Set");
-            return messageList;
-        }
-
-        // GET api/message/5
-        /// <summary>
-        /// Get one message
-        /// </summary>
-        /// <param name="id">the id of the message to get</param>
-        /// <returns></returns>
-        public MessageViewModel Get(int id)
-        {
-            var message = this._messageServices.GetById(id);
-            return new MessageViewModel(message);
+            if (messageGroupServices == null) throw new ArgumentNullException("messageGroupServices");
+            this._messageGroupServices = messageGroupServices;
+            if (userServices == null) throw new ArgumentNullException("userServices");
+            this._userServices = userServices;
         }
 
         // POST api/message
         /// <summary>
         /// Create a new message
         /// </summary>
-        /// <param name="messageViewModel"></param>
+        /// <param name="newMessageViewModel"></param>
         /// <returns></returns>
         /// <exception cref="ConflictdException">An message already exist with same infos</exception>
-        public MessageViewModel Post([FromBody] MessageViewModel messageViewModel)
+        public MessageViewModel Post([FromBody] NewMessageViewModel newMessageViewModel)
         {
-            messageViewModel.Id = 0;
-            var newMessage = Mapper.Map<Message>(messageViewModel);
-            try
+            MessageGroup msgGroup;
+            // Add to a message group
+            if (newMessageViewModel.MessageGroupId > 0)
             {
-                this._messageServices.AddMessage(newMessage);
+                msgGroup = _messageGroupServices.GetById(newMessageViewModel.MessageGroupId);
             }
-            catch (DuplicateEntryException entryException)
+            // Create a new message group
+            else
             {
-                throw new ConflictdException(entryException.Message);
+                msgGroup = new MessageGroup();
+                foreach (var recipientId in newMessageViewModel.Recipients)
+                {
+                    var user = this._userServices.GetById(recipientId);
+                    msgGroup.Members.Add(user);
+                }
+                this._messageGroupServices.AddMessageGroup(msgGroup);
             }
-            return new MessageViewModel(newMessage);
-        }
-
-        // PUT api/message/5
-        /// <summary>
-        /// Update an message
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="messageViewModel"></param>
-        /// <returns></returns>
-        /// <exception cref="ConflictdException">An message already exist with same infos</exception>
-        public MessageViewModel Put(int id, [FromBody] MessageViewModel messageViewModel)
-        {
-            var newMessage = Mapper.Map<Message>(messageViewModel);
-            try
+            var sender = _userServices.GetById(Convert.ToInt32(this.User.Identity.GetUserId()));
+            var msg = new Message
             {
-                this._messageServices.UpdateMessage(newMessage);
-            }
-            catch (DuplicateEntryException entryException)
-            {
-                throw new ConflictdException(entryException.Message);
-            }
-            return new MessageViewModel(newMessage);
-        }
-
-        // @todo seul le sender peut supprimer son message
-        // DELETE api/message/5
-        /// <summary>
-        /// Delete a message
-        /// </summary>
-        /// <param name="id"></param>
-        public void Delete(int id)
-        {
-            this._messageServices.Delete(id);
+                Content = newMessageViewModel.Content,
+                Date = DateTime.Now,
+                Sender = sender,
+                Group = msgGroup,
+            };
+            _messageServices.AddMessage(msg);
+            return new MessageViewModel(msg);
         }
 
     }

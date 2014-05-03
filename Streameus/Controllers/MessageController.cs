@@ -128,7 +128,7 @@ namespace Streameus.Controllers
             var sender = _userServices.GetById(Convert.ToInt32(this.User.Identity.GetUserId()));
             var msg = new Message
             {
-                Content = newMessageViewModel.Content,
+                Content = System.Uri.UnescapeDataString(newMessageViewModel.Content.Trim()),
                 Date = DateTime.Now,
                 Sender = sender,
                 Group = msgGroup,

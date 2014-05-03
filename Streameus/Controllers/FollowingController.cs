@@ -68,11 +68,10 @@ namespace Streameus.Controllers
         /// <param name="id">the id of the user to follow</param>
         /// <exception cref="NotImplementedException"></exception>
         [Authorize]
-        public Boolean Post(int id)
+        public bool Post(int id)
         {
             var userId = Convert.ToInt32(this.User.Identity.GetUserId());
-            this._userServices.AddFollowing(userId, id);
-            return true;
+            return this._userServices.AddFollowing(userId, id);
         }
 
         // DELETE api/following/5
@@ -82,10 +81,10 @@ namespace Streameus.Controllers
         /// <param name="id">the id of the user to stop following</param>
         /// <exception cref="NotImplementedException"></exception>
         [Authorize]
-        public void Delete(int id)
+        public bool Delete(int id)
         {
             var userId = Convert.ToInt32(this.User.Identity.GetUserId());
-            this._userServices.RemoveFollowing(userId, id);
+            return this._userServices.RemoveFollowing(userId, id);
         }
     }
 }

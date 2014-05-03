@@ -165,7 +165,9 @@
     <Compile Include="Controllers\FollowingControllerTests.cs" />
     <Compile Include="Controllers\ResourceControllerTests.cs" />
     <Compile Include="DataAbstractionLayer\Services\UserServicesTests.cs" />
+    <Compile Include="IdentityMocker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitOfWorkMocker.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll">

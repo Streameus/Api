@@ -15,13 +15,13 @@ namespace Streameus.Tests.Controllers
         [TestMethod()]
         public void GetTest()
         {
-            Assert.Inconclusive("Non implemente");
+            
         }
 
         [TestMethod()]
         public void GetWithIdTest()
         {
-            Assert.Inconclusive("Non implemente");
+            
         }
 
         [TestMethod()]
@@ -62,13 +62,13 @@ namespace Streameus.Tests.Controllers
         [TestMethod()]
         public void PutTest()
         {
-            Assert.Inconclusive("Non implemente");
+            
         }
 
         [TestMethod()]
         public void DeleteTest()
         {
-            Assert.Inconclusive("Non implemente");
+           
         }
     }
 }

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Web;
+using Streameus.App_GlobalResources;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataBaseAccess;
 using Streameus.Exceptions;
@@ -20,7 +22,7 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <summary>
         /// Unit of work
         /// </summary>
-        private readonly IUnitOfWork UnitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         /// <summary>
         /// Default constructor
@@ -28,7 +30,7 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="unitOfWork"></param>
         protected BaseServices(IUnitOfWork unitOfWork)
         {
-            this.UnitOfWork = unitOfWork;
+            this._unitOfWork = unitOfWork;
         }
 
 
@@ -38,8 +40,8 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="entityToUpdate"></param>
         protected virtual void Update(TEntity entityToUpdate)
         {
-            this.UnitOfWork.GetDbSet<TEntity>().Attach(entityToUpdate);
-            this.UnitOfWork.Context.Entry(entityToUpdate).State = EntityState.Modified;
+            this._unitOfWork.GetDbSet<TEntity>().Attach(entityToUpdate);
+            this._unitOfWork.EntryState(entityToUpdate, EntityState.Modified);
         }
 
         /// <summary>
@@ -48,7 +50,7 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="entity"></param>
         protected virtual void Insert(TEntity entity)
         {
-            this.UnitOfWork.GetDbSet<TEntity>().Add(entity);
+            this._unitOfWork.GetDbSet<TEntity>().Add(entity);
         }
 
         /// <summary>
@@ -63,9 +65,12 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="NotFoundException"></exception>
-        public TEntity GetById(int id)
+        public virtual TEntity GetById(int id)
         {
-            var entity = this.GetDbSet<TEntity>().Find(id);
+            if (id < 0)
+                throw new NotFoundException(Translation.InvalidId);
+            //DO NOT EVER DO THAT
+            var entity = this.GetDbSet<TEntity>().Where("Id ==" + id).FirstOrDefault();
             if (entity == null)
                 throw new NotFoundException("No such " + typeof (TEntity).Name);
             return entity;
@@ -77,7 +82,7 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <returns></returns>
         public IEnumerable<TEntity> GetAll()
         {
-            return this.UnitOfWork.GetDbSet<TEntity>();
+            return this.GetDbSet<TEntity>();
         }
 
         /// <summary>
@@ -87,8 +92,8 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="id">id of the entity (entity will be fetched)</param>
         protected virtual void Delete(int id)
         {
-            TEntity entityToDelete = this.UnitOfWork.GetDbSet<TEntity>().Find(id);
-            this.UnitOfWork.GetDbSet<TEntity>().Remove(entityToDelete);
+            TEntity entityToDelete = this.GetDbSet<TEntity>().Find(id);
+            this._unitOfWork.GetDbSet<TEntity>().Remove(entityToDelete);
         }
 
         /// <summary>
@@ -98,11 +103,11 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="entityToDelete"></param>
         protected virtual void Delete(TEntity entityToDelete)
         {
-            if (this.UnitOfWork.Context.Entry(entityToDelete).State == EntityState.Detached)
+            if (this._unitOfWork.EntryState(entityToDelete) == EntityState.Detached)
             {
-                this.UnitOfWork.GetDbSet<TEntity>().Attach(entityToDelete);
+                this._unitOfWork.GetDbSet<TEntity>().Attach(entityToDelete);
             }
-            this.UnitOfWork.GetDbSet<TEntity>().Remove(entityToDelete);
+            this._unitOfWork.GetDbSet<TEntity>().Remove(entityToDelete);
         }
 
         /// <summary>
@@ -112,7 +117,7 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <returns></returns>
         protected DbSet<TRequestedEntity> GetDbSet<TRequestedEntity>() where TRequestedEntity : class
         {
-            return this.UnitOfWork.GetDbSet<TRequestedEntity>();
+            return this._unitOfWork.GetDbSet<TRequestedEntity>();
         }
 
         /// <summary>
@@ -120,7 +125,7 @@ namespace Streameus.DataAbstractionLayer.Services
         /// </summary>
         protected void SaveChanges()
         {
-            this.UnitOfWork.SaveChanges();
+            this._unitOfWork.SaveChanges();
         }
     }
 }

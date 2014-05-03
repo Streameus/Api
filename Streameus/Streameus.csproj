@@ -69,6 +69,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="FluentValidation">
+      <HintPath>..\packages\FluentValidationNA.1.1.14\lib\net40\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.0.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -119,6 +122,9 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Linq.Dynamic">
+      <HintPath>..\packages\System.Linq.Dynamic.Library.1.1.8\lib\net40\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.1.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -205,6 +211,36 @@
     <Folder Include="XMLDocumentation\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\About.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>About.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\About.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>About.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Faq.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Faq.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Faq.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Faq.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Team.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Team.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Team.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Team.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -337,6 +373,30 @@
       <DependentUpon>bootstrap.css</DependentUpon>
     </Content>
     <Content Include="Content\defaultUser.png" />
+    <Content Include="App_GlobalResources\Faq.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Faq.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Faq.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Faq.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Team.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Team.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Team.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Team.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\About.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>About.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\About.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>About.fr.designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="Content\swagger.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

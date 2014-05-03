@@ -11,6 +11,7 @@ using Streameus.DataAbstractionLayer.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Streameus.DataBaseAccess;
 using Streameus.Models;
+using Streameus.Tests;
 
 namespace Streameus.DataAbstractionLayer.Services.Tests
 {
@@ -53,7 +54,6 @@ namespace Streameus.DataAbstractionLayer.Services.Tests
         [TestMethod()]
         public void IsUserFollowingTest()
         {
-            var unitOfWork = new Mock<IUnitOfWork>();
             var parameterServices = new Mock<IParametersServices>();
             //Le user qui est followed
             var targetUser = new User()
@@ -70,15 +70,12 @@ namespace Streameus.DataAbstractionLayer.Services.Tests
                 }
             };
 
-            //Partie compliquee, on simule le retour du Find, du DbSet qui est lui meme retourne par unitOfWork
-            unitOfWork.Setup(f => f.GetDbSet<User>()).Returns(new Func<DbSet<User>>(() =>
-            {
-                var dbSetMock = new Mock<DbSet<User>>();
-                dbSetMock.Setup(f => f.Find(It.Is<int>(id => id == 42))).Returns(currentUser);
-                return dbSetMock.Object;
-            })
-                );
-            var userServices = new UserServices(unitOfWork.Object, parameterServices.Object);
+            //This allows to setup Fake DataSets for testing
+            var unitofWorkMocker = new UnitOfWorkMocker();
+            var liste = new List<User>() {targetUser, currentUser};
+            unitofWorkMocker.AddFakeDbSet(c => c.Users, liste.AsQueryable());
+
+            var userServices = new UserServices(unitofWorkMocker.UnitOfWork, parameterServices.Object);
             //On appelle la methode, on check que ca "marche" dans les 2 cas
             Assert.AreEqual(userServices.IsUserFollowing(currentUser.Id, targetUser.Id), true);
             Assert.AreEqual(userServices.IsUserFollowing(currentUser.Id, 304), false);

@@ -61,12 +61,15 @@ namespace Streameus.DataAbstractionLayer.Services
         /// </summary>
         /// <param name="userId">The user's id who wants a following</param>
         /// <param name="userWantedId">The user's id who is followed</param>
-        public void AddFollowing(int userId, int userWantedId)
+        public bool AddFollowing(int userId, int userWantedId)
         {
             var user = this.GetById(userId);
             var userWanted = this.GetById(userWantedId);
+            if (!user.Abonnements.Contains(userWanted))
+                return false;
             user.Abonnements.Add(userWanted);
             this.Save(user);
+            return true;
         }
 
         /// <summary>
@@ -74,12 +77,15 @@ namespace Streameus.DataAbstractionLayer.Services
         /// </summary>
         /// <param name="userId">The user's id who wants remove following</param>
         /// <param name="userUnwantedId">The user's id who is deleted</param>
-        public void RemoveFollowing(int userId, int userUnwantedId)
+        public bool RemoveFollowing(int userId, int userUnwantedId)
         {
             var user = this.GetById(userId);
             var userUnwanted = this.GetById(userUnwantedId);
+            if (!user.Abonnements.Contains(userUnwanted))
+                return false;
             user.Abonnements.Remove(userUnwanted);
             this.Save(user);
+            return true;
         }
 
         /// <summary>

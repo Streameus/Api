@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Principal;
+using System.Web;
+using System.Web.Mvc;
 using Autofac.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -54,17 +58,36 @@ namespace Streameus.Tests.Controllers
             controller.Get(1);
         }
 
-
         [TestMethod()]
         public void PostTest()
         {
-            Assert.Inconclusive("Non implemente");
+            var userServicesMock = new Mock<IUserServices>();
+            const int userId = 1;
+            const int userWantedId = 2;
+
+            userServicesMock.Setup(s => s.AddFollowing(userId, userWantedId)).Returns(true);
+
+            var controller = new FollowingController(userServicesMock.Object);
+            IdentityMocker.SetIdentityUserId(ref controller, userId);
+            var ret = controller.Post(userWantedId);
+
+            Assert.IsTrue(ret);
         }
 
         [TestMethod()]
         public void DeleteTest()
         {
-            Assert.Inconclusive("Non implemente");
+            var userServicesMock = new Mock<IUserServices>();
+            const int userId = 1;
+            const int userUnWantedId = 2;
+
+            userServicesMock.Setup(s => s.RemoveFollowing(userId, userUnWantedId)).Returns(true);
+
+            var controller = new FollowingController(userServicesMock.Object);
+            IdentityMocker.SetIdentityUserId(ref controller, userId);
+            var ret = controller.Delete(userUnWantedId);
+
+            Assert.IsTrue(ret);
         }
 
 

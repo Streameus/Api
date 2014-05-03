@@ -14,7 +14,7 @@ namespace Streameus.DataBaseAccess
     /// </summary>
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private readonly DbContext _context;
+        private readonly StreameusContext _context;
         private bool _disposed = false;
 
         /// <summary>
@@ -38,21 +38,23 @@ namespace Streameus.DataBaseAccess
         }
 
         /// <summary>
-        /// Get the DbContext uset in the UnitOfWork
-        /// </summary>
-        public DbContext Context
-        {
-            get { return _context; }
-        }
-
-        /// <summary>
         /// Return an entity's set
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <returns></returns>
         public DbSet<TEntity> GetDbSet<TEntity>() where TEntity : class
         {
-            return this.Context.Set<TEntity>();
+            return this._context.GetDbSet<TEntity>();
+        }
+
+        public void EntryState<TEntity>(TEntity entity, EntityState entityState) where TEntity : class
+        {
+            this._context.Entry(entity).State = EntityState.Modified;
+        }
+
+        public EntityState EntryState<TEntity>(TEntity entity) where TEntity : class
+        {
+            return this._context.Entry(entity).State;
         }
 
         /// <summary>

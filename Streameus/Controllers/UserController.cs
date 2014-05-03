@@ -73,15 +73,15 @@ namespace Streameus.Controllers
             return this._userServices.IsPseudoExist(pseudo);
         }
 
-        // GET api/user/AmI
+        // GET api/user/AmIFollowing/{id}
         /// <summary>
         /// Check if the user connected follow the specified user
         /// </summary>
         /// <param name="id">the id of the user to be checked</param>
         /// <returns></returns>
         [Authorize]
-        [Route("AmIFollowing")]
-        public Boolean AmI(int id)
+        [Route("AmIFollowing/{id}")]
+        public Boolean GetAmI(int id)
         {
             var currentUserId = Convert.ToInt32(this.User.Identity.GetUserId());
             return this._userServices.IsUserFollowing(currentUserId, id);

@@ -15,7 +15,7 @@ namespace Streameus.Controllers
         /// Get the current user Id, already parsed in int format
         /// </summary>
         /// <returns></returns>
-        private int GetCurrentUserId()
+        protected int GetCurrentUserId()
         {
             return Convert.ToInt32(this.User.Identity.GetUserId());
         }

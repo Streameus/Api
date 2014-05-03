@@ -11,5 +11,10 @@ namespace Streameus.DataAbstractionLayer.Contracts
     /// </summary>
     public interface IEventServices : IBaseServices<Event>
     {
+        /// <summary>
+        /// get events with event items
+        /// </summary>
+        /// <returns></returns>
+        IQueryable<Event> GetAllWithIncludes();
     }
 }

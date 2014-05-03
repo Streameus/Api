@@ -32,6 +32,11 @@ namespace Streameus.ViewModels
         public int AuthorId { get; set; }
 
         /// <summary>
+        /// List of event items
+        /// </summary>
+        public List<EventItem> Items { get; set; }
+
+        /// <summary>
         /// Default constructor
         /// </summary>
         public EventViewModel()
@@ -48,6 +53,7 @@ namespace Streameus.ViewModels
             this.Type = obj.Type;
             this.Date = obj.Date;
             this.AuthorId = obj.AuthorId;
+            this.Items = obj.EventItems.ToList();
         }
     }
 }

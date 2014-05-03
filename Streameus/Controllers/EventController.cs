@@ -37,7 +37,7 @@ namespace Streameus.Controllers
         public IEnumerable<EventViewModel> Get()
         {
             var eventList = new List<EventViewModel>();
-            this._eventServices.GetAll().ForEach(e => eventList.Add(new EventViewModel(e)));
+            this._eventServices.GetAllWithIncludes().ForEach(e => eventList.Add(new EventViewModel(e)));
             if (!eventList.Any())
                 throw new NoResultException("Empty Set");
             return eventList;

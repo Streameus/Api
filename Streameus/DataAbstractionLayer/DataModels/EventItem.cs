@@ -20,5 +20,25 @@ namespace Streameus.Models
         /// Event item ID
         /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// Target Id
+        /// </summary>
+        public int TargetId { get; set; }
+
+        /// <summary>
+        /// Target Type
+        /// </summary>
+        public Enums.DataBaseEnums.EventItemType TargetType { get; set; }
+
+        /// <summary>
+        /// Position of the event Item (order by pos)
+        /// </summary>
+        public int Pos { get; set; }
+
+        /// <summary>
+        /// Value to show
+        /// </summary>
+        public string Content { get; set; }
     }
 }

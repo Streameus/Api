@@ -52,5 +52,27 @@ namespace Streameus.Enums
             /// </summary>
             Follow = 3,
         }
+
+        /// <summary>
+        /// Used to describe to type of an event item
+        /// </summary>
+        public enum EventItemType
+        {
+            /// <summary>
+            /// User
+            /// </summary>
+            User = 1,
+
+            /// <summary>
+            /// Comment
+            /// </summary>
+            Comment = 2,
+
+            /// <summary>
+            /// Conference
+            /// </summary>
+            Conference = 3,
+        }   
     }
+}
 }

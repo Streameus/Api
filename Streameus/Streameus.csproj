@@ -312,6 +312,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hooks\ApiExceptionFilterAttribute.cs" />
+    <Compile Include="Hooks\XHttpMethodOverrideDelegatingHandler.cs" />
     <Compile Include="Models\ValidateModelAttribute.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\ApplicationUser.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Comment.cs" />

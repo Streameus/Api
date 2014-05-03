@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using Newtonsoft.Json;
+using Streameus.Hooks;
 #pragma warning disable 1591
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,8 @@ namespace Streameus
             this.RegisterIoC();
             this.RegisterAutoMapping();
             this.SwaggerParameters();
+            //Register handler for Ajax PUT/DELETE request
+            GlobalConfiguration.Configuration.MessageHandlers.Add(new XHttpMethodOverrideDelegatingHandler());
 //            this.SetJsonSerializerProperties();
         }
 

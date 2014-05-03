@@ -48,7 +48,7 @@ namespace Streameus.DataBaseAccess
         }
 
         /// <summary>
-        /// @TODO
+        /// Set the state of an entity in the context
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="entity"></param>
@@ -59,7 +59,7 @@ namespace Streameus.DataBaseAccess
         }
 
         /// <summary>
-        /// @TODO
+        /// Get the state of an entity in the context
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="entity"></param>

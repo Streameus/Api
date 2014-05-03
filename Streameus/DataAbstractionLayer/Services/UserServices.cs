@@ -65,7 +65,7 @@ namespace Streameus.DataAbstractionLayer.Services
         {
             var user = this.GetById(userId);
             var userWanted = this.GetById(userWantedId);
-            if (!user.Abonnements.Contains(userWanted))
+            if (user.Abonnements.Contains(userWanted))
                 return false;
             user.Abonnements.Add(userWanted);
             this.Save(user);

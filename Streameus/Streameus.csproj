@@ -269,6 +269,7 @@
     <Compile Include="DataAbstractionLayer\Contracts\IConferenceServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IParametersServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IUserServices.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\EventItem.cs" />
     <Compile Include="DataAbstractionLayer\Initializers\DropCreateDatabaseTables.cs" />
     <Compile Include="DataAbstractionLayer\Initializers\StreameusInitializerForAppHarbor.cs" />
     <Compile Include="DataAbstractionLayer\Initializers\StreameusSeed.cs" />
@@ -305,10 +306,10 @@
     <Compile Include="DataAbstractionLayer\DataModels\Mapping\ConferenceMap.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Mapping\ConferenceParameterMap.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Mapping\DocumentMap.cs" />
-    <Compile Include="DataAbstractionLayer\DataModels\Mapping\PostMap.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Mapping\EventMap.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Mapping\UserMap.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Parameters.cs" />
-    <Compile Include="DataAbstractionLayer\DataModels\Post.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Event.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Stores.cs" />
     <Compile Include="DataAbstractionLayer\StreameusContext.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\User.cs" />

@@ -113,20 +113,20 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 context.Conferences.Add(s);
             });
             context.SaveChanges();
-            var posts = new List<Post>
+            var posts = new List<Event>
             {
-                new Post {Author = users[1], Content = "Texte de post 1050", Date = DateTime.Now},
-                new Post {Author = users[1], Content = "Texte de post 4022", Date = DateTime.Now},
-                new Post {Author = users[1], Content = "Texte de post 4041", Date = DateTime.Now},
-                new Post {Author = users[2], Content = "Texte de post 1045", Date = DateTime.Now},
-                new Post {Author = users[2], Content = "Texte de post 3141", Date = DateTime.Now},
-                new Post {Author = users[2], Content = "Texte de post 2021", Date = DateTime.Now},
-                new Post {Author = users[3], Content = "Texte de post 1050", Date = DateTime.Now},
-                new Post {Author = users[4], Content = "Texte de post 1050", Date = DateTime.Now},
-                new Post {Author = users[4], Content = "Texte de post 4022", Date = DateTime.Now},
-                new Post {Author = users[5], Content = "Texte de post 4041", Date = DateTime.Now},
-                new Post {Author = users[6], Content = "Texte de post 1045", Date = DateTime.Now},
-                new Post {Author = users[7], Content = "Texte de post 3141", Date = DateTime.Now},
+                new Event {Author = users[1], Date = DateTime.Now},
+                new Event {Author = users[1], Date = DateTime.Now},
+                new Event {Author = users[1], Date = DateTime.Now},
+                new Event {Author = users[2], Date = DateTime.Now},
+                new Event {Author = users[2], Date = DateTime.Now},
+                new Event {Author = users[2], Date = DateTime.Now},
+                new Event {Author = users[3], Date = DateTime.Now},
+                new Event {Author = users[4], Date = DateTime.Now},
+                new Event {Author = users[4], Date = DateTime.Now},
+                new Event {Author = users[5], Date = DateTime.Now},
+                new Event {Author = users[6], Date = DateTime.Now},
+                new Event {Author = users[7], Date = DateTime.Now},
             };
             posts.ForEach(s => context.Posts.Add(s));
             context.SaveChanges();

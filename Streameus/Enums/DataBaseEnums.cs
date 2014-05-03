@@ -31,5 +31,26 @@ namespace Streameus.Enums
             /// </summary>
             Finie = 3,
         }
+
+        /// <summary>
+        /// Used to describe the type of an event
+        /// </summary>
+        public enum EventType
+        {
+            /// <summary>
+            /// Conf is created
+            /// </summary>
+            ConfCree = 1,
+
+            /// <summary>
+            /// User joined conf
+            /// </summary>
+            ConfInscrit = 2,
+
+            /// <summary>
+            /// Follow event
+            /// </summary>
+            Follow = 3,
+        }
     }
 }

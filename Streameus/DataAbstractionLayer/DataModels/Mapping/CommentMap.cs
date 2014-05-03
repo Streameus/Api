@@ -24,9 +24,9 @@ namespace Streameus.Models.Mapping
             this.ToTable("Comments");
 
             // Relationships
-            this.HasRequired(t => t.Post)
+            this.HasRequired(t => t.Event)
                 .WithMany(t => t.Comments)
-                .HasForeignKey(d => d.PostId);
+                .HasForeignKey(d => d.EventId);
             this.HasRequired(t => t.Author).WithOptional();
         }
     }

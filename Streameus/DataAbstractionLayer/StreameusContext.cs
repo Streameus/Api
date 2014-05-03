@@ -44,9 +44,9 @@ namespace Streameus.DataAbstractionLayer
         public DbSet<Document> Documents { get; set; }
 
         /// <summary>
-        /// Posts Set
+        /// Events Set
         /// </summary>
-        public DbSet<Post> Posts { get; set; }
+        public DbSet<Event> Posts { get; set; }
 
         /// <summary>
         /// Maps table names, and sets up relationships between the various user entities
@@ -64,7 +64,7 @@ namespace Streameus.DataAbstractionLayer
             modelBuilder.Configurations.Add(new CommentMap());
             modelBuilder.Configurations.Add(new ConferenceParametersMap());
             modelBuilder.Configurations.Add(new DocumentMap());
-            modelBuilder.Configurations.Add(new PostMap());
+            modelBuilder.Configurations.Add(new EventMap());
             modelBuilder.Configurations.Add(new UserMap());
             modelBuilder.Configurations.Add(new ConferenceMap());
         }

@@ -38,9 +38,9 @@ namespace Streameus.Models
         public System.DateTime Date { get; set; }
 
         /// <summary>
-        /// Post object
+        /// Event object
         /// </summary>
-        public virtual Post Post { get; set; }
+        public virtual Event Event { get; set; }
 
         /// <summary>
         /// Author object

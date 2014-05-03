@@ -7,23 +7,22 @@
 
 using System;
 using System.Collections.Generic;
+using Streameus.Enums;
 
 namespace Streameus.Models
 {
     /// <summary>
     /// Represent an event that happened
     /// </summary>
-    /// <remarks>
-    /// Likely to be changed pretty soon
-    /// </remarks>
-    public partial class Post
+    public partial class Event
     {
         /// <summary>
         /// Default constructor
         /// </summary>
-        public Post()
+        public Event()
         {
             this.Comments = new HashSet<Comment>();
+            this.EventItems = new HashSet<EventItem>();
         }
 
         /// <summary>
@@ -37,9 +36,9 @@ namespace Streameus.Models
         public bool Visibility { get; set; }
 
         /// <summary>
-        /// Post content
+        /// Type of event
         /// </summary>
-        public string Content { get; set; }
+        public Enums.DataBaseEnums.EventType Type { get; set; }
 
         /// <summary>
         /// Date this event happened
@@ -52,9 +51,14 @@ namespace Streameus.Models
         public int AuthorId { get; set; }
 
         /// <summary>
-        /// List of comment linked to this post
+        /// List of comment linked to this event
         /// </summary>
         public virtual ICollection<Comment> Comments { get; set; }
+
+        /// <summary>
+        /// List of event Type linked to this event
+        /// </summary>
+        public virtual ICollection<EventItem> EventItems { get; set; } 
 
         /// <summary>
         /// The user who generated this event

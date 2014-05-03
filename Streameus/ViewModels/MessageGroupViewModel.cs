@@ -57,6 +57,7 @@ namespace Streameus.ViewModels
         public MessageGroupViewModel(MessageGroup messageGroup, int userId = 0)
         {
             this.Id = messageGroup.Id;
+            this.Count = messageGroup.Messages.Count;
             if (userId < 1)
             {
                 this.Members = messageGroup.Members.Select(member => member.Pseudo).ToArray();
@@ -65,15 +66,17 @@ namespace Streameus.ViewModels
             else
             {
                 this.Members = messageGroup.Members.Where(i => i.Id != userId).Select(member => member.FullName).ToArray();
-                this.ImageId = messageGroup.Members.First(i => i.Id != userId).Id;                
+                this.ImageId = messageGroup.Members.First(i => i.Id != userId).Id;
             }
-            var lastMessage = messageGroup.Messages.OrderByDescending(m => m.Date).First();
-            if (lastMessage.Content.Length >= 64)
-                this.Message = lastMessage.Content.Substring(0, 63) + "...";
-            else
-                this.Message = lastMessage.Content;
-            this.Date = lastMessage.Date.ToShortDateString() + " " + lastMessage.Date.ToShortTimeString();
-            this.Count = messageGroup.Messages.Count;
+            if (messageGroup.Messages.Count > 0)
+            {
+                var lastMessage = messageGroup.Messages.OrderByDescending(m => m.Date).First();
+                if (lastMessage.Content.Length >= 64)
+                    this.Message = lastMessage.Content.Substring(0, 63) + "...";
+                else
+                    this.Message = lastMessage.Content;
+                this.Date = lastMessage.Date.ToShortDateString() + " " + lastMessage.Date.ToShortTimeString();
+            }
         }
     }
 }

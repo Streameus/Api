@@ -18,9 +18,9 @@ namespace Streameus.Models
         public int Id { get; set; }
 
         /// <summary>
-        /// Id of the post
+        /// Id of the event
         /// </summary>
-        public int PostId { get; set; }
+        public int EventId { get; set; }
 
         /// <summary>
         /// Id of the autor

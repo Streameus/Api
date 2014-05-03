@@ -47,11 +47,23 @@ namespace Streameus.DataBaseAccess
             return this._context.GetDbSet<TEntity>();
         }
 
+        /// <summary>
+        /// @TODO
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entity"></param>
+        /// <param name="entityState"></param>
         public void EntryState<TEntity>(TEntity entity, EntityState entityState) where TEntity : class
         {
             this._context.Entry(entity).State = EntityState.Modified;
         }
 
+        /// <summary>
+        /// @TODO
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public EntityState EntryState<TEntity>(TEntity entity) where TEntity : class
         {
             return this._context.Entry(entity).State;

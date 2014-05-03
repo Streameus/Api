@@ -49,6 +49,8 @@ namespace Streameus.Providers
         {
             using (StreameusUserManager userManager = context.OwinContext.GetUserManager<StreameusUserManager>())
             {
+                //Authorize CORS for everyone yeah!
+                context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] {"*"});
                 User user = await userManager.FindAsync(context.UserName, context.Password);
 
                 if (user == null)
@@ -129,7 +131,7 @@ namespace Streameus.Providers
 
                 //if (expectedRootUri.AbsoluteUri == context.RedirectUri)
                 //{
-                    context.Validated();
+                context.Validated();
                 //}
             }
 

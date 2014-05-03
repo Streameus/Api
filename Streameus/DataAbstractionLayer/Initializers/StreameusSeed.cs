@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Streameus.Enums;
 using Streameus.Models;
 
 namespace Streameus.DataAbstractionLayer.Initializers
@@ -113,22 +114,22 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 context.Conferences.Add(s);
             });
             context.SaveChanges();
-            var posts = new List<Event>
+            var events = new List<Event>
             {
-                new Event {Author = users[1], Date = DateTime.Now},
-                new Event {Author = users[1], Date = DateTime.Now},
-                new Event {Author = users[1], Date = DateTime.Now},
-                new Event {Author = users[2], Date = DateTime.Now},
-                new Event {Author = users[2], Date = DateTime.Now},
-                new Event {Author = users[2], Date = DateTime.Now},
-                new Event {Author = users[3], Date = DateTime.Now},
-                new Event {Author = users[4], Date = DateTime.Now},
-                new Event {Author = users[4], Date = DateTime.Now},
-                new Event {Author = users[5], Date = DateTime.Now},
-                new Event {Author = users[6], Date = DateTime.Now},
-                new Event {Author = users[7], Date = DateTime.Now},
+                new Event {Author = users[1], Type = DataBaseEnums.EventType.ConfInscrit, Date = DateTime.Now},
+                new Event {Author = users[1], Type = DataBaseEnums.EventType.ConfCree, Date = DateTime.Now},
+                new Event {Author = users[1], Type = DataBaseEnums.EventType.Follow, Date = DateTime.Now},
+                new Event {Author = users[2], Type = DataBaseEnums.EventType.ConfCree, Date = DateTime.Now},
+                new Event {Author = users[2], Type = DataBaseEnums.EventType.ConfInscrit, Date = DateTime.Now},
+                new Event {Author = users[2], Type = DataBaseEnums.EventType.ConfInscrit, Date = DateTime.Now},
+                new Event {Author = users[3], Type = DataBaseEnums.EventType.Follow, Date = DateTime.Now},
+                new Event {Author = users[4], Type = DataBaseEnums.EventType.ConfCree, Date = DateTime.Now},
+                new Event {Author = users[4], Type = DataBaseEnums.EventType.ConfCree, Date = DateTime.Now},
+                new Event {Author = users[5], Type = DataBaseEnums.EventType.Follow, Date = DateTime.Now},
+                new Event {Author = users[6], Type = DataBaseEnums.EventType.ConfInscrit, Date = DateTime.Now},
+                new Event {Author = users[7], Type = DataBaseEnums.EventType.Follow, Date = DateTime.Now},
             };
-            posts.ForEach(s => context.Posts.Add(s));
+            events.ForEach(s => context.Events.Add(s));
             context.SaveChanges();
         }
     }

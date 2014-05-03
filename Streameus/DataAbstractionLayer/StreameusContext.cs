@@ -46,7 +46,7 @@ namespace Streameus.DataAbstractionLayer
         /// <summary>
         /// Events Set
         /// </summary>
-        public DbSet<Event> Posts { get; set; }
+        public DbSet<Event> Events { get; set; }
 
         /// <summary>
         /// Maps table names, and sets up relationships between the various user entities

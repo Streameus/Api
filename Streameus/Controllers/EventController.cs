@@ -34,6 +34,7 @@ namespace Streameus.Controllers
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NoResultException"></exception>
+        [Authorize]
         public IEnumerable<EventViewModel> Get()
         {
             var eventList = new List<EventViewModel>();
@@ -41,6 +42,19 @@ namespace Streameus.Controllers
             if (!eventList.Any())
                 throw new NoResultException("Empty Set");
             return eventList;
+        }
+
+        /// GET api/event/{id}
+        /// <summary>
+        /// Get one event
+        /// </summary>
+        /// <param name="id">the id of the event to get</param>
+        /// <returns></returns>
+        [Authorize]
+        public EventViewModel Get(int id)
+        {
+            var _event = this._eventServices.GetById(id);
+            return new EventViewModel(_event);
         }
     }
 }

@@ -222,6 +222,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Faq.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Events.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Events.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Events.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -383,6 +388,10 @@
     <Content Include="App_GlobalResources\About.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>About.fr.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Events.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Events.fr.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\Events.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>

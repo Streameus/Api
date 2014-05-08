@@ -20,7 +20,7 @@ namespace Streameus.ViewModels
         /// <summary>
         /// MessageGroup members
         /// </summary>
-        public string[] Members { get; set; }
+        public Dictionary<int, string> Members { get; set; }
 
         /// <summary>
         /// MessageGroup last message content
@@ -54,18 +54,19 @@ namespace Streameus.ViewModels
         /// </summary>
         /// <param name="messageGroup">Message Group</param>
         /// <param name="userId">User Id</param>
+        /// <param name="count">Total number of messages</param>
         public MessageGroupViewModel(MessageGroup messageGroup, int userId = -1, int count = -1)
         {
             this.Id = messageGroup.Id;
             this.Count = count == -1 ? messageGroup.Messages.Count : count;
             if (userId < 0)
             {
-                this.Members = messageGroup.Members.Select(member => member.Pseudo).ToArray();
+                this.Members = messageGroup.Members.ToDictionary(m => m.Id, m => m.FullName);
                 this.ImageId = messageGroup.Members.First().Id;
             }
             else
             {
-                this.Members = messageGroup.Members.Where(i => i.Id != userId).Select(member => member.FullName).ToArray();
+                this.Members = messageGroup.Members.Where(i => i.Id != userId).ToDictionary(m => m.Id, m => m.FullName);
                 this.ImageId = messageGroup.Members.First(i => i.Id != userId).Id;
             }
             if (messageGroup.Messages.Count > 0)

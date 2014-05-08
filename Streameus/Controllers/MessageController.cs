@@ -72,7 +72,7 @@ namespace Streameus.Controllers
             var userGroups = options.ApplyTo(this._messageGroupServices.GetAll().Where(g => g.Members.Any(m => m.Id == userId)).AsQueryable()) as IQueryable<MessageGroup>;
             var messageGroupList = new List<MessageGroupViewModel>();
             userGroups.ForEach(u => messageGroupList.Add(new MessageGroupViewModel(u, userId)));
-            return messageGroupList.OrderByDescending(i => i.Date);
+            return messageGroupList;
         }
 
         // GET api/message/group/5
@@ -89,7 +89,7 @@ namespace Streameus.Controllers
             var messageGroup = this._messageGroupServices.GetById(id);
             var user = this.CheckUser(messageGroup);
             var totalMsgs = messageGroup.Messages.Count;
-            var sortedMessages = options.ApplyTo(messageGroup.Messages.OrderByDescending(m => m.Date).AsQueryable()) as IQueryable<Message>;
+            var sortedMessages = options.ApplyTo(messageGroup.Messages.AsQueryable()) as IQueryable<Message>;
             if (sortedMessages != null)
                 messageGroup.Messages = sortedMessages.ToArray();
             return new MessageGroupViewModel(messageGroup, user.Id, totalMsgs);
@@ -106,7 +106,7 @@ namespace Streameus.Controllers
         {
             var group = this._messageGroupServices.GetById(id);
             this.CheckUser(group);
-            var messages = group.Messages.OrderByDescending(m => m.Date).AsQueryable();
+            var messages = group.Messages.AsQueryable();
             messages = options.ApplyTo(messages) as IQueryable<Message>;
             var messagesList = new List<MessageViewModel>();
             messages.ForEach(m => messagesList.Add(new MessageViewModel(m)));
@@ -164,6 +164,8 @@ namespace Streameus.Controllers
         {
             var userId = Convert.ToInt32(this.User.Identity.GetUserId());
             var users = userIds.Select(id => this._userServices.GetById(id)).ToList();
+            if (users.Count == 1 && users.First().Id == userId)
+                throw new InvalidOperationException("You cannot send a message to yourself");
             var messageGroups = this._messageGroupServices.GetAll();
             try
             {
@@ -173,7 +175,7 @@ namespace Streameus.Controllers
                 {
                     // Sorting messages
                     var totalMsgs = existingGroup.Messages.Count;
-                    var sortedMessages = options.ApplyTo(existingGroup.Messages.OrderByDescending(m => m.Date).AsQueryable()) as IQueryable<Message>;
+                    var sortedMessages = options.ApplyTo(existingGroup.Messages.AsQueryable()) as IQueryable<Message>;
                     if (sortedMessages != null)
                         existingGroup.Messages = sortedMessages.ToArray();
                     return new NewMessageGroupViewModel(existingGroup, userId, totalMsgs);

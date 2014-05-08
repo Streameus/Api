@@ -34,6 +34,7 @@ namespace Streameus.ViewModels
         /// </summary>
         /// <param name="messageGroup">Message Group</param>
         /// <param name="userId">User Id</param>
+        /// <param name="count">Total number of messages</param>
         public NewMessageGroupViewModel(MessageGroup messageGroup, int userId = -1, int count = -1)
         {
             this.MessageGroup = new MessageGroupViewModel(messageGroup, userId, count);

@@ -151,7 +151,7 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 for (var i = 0; i < msgPerGroup; i++)
                 {
                     var user = i%2 == 0 ? group.Members.First() : group.Members.Last();
-                    var content = String.Format("Message from '{0}' to group with Id '{1}'", user.UserName, group.Id);
+                    var content = String.Format("Message #{0} from '{1}' to group with Id '{2}'", i, user.UserName, group.Id);
                     var message = new Message { Content = content, Date = date.AddMinutes(i * 5), Sender = user };
                     group.Messages.Add(message);
                 }

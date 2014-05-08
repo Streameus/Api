@@ -75,13 +75,13 @@ namespace Streameus
             //    consumerKey: "",
             //    consumerSecret: "");
 
-//            var facebookOptions = new FacebookAuthenticationOptions()
-//            {
-//                AppId = "",
-//                AppSecret = "",
-//            };
-//            facebookOptions.Scope.Add("email");
-//            app.UseFacebookAuthentication(facebookOptions);
+            //            var facebookOptions = new FacebookAuthenticationOptions()
+            //            {
+            //                AppId = "",
+            //                AppSecret = "",
+            //            };
+            //            facebookOptions.Scope.Add("email");
+            //            app.UseFacebookAuthentication(facebookOptions);
             var googleOAuth2AuthenticationOptions = new GoogleOAuth2AuthenticationOptions
             {
                 ClientId = ConfigurationManager.AppSettings.Get("googleClientId"),
@@ -89,11 +89,13 @@ namespace Streameus
                 CallbackPath = new PathString("/signin-google"),
                 Provider = new GoogleOAuth2AuthenticationProvider()
                 {
+#pragma warning disable 1998
                     OnAuthenticated = async context =>
                     {
                         context.Identity.AddClaim(new Claim("picture", context.User.GetValue("picture").ToString()));
                         context.Identity.AddClaim(new Claim("profile", context.User.GetValue("profile").ToString()));
                     }
+#pragma warning restore 1998
                 }
             };
             googleOAuth2AuthenticationOptions.Scope.Add("email");

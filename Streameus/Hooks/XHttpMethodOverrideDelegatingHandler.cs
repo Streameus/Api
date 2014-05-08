@@ -16,6 +16,12 @@ namespace Streameus.Hooks
         private static readonly string[] HttpMethods = {"PUT", "DELETE"};
         private const string HttpMethodOverrideHeader = "X-HTTP-Method-Override";
 
+        /// <summary>
+        /// Overriding the send async method
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {

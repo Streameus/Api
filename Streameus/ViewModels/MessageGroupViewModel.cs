@@ -54,11 +54,11 @@ namespace Streameus.ViewModels
         /// </summary>
         /// <param name="messageGroup">Message Group</param>
         /// <param name="userId">User Id</param>
-        public MessageGroupViewModel(MessageGroup messageGroup, int userId = 0)
+        public MessageGroupViewModel(MessageGroup messageGroup, int userId = -1, int count = -1)
         {
             this.Id = messageGroup.Id;
-            this.Count = messageGroup.Messages.Count;
-            if (userId < 1)
+            this.Count = count == -1 ? messageGroup.Messages.Count : count;
+            if (userId < 0)
             {
                 this.Members = messageGroup.Members.Select(member => member.Pseudo).ToArray();
                 this.ImageId = messageGroup.Members.First().Id;

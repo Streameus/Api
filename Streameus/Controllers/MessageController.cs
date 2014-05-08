@@ -87,11 +87,12 @@ namespace Streameus.Controllers
         public MessageGroupViewModel GetGroup(int id, ODataQueryOptions<Message> options)
         {
             var messageGroup = this._messageGroupServices.GetById(id);
-            this.CheckUser(messageGroup);
-            var sortedMessages = options.ApplyTo(messageGroup.Messages.AsQueryable()) as IQueryable<Message>;
+            var user = this.CheckUser(messageGroup);
+            var totalMsgs = messageGroup.Messages.Count;
+            var sortedMessages = options.ApplyTo(messageGroup.Messages.OrderByDescending(m => m.Date).AsQueryable()) as IQueryable<Message>;
             if (sortedMessages != null)
                 messageGroup.Messages = sortedMessages.ToArray();
-            return new MessageGroupViewModel(messageGroup);
+            return new MessageGroupViewModel(messageGroup, user.Id, totalMsgs);
         }
 
         /// <summary>
@@ -105,7 +106,7 @@ namespace Streameus.Controllers
         {
             var group = this._messageGroupServices.GetById(id);
             this.CheckUser(group);
-            var messages = group.Messages.AsQueryable();
+            var messages = group.Messages.OrderByDescending(m => m.Date).AsQueryable();
             messages = options.ApplyTo(messages) as IQueryable<Message>;
             var messagesList = new List<MessageViewModel>();
             messages.ForEach(m => messagesList.Add(new MessageViewModel(m)));
@@ -171,10 +172,11 @@ namespace Streameus.Controllers
                 if (existingGroup != null)
                 {
                     // Sorting messages
-                    var sortedMessages = options.ApplyTo(existingGroup.Messages.AsQueryable()) as IQueryable<Message>;
+                    var totalMsgs = existingGroup.Messages.Count;
+                    var sortedMessages = options.ApplyTo(existingGroup.Messages.OrderByDescending(m => m.Date).AsQueryable()) as IQueryable<Message>;
                     if (sortedMessages != null)
                         existingGroup.Messages = sortedMessages.ToArray();
-                    return new NewMessageGroupViewModel(existingGroup, userId);
+                    return new NewMessageGroupViewModel(existingGroup, userId, totalMsgs);
                 }
                 // Create a new one
                 var group = new MessageGroup { Members = users };
@@ -191,12 +193,13 @@ namespace Streameus.Controllers
         /// Check if the connected user can access to this message group
         /// </summary>
         /// <param name="group">Message group</param>
-        private void CheckUser(MessageGroup group)
+        private User CheckUser(MessageGroup group)
         {
             var userId = Convert.ToInt32(this.User.Identity.GetUserId());
             var user = this._userServices.GetById(userId);
             if (!group.Members.Contains(user))
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden)); ;
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            return user;
         }
 
     }

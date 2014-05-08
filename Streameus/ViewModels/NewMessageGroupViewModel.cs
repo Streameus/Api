@@ -34,9 +34,9 @@ namespace Streameus.ViewModels
         /// </summary>
         /// <param name="messageGroup">Message Group</param>
         /// <param name="userId">User Id</param>
-        public NewMessageGroupViewModel(MessageGroup messageGroup, int userId = 0)
+        public NewMessageGroupViewModel(MessageGroup messageGroup, int userId = -1, int count = -1)
         {
-            this.MessageGroup = new MessageGroupViewModel(messageGroup, userId);
+            this.MessageGroup = new MessageGroupViewModel(messageGroup, userId, count);
             this.Messages = messageGroup.Messages.Select(message => new MessageViewModel(message)).ToList();
         }
     }

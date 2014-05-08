@@ -145,18 +145,14 @@ namespace Streameus.DataAbstractionLayer.Initializers
             context.MessagesGroups.AddRange(messagesGroups);
             context.SaveChanges();
             var date = DateTime.Now.Subtract(new TimeSpan(31, 0, 0, 0));
+            const int msgPerGroup = 40;
             foreach (var group in messagesGroups)
             {
-                foreach (var user in group.Members)
+                for (var i = 0; i < msgPerGroup; i++)
                 {
+                    var user = i%2 == 0 ? group.Members.First() : group.Members.Last();
                     var content = String.Format("Message from '{0}' to group with Id '{1}'", user.UserName, group.Id);
-                    var message = new Message { Content = content, Date = date.AddHours(group.Id), Sender = user };
-                    group.Messages.Add(message);
-                }
-                foreach (var user in group.Members)
-                {
-                    var content = String.Format("Answer from '{0}' to group with Id '{1}'", user.UserName, group.Id);
-                    var message = new Message { Content = content, Date = date.AddHours(group.Id), Sender = user };
+                    var message = new Message { Content = content, Date = date.AddMinutes(i * 5), Sender = user };
                     group.Messages.Add(message);
                 }
             }

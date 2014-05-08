@@ -196,7 +196,7 @@ namespace Streameus.Controllers
             var userId = Convert.ToInt32(this.User.Identity.GetUserId());
             var user = this._userServices.GetById(userId);
             if (!group.Members.Contains(user))
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Unauthorized)); ;
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden)); ;
         }
 
     }

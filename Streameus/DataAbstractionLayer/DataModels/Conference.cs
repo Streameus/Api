@@ -22,7 +22,8 @@ namespace Streameus.Models
         public Conference()
         {
             this.Documents = new HashSet<Document>();
-            this.Members = new HashSet<User>();
+            this.Speakers = new HashSet<User>();
+            this.Participants = new HashSet<User>();
         }
 
         /// <summary>
@@ -33,6 +34,10 @@ namespace Streameus.Models
         /// Conference's owner ID
         /// </summary>
         public int OwnerId { get; set; }
+        /// <summary>
+        /// Conference's owner ID
+        /// </summary>
+        public int CategoryId { get; set; }
         /// <summary>
         /// Conference name
         /// </summary>
@@ -72,9 +77,17 @@ namespace Streameus.Models
         /// </summary>
         public virtual User Owner { get; set; }
         /// <summary>
+        /// Conference Category
+        /// </summary>
+        public virtual ConferenceCategory Category { get; set; }
+        /// <summary>
+        /// Speakers participating to the Conference
+        /// </summary>
+        public virtual ICollection<User> Speakers { get; set; }
+        /// <summary>
         /// Users participating to the Conference
         /// </summary>
-        public virtual ICollection<User> Members { get; set; }
+        public virtual ICollection<User> Participants { get; set; }
     }
 
 }

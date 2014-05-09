@@ -53,6 +53,11 @@ namespace Streameus.ViewModels
         public int FinalDuration { get; set; }
 
         /// <summary>
+        /// The conference category
+        /// </summary>
+        public ConferenceCategoryViewModel Category { get; set; }
+
+        /// <summary>
         /// Create a vm based on a conference
         /// </summary>
         /// <param name="conf"></param>
@@ -66,6 +71,7 @@ namespace Streameus.ViewModels
             this.Time = conf.Time;
             this.ScheduledDuration = conf.ScheduledDuration;
             this.FinalDuration = conf.FinalDuration;
+            this.Category = new ConferenceCategoryViewModel(conf.Category);
         }
     }
 }

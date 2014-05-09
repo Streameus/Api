@@ -21,17 +21,21 @@ namespace Streameus.Controllers
     public class ConferenceController : BaseController
     {
         private readonly IConferenceServices _conferenceServices;
+        private readonly IConferenceCategoryServices _conferenceCategoryServices;
         private readonly IUserServices _userServices;
 
         /// <summary>
         /// Default constructor
         /// </summary>
+        /// <param name="conferenceCategoryServices"></param>
         /// <param name="conferenceServices"></param>
         /// <param name="userServices"></param>
-        public ConferenceController(IConferenceServices conferenceServices, IUserServices userServices)
+        public ConferenceController(IConferenceServices conferenceServices, IUserServices userServices, IConferenceCategoryServices conferenceCategoryServices)
         {
+            if (conferenceCategoryServices == null) throw new ArgumentNullException("conferenceCategoryServices");
             if (conferenceServices == null) throw new ArgumentNullException("conferenceServices");
             if (userServices == null) throw new ArgumentNullException("userServices");
+            this._conferenceCategoryServices = conferenceCategoryServices;
             this._conferenceServices = conferenceServices;
             this._userServices = userServices;
         }
@@ -46,6 +50,34 @@ namespace Streameus.Controllers
         {
             var conferences = new List<ConferenceViewModel>();
             this._conferenceServices.GetAll().ForEach(c => conferences.Add(new ConferenceViewModel(c)));
+            return conferences;
+        }
+
+        // GET api/Conference/Categories
+        /// <summary>
+        /// Retourne toutes les categories de conferences
+        /// </summary>
+        /// <returns></returns>
+        /// <responseCode></responseCode>
+        [Route("Categories")]
+        public IEnumerable<ConferenceCategoryViewModel> GetCategories()
+        {
+            var categories = new List<ConferenceCategoryViewModel>();
+            this._conferenceCategoryServices.GetAll().ForEach(c => categories.Add(new ConferenceCategoryViewModel(c)));
+            return categories;
+        }
+
+        // GET api/Conference/Category/5
+        /// <summary>
+        /// Retourne toutes les conferences
+        /// </summary>
+        /// <returns></returns>
+        /// <responseCode></responseCode>
+        [Route("Category/{id}")]
+        public IEnumerable<ConferenceViewModel> GetByCategory(int categoryId)
+        {
+            var conferences = new List<ConferenceViewModel>();
+            this._conferenceServices.GetAll().Where(i => i.CategoryId == categoryId).ForEach(c => conferences.Add(new ConferenceViewModel(c)));
             return conferences;
         }
 

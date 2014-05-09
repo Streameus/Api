@@ -304,6 +304,7 @@
     <Compile Include="Controllers\ResourceController.cs" />
     <Compile Include="Controllers\RessourceController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="DataAbstractionLayer\Contracts\IConferenceCategoryServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IMessageGroupServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IMessageServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IEventServices.cs" />
@@ -312,6 +313,8 @@
     <Compile Include="DataAbstractionLayer\Contracts\IConferenceServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IParametersServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IUserServices.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\ConferenceCategory.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Mapping\ConferenceCategoryMap.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\MessageGroup.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Mapping\MessageGroupMap.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Message.cs" />
@@ -324,6 +327,7 @@
     <Compile Include="DataAbstractionLayer\Services\EventServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\ConferenceServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\ConferenceParametersServices.cs" />
+    <Compile Include="DataAbstractionLayer\Services\ConferenceCategoryServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\MessageGroupServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\MessageServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\ParametersServices.cs" />
@@ -379,6 +383,7 @@
     </Compile>
     <Compile Include="ViewModels\AccountBindingModels.cs" />
     <Compile Include="ViewModels\AddExternalLoginBindingModel.cs" />
+    <Compile Include="ViewModels\ConferenceCategoryViewModel.cs" />
     <Compile Include="ViewModels\NewMessageGroupViewModel.cs" />
     <Compile Include="ViewModels\NewMessageViewModel.cs" />
     <Compile Include="ViewModels\MessageGroupViewModel.cs" />

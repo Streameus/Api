@@ -34,6 +34,11 @@ namespace Streameus.DataAbstractionLayer
         public DbSet<ConferenceParameters> ConferenceParameters { get; set; }
 
         /// <summary>
+        /// ConferenceParameters Set
+        /// </summary>
+        public DbSet<ConferenceCategory> ConferenceCategories { get; set; }
+
+        /// <summary>
         /// Conferences Set
         /// </summary>
         public DbSet<Conference> Conferences { get; set; }

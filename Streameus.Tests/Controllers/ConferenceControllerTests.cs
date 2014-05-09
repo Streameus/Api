@@ -26,6 +26,7 @@ namespace Streameus.Tests.Controllers
         [TestMethod()]
         public void PostTest()
         {
+            var conferenceCategoryServiceMock = new Mock<IConferenceCategoryServices>();
             var conferenceServiceMock = new Mock<IConferenceServices>();
             var userServiceMock = new Mock<IUserServices>();
 
@@ -52,7 +53,7 @@ namespace Streameus.Tests.Controllers
             //permet d'evaluer la variable plus tard, evite d'avoir null
             conferenceServiceMock.Setup(s => s.GetById(45)).Returns(() => controllerGeneratedConference);
 
-            var controller = new ConferenceController(conferenceServiceMock.Object, userServiceMock.Object);
+            var controller = new ConferenceController(conferenceServiceMock.Object, userServiceMock.Object, conferenceCategoryServiceMock.Object);
 
             //En vrai tester la valeur de retour ne sert a rien, puisqu'on teste le GET du coup...
             Assert.AreEqual(45, controller.Post(conference).Id);

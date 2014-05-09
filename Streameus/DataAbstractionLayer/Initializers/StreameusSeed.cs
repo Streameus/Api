@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Streameus.Exceptions.HttpErrors;
 using Streameus.Enums;
 using Streameus.Models;
 
@@ -20,7 +21,11 @@ namespace Streameus.DataAbstractionLayer.Initializers
         /// <param name="context">The dbcontext to be seeded</param>
         public static void Seed(StreameusContext context)
         {
+            // Seed only if needed
             if (context.Users.Any()) return;
+
+
+            // Users
             var users = new List<User>
             {
                 new User {Parameters = new Parameters(), FirstName = "Carson", LastName = "Alexander"},
@@ -32,19 +37,14 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 new User {Parameters = new Parameters(), FirstName = "Laura", LastName = "Norman", Gender = false},
                 new User {Parameters = new Parameters(), FirstName = "Nino", LastName = "Olivetto", Gender = true}
             };
-
             var userManager = new StreameusUserManager(new StreameusUserStore(context));
-            //var userManager = HttpContext.Current.GetOwinContext().GetUserManager<StreameusUserManager>();
             users.ForEach(s =>
             {
                 s.Pseudo = s.FullName.Replace(" ", "");
                 s.Email = s.FirstName + "." + s.LastName + "@epitech.eu";
                 var result = userManager.Create(s, "123123");
-                //context.Users.Add(s);
-                if (result.Succeeded)
-                    Console.WriteLine("User added");
-                else
-                    Console.WriteLine("Seed user failed");
+                if (!result.Succeeded)
+                    throw new Exception("Seed user failed");
             });
             context.SaveChanges();
             users.First().Followers.Add(users[2]);
@@ -63,6 +63,26 @@ namespace Streameus.DataAbstractionLayer.Initializers
             context.SaveChanges();
 
 
+            // Categories
+            var confCategoriesDictionnary = new Dictionary<string, string>
+            {
+                {"IT", "Description of IT"},
+                {"Economics", "Description of Economics"},
+                {"Science", "Description of Science"},
+                {"Life", "Description of Life"},
+                {"Politics", "Description of Politics"},
+                {"Arts", "Description of Arts"},
+                {"Miscellaneous", "Description of Miscellaneous"}
+            };
+            var confCategoriesList = confCategoriesDictionnary.Select(confCategory => new ConferenceCategory
+            {
+                Name = confCategory.Key, Description = confCategory.Value,
+            }).ToList();
+            context.ConferenceCategories.AddRange(confCategoriesList);
+            context.SaveChanges();
+
+
+            // Conferences
             var conference = new List<Conference>
             {
                 new Conference
@@ -71,6 +91,7 @@ namespace Streameus.DataAbstractionLayer.Initializers
                     ConferenceParameters = new ConferenceParameters(),
                     Name = "Chemistry",
                     ScheduledDuration = 3,
+                    Category = confCategoriesList.Single(c => c.Name == "Science"),
                 },
                 new Conference
                 {
@@ -78,6 +99,7 @@ namespace Streameus.DataAbstractionLayer.Initializers
                     ConferenceParameters = new ConferenceParameters(),
                     Name = "Microeconomics",
                     ScheduledDuration = 3,
+                    Category = confCategoriesList.Single(c => c.Name == "Economics"),
                 },
                 new Conference
                 {
@@ -85,6 +107,7 @@ namespace Streameus.DataAbstractionLayer.Initializers
                     ConferenceParameters = new ConferenceParameters(),
                     Name = "Macroeconomics",
                     ScheduledDuration = 3,
+                    Category = confCategoriesList.Single(c => c.Name == "Economics"),
                 },
                 new Conference
                 {
@@ -92,6 +115,7 @@ namespace Streameus.DataAbstractionLayer.Initializers
                     ConferenceParameters = new ConferenceParameters(),
                     Name = "Calculus",
                     ScheduledDuration = 4,
+                    Category = confCategoriesList.Single(c => c.Name == "Science"),
                 },
                 new Conference
                 {
@@ -99,6 +123,7 @@ namespace Streameus.DataAbstractionLayer.Initializers
                     ConferenceParameters = new ConferenceParameters(),
                     Name = "Trigonometry",
                     ScheduledDuration = 4,
+                    Category = confCategoriesList.Single(c => c.Name == "Science"),
                 },
                 new Conference
                 {
@@ -106,6 +131,7 @@ namespace Streameus.DataAbstractionLayer.Initializers
                     ConferenceParameters = new ConferenceParameters(),
                     Name = "Composition",
                     ScheduledDuration = 3,
+                    Category = confCategoriesList.Single(c => c.Name == "Arts"),
                 },
                 new Conference
                 {
@@ -113,6 +139,7 @@ namespace Streameus.DataAbstractionLayer.Initializers
                     ConferenceParameters = new ConferenceParameters(),
                     Name = "Literature",
                     ScheduledDuration = 4,
+                    Category = confCategoriesList.Single(c => c.Name == "Arts"),
                 }
             };
             conference.ForEach(s =>
@@ -175,6 +202,8 @@ namespace Streameus.DataAbstractionLayer.Initializers
             events.ForEach(s => context.Events.Add(s));
             context.SaveChanges();
 
+
+            // Messages
             var messagesGroups = new List<MessageGroup>();
             users.Where(u => u.Id > 1).ToList().ForEach(u => messagesGroups.Add(new MessageGroup { Members = { users[0], u } }));
             context.MessagesGroups.AddRange(messagesGroups);

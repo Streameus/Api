@@ -1,4 +1,4 @@
-    //////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
 // This class must only contains DB related info!                                                   //
 // If you need to add a method or a field, go into Models and find/create the partial class         //
@@ -46,6 +46,8 @@ namespace Streameus.Models
             this.Profession = "";
             this.Description = "";
             this.ConferencesCreated = new HashSet<Conference>();
+            this.ConferencesInvolved = new HashSet<Conference>();
+            this.ConferencesAttended = new HashSet<Conference>();
             this.Conferences = new HashSet<Conference>();
             this.Events = new HashSet<Event>();
             this.Abonnements = new HashSet<User>();
@@ -173,13 +175,17 @@ namespace Streameus.Models
         public string Description { get; set; }
 
         /// <summary>
-        /// Created conference by user
+        /// Conferences created
         /// </summary>
         public virtual ICollection<Conference> ConferencesCreated { get; set; }
         /// <summary>
-        /// Conference linked to the user
+        /// Conferences when user was a Speaker
         /// </summary>
-        public virtual ICollection<Conference> Conferences { get; set; }
+        public virtual ICollection<Conference> ConferencesInvolved { get; set; }
+        /// <summary>
+        /// Conferences when user was a Participatns
+        /// </summary>
+        public virtual ICollection<Conference> ConferencesAttended { get; set; }
         /// <summary>
         /// User posts
         /// </summary>

@@ -27,21 +27,21 @@ namespace Streameus.Models.Mapping
 
             // Relationships
             this.HasMany(t => t.Speakers)
-                .WithMany(t => t.Conferences)
+                .WithMany(t => t.ConferencesInvolved)
                 .Map(m =>
                 {
                     m.ToTable("ConferenceSpeakers");
-                    m.MapLeftKey("Conference_Id");
-                    m.MapRightKey("Speaker_Id");
+                    m.MapLeftKey("Conferences_Id");
+                    m.MapRightKey("Speakers_Id");
                 });
 
             this.HasMany(t => t.Participants)
-                .WithMany(t => t.Conferences)
+                .WithMany(t => t.ConferencesAttended)
                 .Map(m =>
                 {
                     m.ToTable("ConferenceParticipants");
-                    m.MapLeftKey("Conference_Id");
-                    m.MapRightKey("Participant_Id");
+                    m.MapLeftKey("Conferences_Id");
+                    m.MapRightKey("Participants_Id");
                 });
 
             this.HasRequired(t => t.Owner)

@@ -18,6 +18,7 @@ namespace Streameus.Controllers
     /// <summary>
     /// Conference controller
     /// </summary>
+    [RoutePrefix("api/Conference")]
     public class ConferenceController : BaseController
     {
         private readonly IConferenceServices _conferenceServices;
@@ -74,10 +75,10 @@ namespace Streameus.Controllers
         /// <returns></returns>
         /// <responseCode></responseCode>
         [Route("Category/{id}")]
-        public IEnumerable<ConferenceViewModel> GetByCategory(int categoryId)
+        public IEnumerable<ConferenceViewModel> GetByCategory(int id)
         {
             var conferences = new List<ConferenceViewModel>();
-            this._conferenceServices.GetAll().Where(i => i.CategoryId == categoryId).ForEach(c => conferences.Add(new ConferenceViewModel(c)));
+            this._conferenceServices.GetAll().Where(i => i.CategoryId == id).ForEach(c => conferences.Add(new ConferenceViewModel(c)));
             return conferences;
         }
 

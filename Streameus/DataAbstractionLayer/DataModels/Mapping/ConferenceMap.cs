@@ -31,8 +31,8 @@ namespace Streameus.Models.Mapping
                 .Map(m =>
                 {
                     m.ToTable("ConferenceSpeakers");
-                    m.MapLeftKey("Conferences_Id");
-                    m.MapRightKey("Speakers_Id");
+                    m.MapLeftKey("Conference_Id");
+                    m.MapRightKey("Speaker_Id");
                 });
 
             this.HasMany(t => t.Participants)
@@ -40,8 +40,17 @@ namespace Streameus.Models.Mapping
                 .Map(m =>
                 {
                     m.ToTable("ConferenceParticipants");
-                    m.MapLeftKey("Conferences_Id");
-                    m.MapRightKey("Participants_Id");
+                    m.MapLeftKey("Conference_Id");
+                    m.MapRightKey("Participant_Id");
+                });
+
+            this.HasMany(t => t.Registred)
+                .WithMany(t => t.ConferencesRegistered)
+                .Map(m =>
+                {
+                    m.ToTable("ConferenceRegistred");
+                    m.MapLeftKey("Conference_Id");
+                    m.MapRightKey("Registred_Id");
                 });
 
             this.HasRequired(t => t.Owner)

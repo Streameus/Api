@@ -48,7 +48,7 @@ namespace Streameus.Models
             this.ConferencesCreated = new HashSet<Conference>();
             this.ConferencesInvolved = new HashSet<Conference>();
             this.ConferencesAttended = new HashSet<Conference>();
-            this.Conferences = new HashSet<Conference>();
+            this.ConferencesRegistered = new HashSet<Conference>();
             this.Events = new HashSet<Event>();
             this.Abonnements = new HashSet<User>();
             this.Followers = new HashSet<User>();
@@ -179,13 +179,17 @@ namespace Streameus.Models
         /// </summary>
         public virtual ICollection<Conference> ConferencesCreated { get; set; }
         /// <summary>
-        /// Conferences when user was a Speaker
+        /// Conferences involved as a Speaker
         /// </summary>
         public virtual ICollection<Conference> ConferencesInvolved { get; set; }
         /// <summary>
-        /// Conferences when user was a Participatns
+        /// Conferences attended as a Participant
         /// </summary>
         public virtual ICollection<Conference> ConferencesAttended { get; set; }
+        /// <summary>
+        /// Conferences RSVP as a Participant
+        /// </summary>
+        public virtual ICollection<Conference> ConferencesRegistered { get; set; }
         /// <summary>
         /// User posts
         /// </summary>

@@ -22,6 +22,7 @@ namespace Streameus.Models
         public Conference()
         {
             this.Documents = new HashSet<Document>();
+            this.Registred = new HashSet<User>();
             this.Speakers = new HashSet<User>();
             this.Participants = new HashSet<User>();
         }
@@ -88,6 +89,10 @@ namespace Streameus.Models
         /// Users participating to the Conference
         /// </summary>
         public virtual ICollection<User> Participants { get; set; }
+        /// <summary>
+        /// Users planning to participate to the Conference
+        /// </summary>
+        public virtual ICollection<User> Registred { get; set; }
     }
 
 }

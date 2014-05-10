@@ -118,21 +118,21 @@ namespace Streameus.DataAbstractionLayer.Initializers
             {
                 new Event
                 {
-                    Author = users[1], Type = DataBaseEnums.EventType.ConfInscrit, Date = DateTime.Now,
+                    Author = users[1], Type = DataBaseEnums.EventType.ParticipateConf, Date = DateTime.Now,
                     EventItems = new List<EventItem>
                     {
                         new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[1].Id, Content = users[1].Pseudo},
                         new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference[1].Id, Content = conference[1].Name},
                     }
                 },
-                new Event {Author = users[1], Type = DataBaseEnums.EventType.ConfCree, Date = DateTime.Now,
+                new Event {Author = users[1], Type = DataBaseEnums.EventType.CreateConf, Date = DateTime.Now,
                     EventItems = new List<EventItem>
                     {
                         new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[2].Id, Content = users[2].Pseudo},
                         new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference[2].Id, Content = conference[2].Name},
                     }
                 },
-                new Event {Author = users[1], Type = DataBaseEnums.EventType.Follow, Date = DateTime.Now,
+                new Event {Author = users[1], Type = DataBaseEnums.EventType.StartFollow, Date = DateTime.Now,
                     EventItems = new List<EventItem>
                     {
                         new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[2].Id, Content = users[2].Pseudo},
@@ -141,21 +141,21 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 },
                 new Event
                 {
-                    Author = users[2], Type = DataBaseEnums.EventType.ConfInscrit, Date = DateTime.Now,
+                    Author = users[2], Type = DataBaseEnums.EventType.SuscribeConf, Date = DateTime.Now,
                     EventItems = new List<EventItem>
                     {
                         new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[3].Id, Content = users[3].Pseudo},
                         new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference[3].Id, Content = conference[3].Name},
                     }
                 },
-                new Event {Author = users[4], Type = DataBaseEnums.EventType.ConfCree, Date = DateTime.Now,
+                new Event {Author = users[4], Type = DataBaseEnums.EventType.CreateConf, Date = DateTime.Now,
                     EventItems = new List<EventItem>
                     {
                         new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[5].Id, Content = users[5].Pseudo},
                         new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference[4].Id, Content = conference[4].Name},
                     }
                 },
-                new Event {Author = users[5], Type = DataBaseEnums.EventType.Follow, Date = DateTime.Now,
+                new Event {Author = users[5], Type = DataBaseEnums.EventType.StartFollow, Date = DateTime.Now,
                     EventItems = new List<EventItem>
                     {
                         new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[6].Id, Content = users[6].Pseudo},

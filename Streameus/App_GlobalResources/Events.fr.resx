@@ -151,7 +151,7 @@
   <data name="FirstFollower" xml:space="preserve">
     <value>{0} a son premier abonné !</value>
   </data>
-  <data name="participateConf" xml:space="preserve">
+  <data name="ParticipateConf" xml:space="preserve">
     <value>{0} a participé à la conférence {1}.</value>
   </data>
   <data name="RateConf" xml:space="preserve">

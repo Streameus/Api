@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Resources;
 using Streameus.Models;
 
 namespace Streameus.ViewModels
@@ -32,6 +33,11 @@ namespace Streameus.ViewModels
         public int AuthorId { get; set; }
 
         /// <summary>
+        /// Content string with placeholders
+        /// </summary>
+        public string Content { get; set; }
+
+        /// <summary>
         /// List of event items
         /// </summary>
         public List<EventItem> Items { get; set; }
@@ -44,7 +50,7 @@ namespace Streameus.ViewModels
         }
 
         /// <summary>
-        /// Instantiate VM with a user's values
+        /// Instantiate VM with a event's values
         /// </summary>
         /// <param name="obj"></param>
         public EventViewModel(Event obj)
@@ -54,6 +60,7 @@ namespace Streameus.ViewModels
             this.Date = obj.Date;
             this.AuthorId = obj.AuthorId;
             this.Items = obj.EventItems.ToList();
+            this.Content = this.Type.ToString();
         }
     }
 }

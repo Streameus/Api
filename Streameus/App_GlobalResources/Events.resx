@@ -152,7 +152,7 @@
     <value>{0} gets {1} first follower !</value>
     <comment>{1} his/her</comment>
   </data>
-  <data name="participateConf" xml:space="preserve">
+  <data name="ParticipateConf" xml:space="preserve">
     <value>{0} has participated to the conference {1}.</value>
   </data>
   <data name="RateConf" xml:space="preserve">

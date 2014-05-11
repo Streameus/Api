@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Resources;
+using Streameus.Enums;
 using Streameus.Models;
 
 namespace Streameus.ViewModels
@@ -60,7 +61,7 @@ namespace Streameus.ViewModels
             this.Date = obj.Date;
             this.AuthorId = obj.AuthorId;
             this.Items = obj.EventItems.ToList();
-            this.Content = this.Type.ToString();
+            this.Content = this.Type.GetDisplayName();
         }
     }
 }

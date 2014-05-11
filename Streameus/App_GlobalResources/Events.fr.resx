@@ -117,35 +117,35 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="bilanCreateConfMonth" xml:space="preserve">
+  <data name="BilanCreateConfMonth" xml:space="preserve">
     <value>{0} a créé {1} conférence(s) ce mois-ci.</value>
   </data>
-  <data name="bilanCreateConfWeek" xml:space="preserve">
+  <data name="BilanCreateConfWeek" xml:space="preserve">
     <value>{0} a créé {1} conférence(s) cette semaine.</value>
   </data>
-  <data name="bilanFollowers" xml:space="preserve">
+  <data name="BilanFollowers" xml:space="preserve">
     <value>{0} a désormais {1} abonnés.</value>
     <comment>{1} nombre d'abonnés à afficher toutes les dizaines, centaines ?</comment>
   </data>
-  <data name="bilanFollowingMonth" xml:space="preserve">
+  <data name="BilanFollowingMonth" xml:space="preserve">
     <value>{0} a commencé à suivre {1} nouvelles personnes ce mois-ci.</value>
   </data>
-  <data name="bilanFollowingWeek" xml:space="preserve">
+  <data name="BilanFollowingWeek" xml:space="preserve">
     <value>{0} a commencé à suivre {1} nouvelles personnes cette semaine.</value>
     <comment>{1} nombre de personnes nouvellement suivies</comment>
   </data>
-  <data name="bilanParticipateConfMonth" xml:space="preserve">
+  <data name="BilanParticipateConfMonth" xml:space="preserve">
     <value>{0} s'est inscrit à {1} conférence(s) ce mois-ci.</value>
     <comment>{1} nombre de conférences auxquelles il a participé</comment>
   </data>
-  <data name="bilanParticipateConfWeek" xml:space="preserve">
+  <data name="BilanParticipateConfWeek" xml:space="preserve">
     <value>{0} s'est inscrit à {1} conférence(s) cette semaine.</value>
   </data>
-  <data name="bilanReputation" xml:space="preserve">
+  <data name="BilanReputation" xml:space="preserve">
     <value>{0} a atteint {1} points de réputation.</value>
     <comment>{1} nombre de points à afficher ponctuellement</comment>
   </data>
-  <data name="createConf" xml:space="preserve">
+  <data name="CreateConf" xml:space="preserve">
     <value>{0} a créé une conférence {1}.</value>
   </data>
   <data name="FirstFollower" xml:space="preserve">

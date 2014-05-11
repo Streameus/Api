@@ -41,6 +41,19 @@ namespace Streameus.ViewModels
         public string LastName { get; set; }
 
         /// <summary>
+        /// The display name to be used for this person
+        /// </summary>
+        public string DisplayName { get; private set; }
+
+        /// <summary>
+        /// Get the User's full name
+        /// </summary>
+        public string FullName
+        {
+            get { return this.FirstName + " " + this.LastName; }
+        }
+
+        /// <summary>
         /// User gender, null if not said
         /// </summary>
         public bool? Gender { get; set; }
@@ -136,6 +149,8 @@ namespace Streameus.ViewModels
             this.Followers = user.Followers.Count;
             this.Followings = user.Abonnements.Count;
             this.Conferences = user.ConferencesCreated.Count;
+
+            this.DisplayName = this.FullName.Trim().Length > 0 ? this.FullName : this.Pseudo;
         }
     }
 }

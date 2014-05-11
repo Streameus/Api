@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Streameus.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.Enums;
 using Streameus.Models;
 using Streameus.ViewModels;
 
-namespace Streameus.Controllers.Tests
+namespace Streameus.Tests.Controllers
 {
     [TestClass()]
     public class EventControllerTests
@@ -24,7 +22,7 @@ namespace Streameus.Controllers.Tests
             eventServicesMock.Setup(e => e.GetAllWithIncludes()).Returns(returnedList);
             var controller = new EventController(eventServicesMock.Object);
             var list = controller.Get();
-            Assert.AreEqual(3, list.Count());
+            Assert.AreEqual(6, list.Count());
         }
 
         [TestMethod()]
@@ -43,7 +41,7 @@ namespace Streameus.Controllers.Tests
                 new User {Parameters = new Parameters(), FirstName = "Carson", LastName = "Alexander"},
                 new User {Parameters = new Parameters(), FirstName = "Meredith", LastName = "Alonso"},
                 new User {Parameters = new Parameters(), FirstName = "Arturo", LastName = "Anand", Gender = true}
-           };
+            };
             users.ForEach(s =>
             {
                 s.Pseudo = s.FullName;
@@ -64,6 +62,13 @@ namespace Streameus.Controllers.Tests
                     ConferenceParameters = new ConferenceParameters(),
                     Name = "Microeconomics",
                     ScheduledDuration = 3,
+                },
+                new Conference
+                {
+                    Owner = users[2],
+                    ConferenceParameters = new ConferenceParameters(),
+                    Name = "Physics",
+                    ScheduledDuration = 3,
                 }
             };
             conference.ForEach(s =>
@@ -71,13 +76,13 @@ namespace Streameus.Controllers.Tests
                 s.OwnerId = s.Owner.Id;
                 s.Description = "Description de " + s.Name;
                 s.Time = DateTime.Now;
-             });
-            return new List<Event>()
+            });
+            return new List<Event>
             {
                 new Event
                 {
                     Author = users[1],
-                    Type = DataBaseEnums.EventType.ConfInscrit,
+                    Type = DataBaseEnums.EventType.ParticipateConf,
                     Date = DateTime.Now,
                     EventItems = new List<EventItem>
                     {
@@ -100,7 +105,7 @@ namespace Streameus.Controllers.Tests
                 new Event
                 {
                     Author = users[1],
-                    Type = DataBaseEnums.EventType.ConfCree,
+                    Type = DataBaseEnums.EventType.CreateConf,
                     Date = DateTime.Now,
                     EventItems = new List<EventItem>
                     {
@@ -123,7 +128,7 @@ namespace Streameus.Controllers.Tests
                 new Event
                 {
                     Author = users[1],
-                    Type = DataBaseEnums.EventType.Follow,
+                    Type = DataBaseEnums.EventType.StartFollow,
                     Date = DateTime.Now,
                     EventItems = new List<EventItem>
                     {
@@ -140,6 +145,75 @@ namespace Streameus.Controllers.Tests
                             TargetType = DataBaseEnums.EventItemType.User,
                             TargetId = users[0].Id,
                             Content = users[0].Pseudo
+                        },
+                    }
+                },
+                new Event
+                {
+                    Author = users[2],
+                    Type = DataBaseEnums.EventType.SuscribeConf,
+                    Date = DateTime.Now,
+                    EventItems = new List<EventItem>
+                    {
+                        new EventItem
+                        {
+                            Pos = 0,
+                            TargetType = DataBaseEnums.EventItemType.User,
+                            TargetId = users[0].Id,
+                            Content = users[0].Pseudo
+                        },
+                        new EventItem
+                        {
+                            Pos = 1,
+                            TargetType = DataBaseEnums.EventItemType.Conference,
+                            TargetId = conference[0].Id,
+                            Content = conference[0].Name
+                        },
+                    }
+                },
+                new Event
+                {
+                    Author = users[0],
+                    Type = DataBaseEnums.EventType.CreateConf,
+                    Date = DateTime.Now,
+                    EventItems = new List<EventItem>
+                    {
+                        new EventItem
+                        {
+                            Pos = 0,
+                            TargetType = DataBaseEnums.EventItemType.User,
+                            TargetId = users[2].Id,
+                            Content = users[2].Pseudo
+                        },
+                        new EventItem
+                        {
+                            Pos = 1,
+                            TargetType = DataBaseEnums.EventItemType.Conference,
+                            TargetId = conference[1].Id,
+                            Content = conference[1].Name
+                        },
+                    }
+                },
+                new Event
+                {
+                    Author = users[0],
+                    Type = DataBaseEnums.EventType.StartFollow,
+                    Date = DateTime.Now,
+                    EventItems = new List<EventItem>
+                    {
+                        new EventItem
+                        {
+                            Pos = 0,
+                            TargetType = DataBaseEnums.EventItemType.User,
+                            TargetId = users[2].Id,
+                            Content = users[2].Pseudo
+                        },
+                        new EventItem
+                        {
+                            Pos = 1,
+                            TargetType = DataBaseEnums.EventItemType.User,
+                            TargetId = users[1].Id,
+                            Content = users[1].Pseudo
                         },
                     }
                 }

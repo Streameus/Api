@@ -25,6 +25,6 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// Return all existing entry for this entity
         /// </summary>
         /// <returns></returns>
-        IEnumerable<TEntity> GetAll();
+        IQueryable<TEntity> GetAll();
     }
 }

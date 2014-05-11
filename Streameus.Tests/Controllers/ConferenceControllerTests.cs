@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Streameus.Controllers;
@@ -15,13 +16,11 @@ namespace Streameus.Tests.Controllers
         [TestMethod()]
         public void GetTest()
         {
-            
         }
 
         [TestMethod()]
         public void GetWithIdTest()
         {
-            
         }
 
         [TestMethod()]
@@ -49,7 +48,7 @@ namespace Streameus.Tests.Controllers
                     controllerGeneratedConference = arg;
                     controllerGeneratedConference.Id = arg.Id = conference.Id;
                 });
-            userServiceMock.Setup(s => s.GetAll()).Returns(() => new List<User>() {new User()});
+            userServiceMock.Setup(s => s.GetAll()).Returns(() => new List<User>() {new User()}.AsQueryable());
             //permet d'evaluer la variable plus tard, evite d'avoir null
             conferenceServiceMock.Setup(s => s.GetById(45)).Returns(() => controllerGeneratedConference);
 
@@ -62,13 +61,11 @@ namespace Streameus.Tests.Controllers
         [TestMethod()]
         public void PutTest()
         {
-            
         }
 
         [TestMethod()]
         public void DeleteTest()
         {
-           
         }
     }
 }

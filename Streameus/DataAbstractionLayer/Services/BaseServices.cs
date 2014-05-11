@@ -80,7 +80,7 @@ namespace Streameus.DataAbstractionLayer.Services
         /// Return all the Entity in a set
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<TEntity> GetAll()
+        public IQueryable<TEntity> GetAll()
         {
             return this.GetDbSet<TEntity>();
         }

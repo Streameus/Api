@@ -29,9 +29,12 @@ namespace Streameus.Tests.Controllers
         public void GetByIdTest()
         {
             var eventServicesMock = new Mock<IEventServices>();
+            var returnedList = this.GetDummyEventsList().OrderBy(ev => ev.Id);
+            Event myEvent = returnedList.First();
+            eventServicesMock.Setup(e => e.GetById(1)).Returns(myEvent);
             var controller = new EventController(eventServicesMock.Object);
-            EventViewModel ev = controller.Get(1);
-            Assert.AreEqual(1, ev.Id);
+            EventViewModel obj = controller.Get(1);
+            Assert.AreEqual(1, obj.Id);
         }
 
         private IQueryable<Event> GetDummyEventsList()
@@ -81,6 +84,7 @@ namespace Streameus.Tests.Controllers
             {
                 new Event
                 {
+                    Id = 1,
                     Author = users[1],
                     Type = DataBaseEnums.EventType.ParticipateConf,
                     Date = DateTime.Now,
@@ -104,6 +108,7 @@ namespace Streameus.Tests.Controllers
                 },
                 new Event
                 {
+                    Id = 2,
                     Author = users[1],
                     Type = DataBaseEnums.EventType.CreateConf,
                     Date = DateTime.Now,
@@ -127,6 +132,7 @@ namespace Streameus.Tests.Controllers
                 },
                 new Event
                 {
+                    Id = 3,
                     Author = users[1],
                     Type = DataBaseEnums.EventType.StartFollow,
                     Date = DateTime.Now,
@@ -150,6 +156,7 @@ namespace Streameus.Tests.Controllers
                 },
                 new Event
                 {
+                    Id = 4,
                     Author = users[2],
                     Type = DataBaseEnums.EventType.SuscribeConf,
                     Date = DateTime.Now,
@@ -173,6 +180,7 @@ namespace Streameus.Tests.Controllers
                 },
                 new Event
                 {
+                    Id = 5,
                     Author = users[0],
                     Type = DataBaseEnums.EventType.CreateConf,
                     Date = DateTime.Now,
@@ -196,6 +204,7 @@ namespace Streameus.Tests.Controllers
                 },
                 new Event
                 {
+                    Id = 6,
                     Author = users[0],
                     Type = DataBaseEnums.EventType.StartFollow,
                     Date = DateTime.Now,

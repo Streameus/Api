@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-using Swashbuckle.Controllers;
 
 namespace Streameus.Controllers
 {
@@ -17,14 +16,15 @@ namespace Streameus.Controllers
         [Obsolete]
         public HttpResponseMessage Get()
         {
-            var apiDocsController = new ApiDocsController();
-            var reponse = apiDocsController.Index();
-            return new HttpResponseMessage()
-            {
-                Content = new StringContent(
-                    reponse.Content.Replace('\\', ' ')
-                    ),
-            };
+//            var apiDocsController = new ApiDocsController();
+//            var reponse = apiDocsController.Index();
+//            return new HttpResponseMessage()
+//            {
+//                Content = new StringContent(
+//                    reponse.Content.Replace('\\', ' ')
+//                    ),
+//            };
+            return null;
         }
     }
 }

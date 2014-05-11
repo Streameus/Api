@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using Newtonsoft.Json;
 using Streameus.Hooks;
+using Swashbuckle.Application;
 #pragma warning disable 1591
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,6 @@ using Streameus.DataBaseAccess;
 using Streameus.Documentation;
 using Streameus.Models;
 using Streameus.ViewModels;
-using Swashbuckle.Models;
 
 namespace Streameus
 {
@@ -38,7 +38,6 @@ namespace Streameus
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             this.RegisterIoC();
             this.RegisterAutoMapping();
-            this.SwaggerParameters();
             //Register handler for Ajax PUT/DELETE request
             GlobalConfiguration.Configuration.MessageHandlers.Add(new XHttpMethodOverrideDelegatingHandler());
 //            this.SetJsonSerializerProperties();
@@ -52,25 +51,6 @@ namespace Streameus
             var settings = jsonFormatter.SerializerSettings;
             settings.Formatting = Formatting.Indented;
             settings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
-        }
-
-        private void SwaggerParameters()
-        {
-            SwaggerSpecConfig.Customize(
-                c =>
-                {
-                    c.IgnoreObsoleteActions = true;
-                    c.OperationFilter<AddStandardResponseMessages>();
-                    c.OperationFilter<AddAuthorizationResponseMessages>();
-                });
-            SwaggerUiConfig.Customize(c =>
-            {
-//                c.SupportHeaderParams = true;
-//                c.DocExpansion = DocExpansion.List;
-//                c.SupportedSubmitMethods = new[] { HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Head };
-                c.AddOnCompleteScript(Assembly.GetExecutingAssembly(), "Streameus.Scripts.swagger.js");
-                c.AddStylesheet(Assembly.GetExecutingAssembly(), "Streameus.Content.swagger.css");
-            });
         }
 
         private void RegisterIoC()

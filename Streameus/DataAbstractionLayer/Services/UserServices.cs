@@ -6,6 +6,7 @@ using Microsoft.Ajax.Utilities;
 using Streameus.App_GlobalResources;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataBaseAccess;
+using Streameus.Enums;
 using Streameus.Exceptions;
 using Streameus.Models;
 
@@ -17,15 +18,18 @@ namespace Streameus.DataAbstractionLayer.Services
     public class UserServices : BaseServices<User>, IUserServices
     {
         private readonly IParametersServices _parametersServices;
+        private readonly IEventServices _eventServices;
 
         /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="unitOfWork"></param>
         /// <param name="parametersServices"></param>
-        public UserServices(IUnitOfWork unitOfWork, IParametersServices parametersServices) : base(unitOfWork)
+        /// <param name="eventServices"></param>
+        public UserServices(IUnitOfWork unitOfWork, IParametersServices parametersServices, IEventServices eventServices) : base(unitOfWork)
         {
             this._parametersServices = parametersServices;
+            this._eventServices = eventServices;
         }
 
         /// <summary>
@@ -69,6 +73,18 @@ namespace Streameus.DataAbstractionLayer.Services
                 return false;
             user.Abonnements.Add(userWanted);
             this.Save(user);
+            var evt = new Event
+            {
+                Author = user,
+                Type = DataBaseEnums.EventType.StartFollow,
+                Date = DateTime.Now,
+                EventItems = new List<EventItem>
+                    {
+                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = userId, Content = user.Pseudo},
+                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.User, TargetId = userWantedId, Content = userWanted.Pseudo},
+                    }
+            };
+            this._eventServices.AddEvent(evt);
             return true;
         }
 

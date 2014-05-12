@@ -162,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ConferenceControllerTests.cs" />
+    <Compile Include="Controllers\EventControllerTests.cs" />
     <Compile Include="Controllers\FollowingControllerTests.cs" />
     <Compile Include="Controllers\ResourceControllerTests.cs" />
     <Compile Include="DataAbstractionLayer\Services\UserServicesTests.cs" />

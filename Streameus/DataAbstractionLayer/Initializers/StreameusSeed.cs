@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Streameus.Enums;
 using Streameus.Models;
 
 namespace Streameus.DataAbstractionLayer.Initializers
@@ -122,22 +123,56 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 context.Conferences.Add(s);
             });
             context.SaveChanges();
-            var posts = new List<Post>
+            var events = new List<Event>
             {
-                new Post {Author = users[1], Content = "Texte de post 1050", Date = DateTime.Now},
-                new Post {Author = users[1], Content = "Texte de post 4022", Date = DateTime.Now},
-                new Post {Author = users[1], Content = "Texte de post 4041", Date = DateTime.Now},
-                new Post {Author = users[2], Content = "Texte de post 1045", Date = DateTime.Now},
-                new Post {Author = users[2], Content = "Texte de post 3141", Date = DateTime.Now},
-                new Post {Author = users[2], Content = "Texte de post 2021", Date = DateTime.Now},
-                new Post {Author = users[3], Content = "Texte de post 1050", Date = DateTime.Now},
-                new Post {Author = users[4], Content = "Texte de post 1050", Date = DateTime.Now},
-                new Post {Author = users[4], Content = "Texte de post 4022", Date = DateTime.Now},
-                new Post {Author = users[5], Content = "Texte de post 4041", Date = DateTime.Now},
-                new Post {Author = users[6], Content = "Texte de post 1045", Date = DateTime.Now},
-                new Post {Author = users[7], Content = "Texte de post 3141", Date = DateTime.Now},
+                new Event
+                {
+                    Author = users[1], Type = DataBaseEnums.EventType.ParticipateConf, Date = DateTime.Now,
+                    EventItems = new List<EventItem>
+                    {
+                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[1].Id, Content = users[1].Pseudo},
+                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference[1].Id, Content = conference[1].Name},
+                    }
+                },
+                new Event {Author = users[1], Type = DataBaseEnums.EventType.CreateConf, Date = DateTime.Now,
+                    EventItems = new List<EventItem>
+                    {
+                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[2].Id, Content = users[2].Pseudo},
+                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference[2].Id, Content = conference[2].Name},
+                    }
+                },
+                new Event {Author = users[1], Type = DataBaseEnums.EventType.StartFollow, Date = DateTime.Now,
+                    EventItems = new List<EventItem>
+                    {
+                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[2].Id, Content = users[2].Pseudo},
+                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[3].Id, Content = users[3].Pseudo},
+                    }
+                },
+                new Event
+                {
+                    Author = users[2], Type = DataBaseEnums.EventType.SuscribeConf, Date = DateTime.Now,
+                    EventItems = new List<EventItem>
+                    {
+                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[3].Id, Content = users[3].Pseudo},
+                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference[3].Id, Content = conference[3].Name},
+                    }
+                },
+                new Event {Author = users[4], Type = DataBaseEnums.EventType.CreateConf, Date = DateTime.Now,
+                    EventItems = new List<EventItem>
+                    {
+                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[5].Id, Content = users[5].Pseudo},
+                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference[4].Id, Content = conference[4].Name},
+                    }
+                },
+                new Event {Author = users[5], Type = DataBaseEnums.EventType.StartFollow, Date = DateTime.Now,
+                    EventItems = new List<EventItem>
+            {
+                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[6].Id, Content = users[6].Pseudo},
+                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[1].Id, Content = users[1].Pseudo},
+                    }
+                }
             };
-            posts.ForEach(s => context.Posts.Add(s));
+            events.ForEach(s => context.Events.Add(s));
             context.SaveChanges();
 
             var messagesGroups = new List<MessageGroup>();

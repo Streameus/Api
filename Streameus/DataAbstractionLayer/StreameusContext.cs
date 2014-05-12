@@ -44,9 +44,9 @@ namespace Streameus.DataAbstractionLayer
         public DbSet<Document> Documents { get; set; }
 
         /// <summary>
-        /// Posts Set
+        /// Events Set
         /// </summary>
-        public DbSet<Post> Posts { get; set; }
+        public DbSet<Event> Events { get; set; }
 
         /// <summary>
         /// Messages Groups Set
@@ -74,7 +74,7 @@ namespace Streameus.DataAbstractionLayer
             modelBuilder.Configurations.Add(new CommentMap());
             modelBuilder.Configurations.Add(new ConferenceParametersMap());
             modelBuilder.Configurations.Add(new DocumentMap());
-            modelBuilder.Configurations.Add(new PostMap());
+            modelBuilder.Configurations.Add(new EventMap());
             modelBuilder.Configurations.Add(new UserMap());
             modelBuilder.Configurations.Add(new ConferenceMap());
             modelBuilder.Configurations.Add(new MessageMap());

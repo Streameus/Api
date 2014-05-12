@@ -248,6 +248,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Faq.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Events.fr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Events.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Events.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Events.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Team.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -282,6 +292,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ConferenceController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\FollowerController.cs" />
     <Compile Include="Controllers\FollowingController.cs" />
@@ -294,6 +305,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IMessageGroupServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IMessageServices.cs" />
+    <Compile Include="DataAbstractionLayer\Contracts\IEventServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IBaseServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IConferenceParametersServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IConferenceServices.cs" />
@@ -303,10 +315,12 @@
     <Compile Include="DataAbstractionLayer\DataModels\Mapping\MessageGroupMap.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Message.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Mapping\MessageMap.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\EventItem.cs" />
     <Compile Include="DataAbstractionLayer\Initializers\DropCreateDatabaseTables.cs" />
     <Compile Include="DataAbstractionLayer\Initializers\StreameusInitializerForAppHarbor.cs" />
     <Compile Include="DataAbstractionLayer\Initializers\StreameusSeed.cs" />
     <Compile Include="DataAbstractionLayer\Services\BaseServices.cs" />
+    <Compile Include="DataAbstractionLayer\Services\EventServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\ConferenceServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\ConferenceParametersServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\MessageGroupServices.cs" />
@@ -317,6 +331,7 @@
     <Compile Include="DataBaseAccess\IUnitOfWork.cs" />
     <Compile Include="DataBaseAccess\UnitOfWork.cs" />
     <Compile Include="Documentation\SwaggerOperationFilters.cs" />
+    <Compile Include="Enums\EnumExtensions.cs" />
     <Compile Include="Enums\DataBaseEnums.cs" />
     <Compile Include="Enums\ModelEnums.cs" />
     <Compile Include="Exceptions\EmptyResultException.cs" />
@@ -341,10 +356,10 @@
     <Compile Include="DataAbstractionLayer\DataModels\Mapping\ConferenceMap.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Mapping\ConferenceParameterMap.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Mapping\DocumentMap.cs" />
-    <Compile Include="DataAbstractionLayer\DataModels\Mapping\PostMap.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Mapping\EventMap.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Mapping\UserMap.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Parameters.cs" />
-    <Compile Include="DataAbstractionLayer\DataModels\Post.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Event.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Stores.cs" />
     <Compile Include="DataAbstractionLayer\StreameusContext.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\User.cs" />
@@ -367,6 +382,7 @@
     <Compile Include="ViewModels\NewMessageViewModel.cs" />
     <Compile Include="ViewModels\MessageGroupViewModel.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
+    <Compile Include="ViewModels\EventViewModel.cs" />
     <Compile Include="ViewModels\ExternalLoginViewModel.cs" />
     <Compile Include="ViewModels\ManageInfoViewModel.cs" />
     <Compile Include="ViewModels\ParametersViewModel.cs" />
@@ -385,7 +401,9 @@
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap-theme.min.css">
+      <DependentUpon>bootstrap-theme.css</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css">
       <DependentUpon>bootstrap.css</DependentUpon>
@@ -415,6 +433,16 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>About.fr.designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="App_GlobalResources\Events.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Events.fr.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Events.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Events.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="Content\swagger.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

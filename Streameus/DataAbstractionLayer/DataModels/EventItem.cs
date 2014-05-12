@@ -1,50 +1,44 @@
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+﻿//////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
 // This class must only contains DB related info!                                                   //
 // If you need to add a method or a field, go into Models and find/create the partial class         //
 //                                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+using System;
+using System.Collections.Generic;
+using Streameus.Enums;
+
 namespace Streameus.Models
 {
     /// <summary>
-    /// Class representing user's comments on posts
+    /// Represent an event item (or placeholder)
     /// </summary>
-    public partial class Comment
+    public partial class EventItem
     {
         /// <summary>
-        /// Comment ID
+        /// Event item ID
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Id of the event
+        /// Target Id
         /// </summary>
-        public int EventId { get; set; }
+        public int TargetId { get; set; }
 
         /// <summary>
-        /// Id of the autor
+        /// Target Type
         /// </summary>
-        public int AuthorId { get; set; }
+        public Enums.DataBaseEnums.EventItemType TargetType { get; set; }
 
         /// <summary>
-        /// Comment message
+        /// Position of the event Item (order by pos)
         /// </summary>
-        public string Message { get; set; }
+        public int Pos { get; set; }
 
         /// <summary>
-        /// Comment date
+        /// Value to show
         /// </summary>
-        public System.DateTime Date { get; set; }
-
-        /// <summary>
-        /// Event object
-        /// </summary>
-        public virtual Event Event { get; set; }
-
-        /// <summary>
-        /// Author object
-        /// </summary>
-        public virtual User Author { get; set; }
+        public string Content { get; set; }
     }
 }

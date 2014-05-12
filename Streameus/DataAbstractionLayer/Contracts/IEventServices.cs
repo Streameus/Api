@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Streameus.Exceptions;
 using Streameus.Models;
 
 namespace Streameus.DataAbstractionLayer.Contracts
@@ -28,5 +29,14 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// </summary>
         /// <returns></returns>
         IQueryable<Event> GetAllWithIncludes();
+
+        /// <summary>
+        /// Return all the events for the specified user
+        /// </summary>
+        /// <param name="userId">userId</param>
+        /// <returns>A list of all the events</returns>
+        /// <exception cref="EmptyResultException">If the user has no events</exception>
+        /// <exception cref="NoResultException">If author doesnt exists</exception>
+        IQueryable<Event> GetEventsForUser(int userId);
     }
 }

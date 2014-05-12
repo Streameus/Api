@@ -25,10 +25,32 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <summary>
         /// Save event
         /// </summary>
-        /// <param name="obj"></param>
-        protected override void Save(Event obj)
+        /// <param name="evt">Event to save</param>
+        protected override void Save(Event evt)
         {
-            throw new NotImplementedException();
+            if (evt.Id > 0)
+                this.Update(evt);
+            else
+                this.Insert(evt);
+            this.SaveChanges();
+        }
+
+        /// <summary>
+        /// Add a new event in db
+        /// </summary>
+        /// <param name="evt">The event to be added</param>
+        public void AddEvent(Event evt)
+        {
+            this.Save(evt);   
+        }
+
+        /// <summary>
+        /// Update an event
+        /// </summary>
+        /// <param name="evt">Event to be updated</param>
+        public void UpdateEvent(Event evt)
+        {
+            this.Save(evt);
         }
 
         /// <summary>

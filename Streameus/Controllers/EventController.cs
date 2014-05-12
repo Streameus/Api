@@ -34,7 +34,7 @@ namespace Streameus.Controllers
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NoResultException"></exception>
-        //[Authorize]
+        [Authorize]
         public IEnumerable<EventViewModel> Get()
         {
             var eventList = new List<EventViewModel>();

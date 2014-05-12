@@ -41,6 +41,7 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="evt">The event to be added</param>
         public void AddEvent(Event evt)
         {
+            // TODO Definir la visibity de l'event par defaut si elle n'est pas set selon les params de l'user
             this.Save(evt);   
         }
 

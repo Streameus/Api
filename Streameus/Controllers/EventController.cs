@@ -14,6 +14,7 @@ namespace Streameus.Controllers
     /// <summary>
     /// Event controller
     /// </summary>
+    [RoutePrefix("api/Event")]
     public class EventController : BaseController
     {
         private readonly IEventServices _eventServices;
@@ -24,7 +25,8 @@ namespace Streameus.Controllers
         /// <param name="eventServices"></param>
         public EventController(IEventServices eventServices)
         {
-            if (eventServices == null) throw new ArgumentNullException("evenServices");
+            if (eventServices == null)
+                throw new ArgumentNullException("evenServices");
             this._eventServices = eventServices;
         }
 
@@ -55,6 +57,24 @@ namespace Streameus.Controllers
         {
             var _event = this._eventServices.GetById(id);
             return new EventViewModel(_event);
+        }
+
+        /// GET api/event/author/{id}
+        /// <summary>
+        /// Get all event for a specific author
+        /// </summary>
+        /// <param name="id">Author Id</param>
+        /// <returns></returns>
+        /// <exception cref="NoResultException">No results</exception>
+        [Authorize]
+        [Route("author/{id}")]
+        public IEnumerable<EventViewModel> GetByAuthorId(int id)
+        {
+            var eventList = new List<EventViewModel>();
+            this._eventServices.GetEventsForUser(id).ForEach(e => eventList.Add(new EventViewModel(e)));
+            if (!eventList.Any())
+                throw new Exceptions.NoResultException("Empty set");
+            return eventList;
         }
     }
 }

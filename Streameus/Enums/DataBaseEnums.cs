@@ -203,7 +203,7 @@ namespace Streameus.Enums
             /// <summary>
             /// String
             /// </summary>
-            String = 5,
+            String = 6,
         }
     }
 }

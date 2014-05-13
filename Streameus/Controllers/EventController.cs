@@ -24,7 +24,7 @@ namespace Streameus.Controllers
         /// <param name="eventServices"></param>
         public EventController(IEventServices eventServices)
         {
-            if (eventServices == null) 
+            if (eventServices == null)
                 throw new ArgumentNullException("evenServices");
             this._eventServices = eventServices;
         }
@@ -62,15 +62,15 @@ namespace Streameus.Controllers
         /// <summary>
         /// Get all event for a specific author
         /// </summary>
-        /// <param name="authorId">Author Id</param>
+        /// <param name="id">Author Id</param>
         /// <returns></returns>
         /// <exception cref="NoResultException">No results</exception>
-        [Route("author/{id}")]
         [Authorize]
-        public IEnumerable<EventViewModel> GetByAuthorId(int authorId)
+        [Route("author/{id}")]
+        public IEnumerable<EventViewModel> GetByAuthorId(int id)
         {
             var eventList = new List<EventViewModel>();
-            this._eventServices.GetEventsForUser(authorId).ForEach(e => eventList.Add(new EventViewModel(e)));
+            this._eventServices.GetEventsForUser(id).ForEach(e => eventList.Add(new EventViewModel(e)));
             if (!eventList.Any())
                 throw new Exceptions.NoResultException("Empty set");
             return eventList;

@@ -14,6 +14,7 @@ namespace Streameus.Controllers
     /// <summary>
     /// Event controller
     /// </summary>
+    [RoutePrefix("api/Event")]
     public class EventController : BaseController
     {
         private readonly IEventServices _eventServices;

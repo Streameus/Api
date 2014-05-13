@@ -6,7 +6,9 @@ using System.Data.Entity;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataBaseAccess;
 using Streameus.Exceptions;
+using Streameus.Exceptions.HttpErrors;
 using Streameus.Models;
+using NoResultException = Streameus.Exceptions.HttpErrors.NoResultException;
 
 namespace Streameus.DataAbstractionLayer.Services
 {
@@ -61,7 +63,7 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <returns></returns>
         public IQueryable<Event> GetAllWithIncludes()
         {
-            return this.GetDbSet<Event>().Include(e => e.EventItems);
+            return this.GetDbSet<Event>().Include(e => e.EventItems).Where(ev => ev.Date < DateTime.Now);
         }
 
         /// <summary>
@@ -75,10 +77,10 @@ namespace Streameus.DataAbstractionLayer.Services
         {
             try
             {
-                var events = this.GetAllWithIncludes().Where(evt => evt.AuthorId == userId).AsQueryable();
+                var events = this.GetAllWithIncludes().Where(evt => evt.AuthorId == userId);
                 // TODO Ajouter la traduction pour ce terme
                 if (!events.Any())
-                    throw new EmptyResultException("No events");
+                    throw new NoResultException("No events");
                 return events;
             }
             catch (InvalidOperationException)

@@ -145,11 +145,35 @@
     <value>{0} a atteint {1} points de réputation.</value>
     <comment>{1} nombre de points à afficher ponctuellement</comment>
   </data>
+  <data name="ChangePhoto" xml:space="preserve">
+    <value>{0} a changé sa photo {1}.</value>
+  </data>
+  <data name="ConfDate" xml:space="preserve">
+    <value>{0} a modifié la date de la conférence {1}, elle débutera le {2}.</value>
+  </data>
+  <data name="ConfDescription" xml:space="preserve">
+    <value>{0} a changé la description de la conférence {1}.</value>
+  </data>
+  <data name="ConferenceEnd" xml:space="preserve">
+    <value>La conférence {0} de {1} est terminée !</value>
+    <comment>{0} conference {1} conferencier</comment>
+  </data>
+  <data name="ConferenceStart" xml:space="preserve">
+    <value>La conférence {0} de {1} commence maintenant !</value>
+    <comment>{0} nom de la conférence, {1} conférencier</comment>
+  </data>
+  <data name="ConfTime" xml:space="preserve">
+    <value>{0} a modifié l'heure de la conférence {1}, elle débutera à {2}. </value>
+  </data>
+  <data name="ConfTitle" xml:space="preserve">
+    <value>{0} a modifié le titre le conférence {1}.</value>
+  </data>
   <data name="CreateConf" xml:space="preserve">
-    <value>{0} a créé une conférence {1}.</value>
+    <value>{0} a planifié la conférence {1} le {2} à {3}.</value>
+    <comment>{2} jour {3} heure</comment>
   </data>
   <data name="FirstFollower" xml:space="preserve">
-    <value>{0} a son premier abonné !</value>
+    <value>{0} est suivi par {1}.</value>
   </data>
   <data name="ParticipateConf" xml:space="preserve">
     <value>{0} a participé à la conférence {1}.</value>
@@ -158,11 +182,17 @@
     <value>{0} a noté {1} étoiles la conférence {2}.</value>
     <comment>{1} représente le nombre d'étoiles</comment>
   </data>
+  <data name="Recommand" xml:space="preserve">
+    <value>{0} recommande la conférence {1}.</value>
+  </data>
+  <data name="ShareConf" xml:space="preserve">
+    <value>{0} a partagé la conférence {1} de {2} qui se déroulera le {3} à {4}</value>
+  </data>
   <data name="StartFollow" xml:space="preserve">
-    <value>{0} commence à suivre {1}.</value>
+    <value>{0} suit désormais {1}.</value>
   </data>
   <data name="SuscribeConf" xml:space="preserve">
-    <value>{0} s'est inscrit à la conférence {1}.</value>
+    <value>{0} participe à la conférence {1}.</value>
   </data>
   <data name="UpdateMsgPerso" xml:space="preserve">
     <value>{0} a mis à jour son petit mot {1}.</value>
@@ -171,5 +201,13 @@
   <data name="UpdateParameter" xml:space="preserve">
     <value>{0} a mis à jour le champ {1} pour {2}.</value>
     <comment>{1} nom du champ (ex: ville) {2} nouvelle valeur (ex: Toulouse)</comment>
+  </data>
+  <data name="UserInvitation" xml:space="preserve">
+    <value>{0} vous a invité à la conférence {1} de {2}.</value>
+    <comment>{0} friend, {1} conférence, {2} conferencier</comment>
+  </data>
+  <data name="WillParticipateConf" xml:space="preserve">
+    <value>{0} participera à la conférence {1} le {2} à {3}</value>
+    <comment>{2} jour {3} heure</comment>
   </data>
 </root>

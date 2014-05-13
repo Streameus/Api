@@ -39,48 +39,48 @@ namespace Streameus.Enums
         public enum EventType
         {
             /// <summary>
-            /// bilanCreateConfMonth
+            /// BilanCreateConfMonth
             /// </summary>
             /// 
             [Display(ResourceType = typeof (Resources.Events), Name = "BilanCreateConfMonth")] BilanCreateConfMonth = 1,
 
             /// <summary>
-            /// bilanCreateConfWeek
+            /// BilanCreateConfWeek
             /// </summary>
             [Display(Name = "BilanCreateConfWeek", ResourceType = typeof (Events))] BilanCreateConfWeek,
 
             /// <summary>
-            /// bilanFollowers
+            /// BilanFollowers
             /// </summary>
             [Display(Name = "BilanFollowers", ResourceType = typeof (Events))] BilanFollowers,
 
             /// <summary>
-            /// bilanFollowingMonth
+            /// BilanFollowingMonth
             /// </summary>
             [Display(Name = "BilanFollowingMonth", ResourceType = typeof (Events))] BilanFollowingMonth,
 
             /// <summary>
-            /// bilanFollowingWeek
+            /// BilanFollowingWeek
             /// </summary>
             [Display(Name = "BilanFollowingWeek", ResourceType = typeof (Events))] BilanFollowingWeek,
 
             /// <summary>
-            /// bilanParticipateConfMonth
+            /// BilanParticipateConfMonth
             /// </summary>
             [Display(Name = "BilanParticipateConfMonth", ResourceType = typeof (Events))] BilanParticipateConfMonth,
 
             /// <summary>
-            /// bilanParticipateConfWeek
+            /// BilanParticipateConfWeek
             /// </summary>
             [Display(Name = "BilanParticipateConfWeek", ResourceType = typeof (Events))] BilanParticipateConfWeek,
 
             /// <summary>
-            /// bilanReputation
+            /// BilanReputation
             /// </summary>
             [Display(Name = "BilanReputation", ResourceType = typeof (Events))] BilanReputation,
 
             /// <summary>
-            /// createConf
+            /// CreateConf
             /// </summary>
             [Display(Name = "CreateConf", ResourceType = typeof (Events))] CreateConf,
 
@@ -90,7 +90,7 @@ namespace Streameus.Enums
             [Display(Name = "FirstFollower", ResourceType = typeof (Events))] FirstFollower,
 
             /// <summary>
-            /// participateConf
+            /// ParticipateConf
             /// </summary>
             [Display(Name = "ParticipateConf", ResourceType = typeof (Events))] ParticipateConf,
 
@@ -118,6 +118,61 @@ namespace Streameus.Enums
             /// UpdateParameter
             /// </summary>
             [Display(Name = "UpdateParameter", ResourceType = typeof (Events))] UpdateParameter,
+
+            /// <summary>
+            /// ConferenceStart
+            /// </summary>
+            [Display(Name = "ConferenceStart", ResourceType = typeof(Events))] ConferenceStart,
+            
+            /// <summary>
+            /// WillParticipateConf
+            /// </summary>
+            [Display(Name = "WillParticipateConf", ResourceType = typeof(Events))] WillParticipateConf,
+
+            /// <summary>
+            /// ConferenceEnd
+            /// </summary>
+            [Display(Name = "ConferenceEnd", ResourceType = typeof(Events))] ConferenceEnd,
+
+            /// <summary>
+            /// UserInvitation
+            /// </summary>
+            [Display(Name = "UserInvitation", ResourceType = typeof(Events))] UserInvitation,
+
+            /// <summary>
+            /// Recommand
+            /// </summary>
+            [Display(Name = "Recommand", ResourceType = typeof(Events))] Recommand,
+
+            /// <summary>
+            /// ShareConf
+            /// </summary>
+            [Display(Name = "ShareConf", ResourceType = typeof(Events))] ShareConf,
+
+            /// <summary>
+            /// ConfTitle
+            /// </summary>
+            [Display(Name = "ConfTitle", ResourceType = typeof(Events)) ConfTitle,
+
+            /// <summary>
+            /// ConfDate
+            /// </summary>
+            [Display(Name = "ConfDate", ResourceType = typeof(Events))] ConfDate,
+
+            /// <summary>
+            /// ConfTime
+            /// </summary>
+            [Display(Name = "ConfTime", ResourceType = typeof(Events))] ConfTime,
+
+            /// <summary>
+            /// ChangePhoto
+            /// </summary>
+            [Display(Name = "ChangePhoto", ResourceType = typeof(Events))] ChangePhoto,
+
+            /// <summary>
+            /// ConfDescription
+            /// </summary>
+            [Display(Name = "ConfDescription", ResourceType = typeof(Events))] ConfDescription,
         }
 
         /// <summary>

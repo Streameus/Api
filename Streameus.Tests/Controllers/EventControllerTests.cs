@@ -37,13 +37,27 @@ namespace Streameus.Tests.Controllers
             Assert.AreEqual(1, obj.Id);
         }
 
+        [TestMethod()]
+        public void GetByAuthorIdTest()
+        {
+            const int id = 1;
+            var eventServicesMock = new Mock<IEventServices>();
+            var returnedList = this.GetDummyEventsList().OrderBy(ev => ev.Id).Where(ev => ev.AuthorId == id);
+            eventServicesMock.Setup(e => e.GetEventsForUser(id)).Returns(returnedList);
+            var controller = new EventController(eventServicesMock.Object);
+            var list = controller.GetByAuthorId(id);
+            foreach (var eventViewModel in list) {
+                Assert.AreEqual(id, eventViewModel.AuthorId);
+            }
+        }
+
         private IQueryable<Event> GetDummyEventsList()
         {
             var users = new List<User>
             {
-                new User {Parameters = new Parameters(), FirstName = "Carson", LastName = "Alexander"},
-                new User {Parameters = new Parameters(), FirstName = "Meredith", LastName = "Alonso"},
-                new User {Parameters = new Parameters(), FirstName = "Arturo", LastName = "Anand", Gender = true}
+                new User {Id = 1, Parameters = new Parameters(), FirstName = "Carson", LastName = "Alexander"},
+                new User {Id = 2, Parameters = new Parameters(), FirstName = "Meredith", LastName = "Alonso"},
+                new User {Id = 3, Parameters = new Parameters(), FirstName = "Arturo", LastName = "Anand", Gender = true}
             };
             users.ForEach(s =>
             {
@@ -85,7 +99,7 @@ namespace Streameus.Tests.Controllers
                 new Event
                 {
                     Id = 1,
-                    Author = users[1],
+                    Author = users[1], AuthorId = users[1].Id,
                     Type = DataBaseEnums.EventType.ParticipateConf,
                     Date = DateTime.Now,
                     EventItems = new List<EventItem>
@@ -109,7 +123,7 @@ namespace Streameus.Tests.Controllers
                 new Event
                 {
                     Id = 2,
-                    Author = users[1],
+                    Author = users[1], AuthorId = users[1].Id,
                     Type = DataBaseEnums.EventType.CreateConf,
                     Date = DateTime.Now,
                     EventItems = new List<EventItem>
@@ -133,7 +147,7 @@ namespace Streameus.Tests.Controllers
                 new Event
                 {
                     Id = 3,
-                    Author = users[1],
+                    Author = users[1], AuthorId = users[1].Id,
                     Type = DataBaseEnums.EventType.StartFollow,
                     Date = DateTime.Now,
                     EventItems = new List<EventItem>
@@ -157,7 +171,7 @@ namespace Streameus.Tests.Controllers
                 new Event
                 {
                     Id = 4,
-                    Author = users[2],
+                    Author = users[2], AuthorId = users[2].Id,
                     Type = DataBaseEnums.EventType.SuscribeConf,
                     Date = DateTime.Now,
                     EventItems = new List<EventItem>
@@ -181,7 +195,7 @@ namespace Streameus.Tests.Controllers
                 new Event
                 {
                     Id = 5,
-                    Author = users[0],
+                    Author = users[0], AuthorId = users[0].Id,
                     Type = DataBaseEnums.EventType.CreateConf,
                     Date = DateTime.Now,
                     EventItems = new List<EventItem>
@@ -205,7 +219,7 @@ namespace Streameus.Tests.Controllers
                 new Event
                 {
                     Id = 6,
-                    Author = users[0],
+                    Author = users[0], AuthorId = users[0].Id,
                     Type = DataBaseEnums.EventType.StartFollow,
                     Date = DateTime.Now,
                     EventItems = new List<EventItem>

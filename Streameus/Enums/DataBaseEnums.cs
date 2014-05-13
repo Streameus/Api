@@ -152,7 +152,7 @@ namespace Streameus.Enums
             /// <summary>
             /// ConfTitle
             /// </summary>
-            [Display(Name = "ConfTitle", ResourceType = typeof(Events)) ConfTitle,
+            [Display(Name = "ConfTitle", ResourceType = typeof(Events))] ConfTitle,
 
             /// <summary>
             /// ConfDate

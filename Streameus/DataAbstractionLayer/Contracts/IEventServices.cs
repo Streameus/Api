@@ -38,5 +38,18 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <exception cref="EmptyResultException">If the user has no events</exception>
         /// <exception cref="NoResultException">If author doesnt exists</exception>
         IQueryable<Event> GetEventsForUser(int userId);
+
+        /// <summary>
+        /// Create start following event
+        /// </summary>
+        /// <param name="user1">The user who wants a following</param>
+        /// <param name="user2">The user who is followed</param>
+        void StartFollowing(User user1, User user2);
+
+        /// <summary>
+        /// Create create conference event
+        /// </summary>
+        /// <param name="conf">The conference</param>
+        void CreateConf(Conference conf);
     }
 }

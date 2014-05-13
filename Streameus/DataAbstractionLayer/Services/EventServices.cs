@@ -5,6 +5,7 @@ using System.Web;
 using System.Data.Entity;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataBaseAccess;
+using Streameus.Enums;
 using Streameus.Exceptions;
 using Streameus.Exceptions.HttpErrors;
 using Streameus.Models;
@@ -89,6 +90,49 @@ namespace Streameus.DataAbstractionLayer.Services
                 // TODO Ajouter la traduction pour ce terme
                 throw new NoResultException("No such author");
             }
+        }
+
+        /// <summary>
+        /// Create start following event
+        /// </summary>
+        /// <param name="user1">The user who wants a following</param>
+        /// <param name="user2">The user who is followed</param>
+        public void StartFollowing(User user1, User user2)
+        {
+            this.AddEvent(new Event
+            {
+                Author = user1,
+                Type = DataBaseEnums.EventType.StartFollow,
+                Date = DateTime.Now,
+                EventItems = new List<EventItem>
+                    {
+                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
+                            TargetId = user1.Id, Content = user1.Pseudo},
+                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.User, 
+                            TargetId = user2.Id, Content = user2.Pseudo},
+                    }
+            });
+        }
+
+        /// <summary>
+        /// Create create conference event
+        /// </summary>
+        /// <param name="conf">The conference</param>
+        public void CreateConf(Conference conf)
+        {
+            this.AddEvent(new Event
+            {
+                Author = conf.Owner,
+                Type = DataBaseEnums.EventType.CreateConf,
+                Date = DateTime.Now,
+                EventItems = new List<EventItem>
+                    {
+                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
+                            TargetId = conf.Owner.Id, Content = conf.Owner.Pseudo},
+                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, 
+                            TargetId = conf.Id, Content = conf.Name},
+                    }
+            });
         }
     }
 }

@@ -73,17 +73,7 @@ namespace Streameus.DataAbstractionLayer.Services
                 return false;
             user.Abonnements.Add(userWanted);
             this.Save(user);
-            this._eventServices.AddEvent(new Event
-            {
-                Author = user,
-                Type = DataBaseEnums.EventType.StartFollow,
-                Date = DateTime.Now,
-                EventItems = new List<EventItem>
-                    {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = userId, Content = user.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.User, TargetId = userWantedId, Content = userWanted.Pseudo},
-                    }
-            });
+            this._eventServices.StartFollowing(user, userWanted);
             return true;
         }
 

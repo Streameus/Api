@@ -146,7 +146,7 @@
     <comment>{1} nombre de points à afficher ponctuellement</comment>
   </data>
   <data name="ChangePhoto" xml:space="preserve">
-    <value>{0} a changé sa photo {1}.</value>
+    <value>{0} a changé sa photo.</value>
   </data>
   <data name="ConfDate" xml:space="preserve">
     <value>{0} a modifié la date de la conférence {1}, elle débutera le {2}.</value>
@@ -197,10 +197,6 @@
   <data name="UpdateMsgPerso" xml:space="preserve">
     <value>{0} a mis à jour son petit mot {1}.</value>
     <comment>{1} affiche le petit mot</comment>
-  </data>
-  <data name="UpdateParameter" xml:space="preserve">
-    <value>{0} a mis à jour le champ {1} pour {2}.</value>
-    <comment>{1} nom du champ (ex: ville) {2} nouvelle valeur (ex: Toulouse)</comment>
   </data>
   <data name="UserInvitation" xml:space="preserve">
     <value>{0} vous a invité à la conférence {1} de {2}.</value>

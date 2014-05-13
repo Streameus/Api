@@ -146,8 +146,7 @@
     <comment>{1} nombre de points à afficher ponctuellement</comment>
   </data>
   <data name="ChangePhoto" xml:space="preserve">
-    <value>{0} has changed {1} photo {2}.</value>
-    <comment>{1} his/her</comment>
+    <value>{0} has changed his photo.</value>
   </data>
   <data name="ConfDate" xml:space="preserve">
     <value>{0} has modified the date of the conference {1}, it will start the {2}.</value>
@@ -171,8 +170,7 @@
     <value>{0} has planified the conference {1} the {2} at {3}.</value>
   </data>
   <data name="FirstFollower" xml:space="preserve">
-    <value>{0} gets {1} first follower !</value>
-    <comment>{1} his/her</comment>
+    <value>{0} gets his first follower !</value>
   </data>
   <data name="ParticipateConf" xml:space="preserve">
     <value>{0} has participated to the conference {1}.</value>
@@ -194,12 +192,8 @@
     <value>{0} has signed up to the conference {1}.</value>
   </data>
   <data name="UpdateMsgPerso" xml:space="preserve">
-    <value>{0} has updated {1} personal description {2}.</value>
-    <comment>{1} his/her {2} affiche le petit mot</comment>
-  </data>
-  <data name="UpdateParameter" xml:space="preserve">
-    <value>{0} has updated the field {1} for {2}.</value>
-    <comment>{1} nom du champ (ex: ville) {2} nouvelle valeur (ex: Toulouse)</comment>
+    <value>{0} has updated his personal description {2}.</value>
+    <comment>{2} affiche le petit mot</comment>
   </data>
   <data name="UserInvitation" xml:space="preserve">
     <value>{0} has invited you to the conference {1} of {2}.</value>

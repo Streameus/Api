@@ -115,11 +115,6 @@ namespace Streameus.Enums
             [Display(Name = "UpdateMsgPerso", ResourceType = typeof (Events))] UpdateMsgPerso,
 
             /// <summary>
-            /// UpdateParameter
-            /// </summary>
-            [Display(Name = "UpdateParameter", ResourceType = typeof (Events))] UpdateParameter,
-
-            /// <summary>
             /// ConferenceStart
             /// </summary>
             [Display(Name = "ConferenceStart", ResourceType = typeof(Events))] ConferenceStart,
@@ -194,6 +189,21 @@ namespace Streameus.Enums
             /// Conference
             /// </summary>
             Conference = 3,
+
+            /// <summary>
+            /// Integer
+            /// </summary>
+            Int = 4,
+
+            /// <summary>
+            /// DateTime
+            /// </summary>
+            DateTime = 5,
+
+            /// <summary>
+            /// String
+            /// </summary>
+            String = 5,
         }
     }
 }

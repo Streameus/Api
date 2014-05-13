@@ -133,7 +133,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à {0} has changed {1} photo {2}..
+        ///   Recherche une chaîne localisée semblable à {0} has changed his photo..
         /// </summary>
         public static string ChangePhoto {
             get {
@@ -205,7 +205,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à {0} gets {1} first follower !.
+        ///   Recherche une chaîne localisée semblable à {0} gets his first follower !.
         /// </summary>
         public static string FirstFollower {
             get {
@@ -268,20 +268,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à {0} has updated {1} personal description {2}..
+        ///   Recherche une chaîne localisée semblable à {0} has updated his personal description {2}..
         /// </summary>
         public static string UpdateMsgPerso {
             get {
                 return ResourceManager.GetString("UpdateMsgPerso", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à {0} has updated the field {1} for {2}..
-        /// </summary>
-        public static string UpdateParameter {
-            get {
-                return ResourceManager.GetString("UpdateParameter", resourceCulture);
             }
         }
         

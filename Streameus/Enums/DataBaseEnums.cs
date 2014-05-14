@@ -183,27 +183,27 @@ namespace Streameus.Enums
             /// <summary>
             /// Comment
             /// </summary>
-            Comment = 2,
+            Comment,
 
             /// <summary>
             /// Conference
             /// </summary>
-            Conference = 3,
+            Conference,
 
             /// <summary>
             /// Integer
             /// </summary>
-            Int = 4,
+            Int,
 
             /// <summary>
             /// DateTime
             /// </summary>
-            DateTime = 5,
+            DateTime,
 
             /// <summary>
             /// String
             /// </summary>
-            String = 6,
+            String,
         }
     }
 }

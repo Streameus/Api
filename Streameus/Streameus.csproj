@@ -293,6 +293,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ConferenceController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\FollowerController.cs" />
@@ -383,6 +384,7 @@
     </Compile>
     <Compile Include="ViewModels\AccountBindingModels.cs" />
     <Compile Include="ViewModels\AddExternalLoginBindingModel.cs" />
+    <Compile Include="ViewModels\SearchResultViewModel.cs" />
     <Compile Include="ViewModels\ConferenceCategoryViewModel.cs" />
     <Compile Include="ViewModels\NewMessageGroupViewModel.cs" />
     <Compile Include="ViewModels\NewMessageViewModel.cs" />

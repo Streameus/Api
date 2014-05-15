@@ -54,6 +54,7 @@ namespace Streameus.DataAbstractionLayer.Services.Tests
         [TestMethod()]
         public void IsUserFollowingTest()
         {
+            var eventsServices = new Mock<IEventServices>();
             var parameterServices = new Mock<IParametersServices>();
             //Le user qui est followed
             var targetUser = new User()
@@ -75,7 +76,7 @@ namespace Streameus.DataAbstractionLayer.Services.Tests
             var liste = new List<User>() {targetUser, currentUser};
             unitofWorkMocker.AddFakeDbSet(c => c.Users, liste.AsQueryable());
 
-            var userServices = new UserServices(unitofWorkMocker.UnitOfWork, parameterServices.Object);
+            var userServices = new UserServices(unitofWorkMocker.UnitOfWork, parameterServices.Object, eventsServices.Object);
             //On appelle la methode, on check que ca "marche" dans les 2 cas
             Assert.AreEqual(userServices.IsUserFollowing(currentUser.Id, targetUser.Id), true);
             Assert.AreEqual(userServices.IsUserFollowing(currentUser.Id, 304), false);

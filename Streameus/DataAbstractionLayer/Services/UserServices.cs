@@ -186,8 +186,9 @@ namespace Streameus.DataAbstractionLayer.Services
         /// Get suggested users to follow based on a user
         /// </summary>
         /// <param name="userId">The Id of the user needing suggestions</param>
+        /// <param name="take">The max number of results desired</param>
         /// <returns>The list of suggested users</returns>
-        public IEnumerable<User> GetSuggestionsForUser(int userId)
+        public IEnumerable<User> GetSuggestionsForUser(int userId, int take = 5)
         {
             var user = this.GetById(userId);
             var results = user.Abonnements.SelectMany(userAbonnedTo => userAbonnedTo.Abonnements)
@@ -195,14 +196,19 @@ namespace Streameus.DataAbstractionLayer.Services
                 .GroupBy(uniqueUser => uniqueUser)
                 .Select(uniqueUser => new {uniqueUser.Key, Count = uniqueUser.Count()})
                 .OrderByDescending(group => group.Count)
-                .Take(5)
+                .Take(take)
                 .Select(group => group.Key);
             return results;
         }
 
-        public IQueryable<User> GetUsersWithBestReputation()
+        /// <summary>
+        /// Get the 5 users with the highest rep
+        /// </summary>
+        /// <returns></returns>
+        /// <param name="take">The max number of results desired</param>
+        public IQueryable<User> GetUsersWithBestReputation(int take = 5)
         {
-            return this.GetAll().OrderByDescending(u => u.Reputation).Take(5);
+            return this.GetAll().OrderByDescending(u => u.Reputation).Take(take);
         }
 
 

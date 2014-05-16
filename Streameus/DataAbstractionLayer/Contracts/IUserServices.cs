@@ -84,13 +84,15 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// Get suggested users to follow based on a user
         /// </summary>
         /// <param name="userId">The Id of the user needing suggestions</param>
+        /// <param name="take">The max number of results desired</param>
         /// <returns>The list of suggested users</returns>
-        IEnumerable<User> GetSuggestionsForUser(int userId);
+        IEnumerable<User> GetSuggestionsForUser(int userId, int take = 5);
 
         /// <summary>
         /// Get the 5 users with the highest rep
         /// </summary>
         /// <returns></returns>
-        IQueryable<User> GetUsersWithBestReputation();
+        /// <param name="take">The max number of results desired</param>
+        IQueryable<User> GetUsersWithBestReputation(int take = 5);
     }
 }

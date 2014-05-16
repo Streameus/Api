@@ -79,5 +79,18 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <param name="targetUserId">the target user ID</param>
         /// <returns></returns>
         bool IsUserFollowing(int currentUserId, int targetUserId);
+
+        /// <summary>
+        /// Get suggested users to follow based on a user
+        /// </summary>
+        /// <param name="userId">The Id of the user needing suggestions</param>
+        /// <returns>The list of suggested users</returns>
+        IEnumerable<User> GetSuggestionsForUser(int userId);
+
+        /// <summary>
+        /// Get the 5 users with the highest rep
+        /// </summary>
+        /// <returns></returns>
+        IQueryable<User> GetUsersWithBestReputation();
     }
 }

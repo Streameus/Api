@@ -26,7 +26,8 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="unitOfWork"></param>
         /// <param name="parametersServices"></param>
         /// <param name="eventServices"></param>
-        public UserServices(IUnitOfWork unitOfWork, IParametersServices parametersServices, IEventServices eventServices) : base(unitOfWork)
+        public UserServices(IUnitOfWork unitOfWork, IParametersServices parametersServices, IEventServices eventServices)
+            : base(unitOfWork)
         {
             this._parametersServices = parametersServices;
             this._eventServices = eventServices;
@@ -179,6 +180,29 @@ namespace Streameus.DataAbstractionLayer.Services
         {
             var currentUser = this.GetById(currentUserId);
             return currentUser.Abonnements.Any(a => a.Id == targetUserId);
+        }
+
+        /// <summary>
+        /// Get suggested users to follow based on a user
+        /// </summary>
+        /// <param name="userId">The Id of the user needing suggestions</param>
+        /// <returns>The list of suggested users</returns>
+        public IEnumerable<User> GetSuggestionsForUser(int userId)
+        {
+            var user = this.GetById(userId);
+            var results = user.Abonnements.SelectMany(userAbonnedTo => userAbonnedTo.Abonnements)
+                .Where(potentialUser => !user.Abonnements.Contains(potentialUser) && potentialUser != user)
+                .GroupBy(uniqueUser => uniqueUser)
+                .Select(uniqueUser => new {uniqueUser.Key, Count = uniqueUser.Count()})
+                .OrderByDescending(group => group.Count)
+                .Take(5)
+                .Select(group => group.Key);
+            return results;
+        }
+
+        public IQueryable<User> GetUsersWithBestReputation()
+        {
+            return this.GetAll().OrderByDescending(u => u.Reputation).Take(5);
         }
 
 

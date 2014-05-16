@@ -11,6 +11,10 @@ using WebGrease.Css.Extensions;
 
 namespace Streameus.Controllers
 {
+    /// <summary>
+    /// The controller used to get the recommendations
+    /// </summary>
+    [RoutePrefix("api/Recommendation")]
     public class RecommendationController : BaseController
     {
         private readonly IUserServices _userServices;
@@ -31,23 +35,11 @@ namespace Streameus.Controllers
         /// </summary>
         /// <returns></returns>
         [Authorize]
+        [Route("users")]
         public IEnumerable<UserViewModel> GetUserRecommendations()
         {
             var suggestionList = new List<UserViewModel>();
             IEnumerable<User> suggestions = this._userServices.GetSuggestionsForUser(this.GetCurrentUserId());
-            suggestions.ForEach(s => suggestionList.Add(new UserViewModel(s)));
-            if (!suggestionList.Any())
-            {
-                suggestions = this._userServices.GetUsersWithBestReputation();
-                suggestions.ForEach(s => suggestionList.Add(new UserViewModel(s)));
-            }
-            return suggestionList;
-        }
-
-        public IEnumerable<UserViewModel> GetUserTESTRecommendations(int id)
-        {
-            var suggestionList = new List<UserViewModel>();
-            IEnumerable<User> suggestions = this._userServices.GetSuggestionsForUser(id);
             suggestions.ForEach(s => suggestionList.Add(new UserViewModel(s)));
             if (!suggestionList.Any())
             {

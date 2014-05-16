@@ -43,5 +43,11 @@ namespace Streameus.ViewModels
         [Required]
         [Range(15, 240)]
         public int ScheduledDuration { get; set; }
+
+        /// <summary>
+        /// The category id
+        /// </summary>
+        [Required]
+        public int CategoryId { get; set; }
     }
 }

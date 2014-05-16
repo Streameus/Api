@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Microsoft.AspNet.Identity;
 using Streameus.App_GlobalResources;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.Enums;
@@ -104,8 +105,12 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="conference">the infos for the new conference</param>
         /// <returns></returns>
+        [Authorize]
         public ConferenceViewModel Post([FromBody] ConferenceFormViewModel conference)
         {
+            var userId = Convert.ToInt32(this.User.Identity.GetUserId());
+            var user = _userServices.GetById(userId);
+            var category = _conferenceCategoryServices.GetById(conference.CategoryId);
             var newConf = new Conference()
             {
                 Name = conference.Name,
@@ -113,7 +118,8 @@ namespace Streameus.Controllers
                 ScheduledDuration = conference.ScheduledDuration,
                 Time = conference.Time.Value,
                 Status = DataBaseEnums.ConfStatus.AVenir,
-                Owner = this._userServices.GetAll().First(), //TODO changer une fois l'Auth implementee.
+                Owner = user,
+                Category = category,
             };
             this._conferenceServices.AddConference(newConf);
             return this.Get(newConf.Id);

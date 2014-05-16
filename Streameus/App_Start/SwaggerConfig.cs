@@ -2,9 +2,12 @@ using System;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.OData.Query;
 using Streameus;
 using Streameus.Documentation;
+using Streameus.Models;
 using Swashbuckle.Application;
+using Swashbuckle.Swagger;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof (SwaggerConfig), "Register")]
 
@@ -21,6 +24,11 @@ namespace Streameus
         public static void Register()
         {
             Swashbuckle.Bootstrapper.Init(GlobalConfiguration.Configuration);
+            var queryOptionDataType = new DataType()
+            {
+                Type = "ODataQueryOptions",
+                Description = "Options to filter request : $skip, $top, $filter, $orderBy",
+            };
             SwaggerSpecConfig.Customize(
                 c =>
                 {
@@ -28,6 +36,9 @@ namespace Streameus
                     c.OperationFilter<AddStandardResponseMessages>();
                     c.OperationFilter<AddAuthorizationResponseMessages>();
                     c.IncludeXmlComments(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/StreameusDocumentation.xml");
+                    // Custom mapping for ODataQueryOptions
+                    c.MapType<ODataQueryOptions<Message>>(() => queryOptionDataType);
+                    c.MapType<ODataQueryOptions<MessageGroup>>(() => queryOptionDataType);
                 });
             SwaggerUiConfig.Customize(c =>
             {

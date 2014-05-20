@@ -95,7 +95,6 @@ namespace Streameus.Controllers
         [Authorize]
         public UserViewModel GetMe()
         {
-            //todo modifier une fois l'auth faite
             return Get(Convert.ToInt32(this.User.Identity.GetUserId()));
         }
 
@@ -143,7 +142,6 @@ namespace Streameus.Controllers
             return new UserViewModel(newUser);
         }
 
-        //todo seul l'user peut se supprimer
         // DELETE api/user/5
         /// <summary>
         /// Delete a user
@@ -151,7 +149,14 @@ namespace Streameus.Controllers
         /// <param name="id"></param>
         public void Delete(int id)
         {
-            this._userServices.Delete(id);
+            if (this.GetMe().Id == id)
+            {
+                this._userServices.Delete(id);
+            }
+            else
+            {
+                throw new Exception("User can't delete another user than himself");
+            }
         }
 
         /// <summary>

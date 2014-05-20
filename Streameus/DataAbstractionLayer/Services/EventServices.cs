@@ -32,12 +32,18 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="evt">Event to save</param>
         protected override void Save(Event evt)
         {
-            // TODO Check que author et authorId ne sont pas vides ou s'assurer qu'il ont la meme value
-            if (evt.Id > 0)
-                this.Update(evt);
+            if (evt.Author.Id > 0 && evt.AuthorId > 0 && evt.Author.Id == evt.AuthorId)
+            {
+                if (evt.Id > 0)
+                    this.Update(evt);
+                else
+                    this.Insert(evt);
+                this.SaveChanges();
+            }
             else
-                this.Insert(evt);
-            this.SaveChanges();
+            {
+                throw  new Exception("evt.author and evt.author are not identical or greather than 0");
+            }
         }
 
         /// <summary>
@@ -46,7 +52,10 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="evt">The event to be added</param>
         public void AddEvent(Event evt)
         {
-            // TODO Definir la visibity de l'event par defaut si elle n'est pas set selon les params de l'user
+            if (evt.Visibility != true && evt.Visibility != false)
+            {
+                evt.Visibility = true;
+            }
             this.Save(evt);   
         }
 

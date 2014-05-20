@@ -18,6 +18,7 @@ namespace Streameus.DataAbstractionLayer.Services
     {
         private readonly IConferenceParametersServices _conferenceParametersServices;
         private readonly IEventServices _eventServices;
+        private readonly IUserServices _userServices;
 
         /// <summary>
         /// default constructor
@@ -25,11 +26,14 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="unitOfWork"></param>
         /// <param name="conferenceParametersServices"></param>
         /// <param name="eventServices"></param>
-        public ConferenceServices(IUnitOfWork unitOfWork, IConferenceParametersServices conferenceParametersServices, IEventServices eventServices)
+        /// <param name="userServices"></param>
+        public ConferenceServices(IUnitOfWork unitOfWork, IConferenceParametersServices conferenceParametersServices, IEventServices eventServices,
+                                    IUserServices userServices)
             : base(unitOfWork)
         {
             this._conferenceParametersServices = conferenceParametersServices;
             this._eventServices = eventServices;
+            this._userServices = userServices;
         }
 
         /// <summary>
@@ -79,8 +83,14 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="updatedConf"></param>
         public void UpdateConference(Conference updatedConf)
         {
-            //Todo verifier que le owner id correspond a celui qui update.
-            this.Save(updatedConf);
+            if (updatedConf.OwnerId == this.GetById(updatedConf.Id).OwnerId)
+            {
+                this.Save(updatedConf);
+            }
+            else
+            {
+                throw new Exception("User tries to modifiy a conference that he does not own.");
+            }
         }
     }
 }

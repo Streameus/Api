@@ -123,6 +123,12 @@
   <data name="InvalidId" xml:space="preserve">
     <value>The Id provided is invalid</value>
   </data>
+  <data name="NoResultExceptionAuthor" xml:space="preserve">
+    <value>No author</value>
+  </data>
+  <data name="NoResultExceptionEvent" xml:space="preserve">
+    <value>No events are present</value>
+  </data>
   <data name="UserWithSameEmailAlreadyExists" xml:space="preserve">
     <value>User with the same email already exists</value>
   </data>

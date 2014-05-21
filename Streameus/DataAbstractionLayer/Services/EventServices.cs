@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.Entity;
+using Streameus.App_GlobalResources;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataBaseAccess;
 using Streameus.Enums;
@@ -89,15 +90,13 @@ namespace Streameus.DataAbstractionLayer.Services
             try
             {
                 var events = this.GetAllWithIncludes().Where(evt => evt.AuthorId == userId);
-                // TODO Ajouter la traduction pour ce terme
                 if (!events.Any())
-                    throw new NoResultException("No events");
+                    throw new NoResultException(Translation.NoResultExceptionEvent);
                 return events;
             }
             catch (InvalidOperationException)
             {
-                // TODO Ajouter la traduction pour ce terme
-                throw new NoResultException("No such author");
+                throw new NoResultException(Translation.NoResultExceptionAuthor);
             }
         }
 

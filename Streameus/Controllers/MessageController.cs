@@ -120,6 +120,7 @@ namespace Streameus.Controllers
         /// <param name="newMessageViewModel"></param>
         /// <returns></returns>
         /// <exception cref="ConflictdException">An message already exist with same infos</exception>
+        [Authorize]
         public MessageViewModel Post([FromBody] NewMessageViewModel newMessageViewModel)
         {
             MessageGroup msgGroup;

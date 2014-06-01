@@ -149,12 +149,13 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <exception cref="ForbiddenException"></exception>
+        [Authorize]
         public void Delete(int id)
         {
             if (this.GetCurrentUserId() == id)
             {
-                this._userServices.Delete(id);
-            }
+            this._userServices.Delete(id);
+        }
             else
             {
                 throw new ForbiddenException(Translation.ForbiddenUserDelete);

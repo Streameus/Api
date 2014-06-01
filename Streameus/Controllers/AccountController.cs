@@ -82,6 +82,7 @@ namespace Streameus.Controllers
         /// </summary>
         /// <returns></returns>
         [Route("Logout")]
+        [Authorize]
         public IHttpActionResult Logout()
         {
             this.Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);

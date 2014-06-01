@@ -136,14 +136,15 @@ namespace Streameus.Controllers
         /// <returns></returns>
         /// <exception cref="NotFoundException"></exception>
         /// <exception cref="ForbiddenException"></exception>
+        [Authorize]
         public ConferenceViewModel Put([FromBody] ConferenceFormViewModel conference)
         {
             var updatedConf = this._conferenceServices.GetById(conference.Id);
             if (updatedConf == null)
                 throw new NotFoundException("Conference not found");
-            updatedConf.Name = conference.Name;
-            updatedConf.Description = conference.Description;
-            updatedConf.ScheduledDuration = conference.ScheduledDuration;
+                updatedConf.Name = conference.Name;
+                updatedConf.Description = conference.Description;
+                updatedConf.ScheduledDuration = conference.ScheduledDuration;
             if (conference.Time != null)
                 updatedConf.Time = conference.Time.Value;
             this._conferenceServices.UpdateConference(updatedConf, this.GetCurrentUserId());
@@ -156,6 +157,7 @@ namespace Streameus.Controllers
         /// Delete a conference
         /// </summary>
         /// <param name="id"></param>
+        [Authorize]
         public void Delete(int id)
         {
             this._conferenceServices.Delete(id);

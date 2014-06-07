@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using AutoMapper;
 using Microsoft.AspNet.Identity;
+using Streameus.App_GlobalResources;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.Exceptions;
 using Streameus.Exceptions.HttpErrors;
@@ -95,7 +96,7 @@ namespace Streameus.Controllers
         [Authorize]
         public UserViewModel GetMe()
         {
-            return Get(Convert.ToInt32(this.User.Identity.GetUserId()));
+            return Get(this.GetCurrentUserId());
         }
 
         // POST api/user
@@ -147,15 +148,16 @@ namespace Streameus.Controllers
         /// Delete a user
         /// </summary>
         /// <param name="id"></param>
+        /// <exception cref="ForbiddenException"></exception>
         public void Delete(int id)
         {
-            if (this.GetMe().Id == id)
+            if (this.GetCurrentUserId() == id)
             {
                 this._userServices.Delete(id);
             }
             else
             {
-                throw new Exception("User can't delete another user than himself");
+                throw new ForbiddenException(Translation.ForbiddenUserDelete);
             }
         }
 
@@ -172,6 +174,5 @@ namespace Streameus.Controllers
             conferences.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c)));
             return conferencesListe;
         }
-
     }
 }

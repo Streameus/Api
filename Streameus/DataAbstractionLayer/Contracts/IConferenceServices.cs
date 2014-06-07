@@ -28,6 +28,7 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// Updates a conference
         /// </summary>
         /// <param name="updatedConf"></param>
-        void UpdateConference(Conference updatedConf);
+        /// <param name="userId">The id of the user who wants to update this conference</param>
+        void UpdateConference(Conference updatedConf, int userId);
     }
 }

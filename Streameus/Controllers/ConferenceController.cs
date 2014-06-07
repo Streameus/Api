@@ -32,7 +32,8 @@ namespace Streameus.Controllers
         /// <param name="conferenceCategoryServices"></param>
         /// <param name="conferenceServices"></param>
         /// <param name="userServices"></param>
-        public ConferenceController(IConferenceServices conferenceServices, IUserServices userServices, IConferenceCategoryServices conferenceCategoryServices)
+        public ConferenceController(IConferenceServices conferenceServices, IUserServices userServices,
+            IConferenceCategoryServices conferenceCategoryServices)
         {
             if (conferenceCategoryServices == null) throw new ArgumentNullException("conferenceCategoryServices");
             if (conferenceServices == null) throw new ArgumentNullException("conferenceServices");
@@ -79,7 +80,9 @@ namespace Streameus.Controllers
         public IEnumerable<ConferenceViewModel> GetByCategory(int id)
         {
             var conferences = new List<ConferenceViewModel>();
-            this._conferenceServices.GetAll().Where(i => i.CategoryId == id).ForEach(c => conferences.Add(new ConferenceViewModel(c)));
+            this._conferenceServices.GetAll()
+                .Where(i => i.CategoryId == id)
+                .ForEach(c => conferences.Add(new ConferenceViewModel(c)));
             return conferences;
         }
 
@@ -132,20 +135,20 @@ namespace Streameus.Controllers
         /// <param name="conference"></param>
         /// <returns></returns>
         /// <exception cref="NotFoundException"></exception>
+        /// <exception cref="ForbiddenException"></exception>
         public ConferenceViewModel Put([FromBody] ConferenceFormViewModel conference)
         {
             var updatedConf = this._conferenceServices.GetById(conference.Id);
             if (updatedConf == null)
                 throw new NotFoundException("Conference not found");
-            else
-            {
-                updatedConf.Name = conference.Name;
-                updatedConf.Description = conference.Description;
-                updatedConf.ScheduledDuration = conference.ScheduledDuration;
+            updatedConf.Name = conference.Name;
+            updatedConf.Description = conference.Description;
+            updatedConf.ScheduledDuration = conference.ScheduledDuration;
+            if (conference.Time != null)
                 updatedConf.Time = conference.Time.Value;
-                this._conferenceServices.UpdateConference(updatedConf);
-            }
-            return this.Get(conference.Id);
+            this._conferenceServices.UpdateConference(updatedConf, this.GetCurrentUserId());
+            //since EF uses references, we will have the latest version here, so it's ok to return.
+            return new ConferenceViewModel(updatedConf);
         }
 
         // DELETE api/conference/5

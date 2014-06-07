@@ -120,6 +120,12 @@
   <data name="ConferenceNotFound" xml:space="preserve">
     <value>Conference not found!</value>
   </data>
+  <data name="ForbiddenConfUpdate" xml:space="preserve">
+    <value>You do not have the rights to update this conference</value>
+  </data>
+  <data name="ForbiddenUserDelete" xml:space="preserve">
+    <value>You can only delete your account</value>
+  </data>
   <data name="InvalidId" xml:space="preserve">
     <value>The Id provided is invalid</value>
   </data>

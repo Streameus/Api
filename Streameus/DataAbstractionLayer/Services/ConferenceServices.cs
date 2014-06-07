@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Streameus.App_GlobalResources;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataBaseAccess;
 using Streameus.Enums;
@@ -18,7 +19,6 @@ namespace Streameus.DataAbstractionLayer.Services
     {
         private readonly IConferenceParametersServices _conferenceParametersServices;
         private readonly IEventServices _eventServices;
-        private readonly IUserServices _userServices;
 
         /// <summary>
         /// default constructor
@@ -26,14 +26,12 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="unitOfWork"></param>
         /// <param name="conferenceParametersServices"></param>
         /// <param name="eventServices"></param>
-        /// <param name="userServices"></param>
-        public ConferenceServices(IUnitOfWork unitOfWork, IConferenceParametersServices conferenceParametersServices, IEventServices eventServices,
-                                    IUserServices userServices)
+        public ConferenceServices(IUnitOfWork unitOfWork, IConferenceParametersServices conferenceParametersServices,
+            IEventServices eventServices)
             : base(unitOfWork)
         {
             this._conferenceParametersServices = conferenceParametersServices;
             this._eventServices = eventServices;
-            this._userServices = userServices;
         }
 
         /// <summary>
@@ -77,19 +75,21 @@ namespace Streameus.DataAbstractionLayer.Services
             this._eventServices.CreateConf(newConf);
         }
 
+
         /// <summary>
-        /// Update a conference
+        /// Updates a conference
         /// </summary>
         /// <param name="updatedConf"></param>
-        public void UpdateConference(Conference updatedConf)
+        /// <param name="userId">The id of the user who wants to update this conference</param>
+        public void UpdateConference(Conference updatedConf, int userId)
         {
-            if (updatedConf.OwnerId == this.GetById(updatedConf.Id).OwnerId)
+            if (userId == this.GetById(updatedConf.Id).OwnerId)
             {
                 this.Save(updatedConf);
             }
             else
             {
-                throw new Exception("User tries to modifiy a conference that he does not own.");
+                throw new ForbiddenException(Translation.ForbiddenConfUpdate);
             }
         }
     }

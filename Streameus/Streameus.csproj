@@ -345,6 +345,7 @@
     <Compile Include="Exceptions\HttpErrors\BadRequestException.cs" />
     <Compile Include="Exceptions\HttpErrors\ConflictdException.cs" />
     <Compile Include="Exceptions\HttpErrors\ApiException.cs" />
+    <Compile Include="Exceptions\HttpErrors\ForbiddenException.cs" />
     <Compile Include="Exceptions\HttpErrors\NoResultException.cs" />
     <Compile Include="Exceptions\HttpErrors\NotFoundException.cs" />
     <Compile Include="Global.asax.cs">

@@ -33,18 +33,12 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="evt">Event to save</param>
         protected override void Save(Event evt)
         {
-            if (evt.Author.Id > 0 && evt.AuthorId > 0 && evt.Author.Id == evt.AuthorId)
-            {
-                if (evt.Id > 0)
-                    this.Update(evt);
-                else
-                    this.Insert(evt);
-                this.SaveChanges();
-            }
+            //no check needed for the Author. Entity does it for us ;)
+            if (evt.Id > 0)
+                this.Update(evt);
             else
-            {
-                throw  new Exception("evt.author and evt.author are not identical or greather than 0");
-            }
+                this.Insert(evt);
+            this.SaveChanges();
         }
 
         /// <summary>
@@ -57,7 +51,7 @@ namespace Streameus.DataAbstractionLayer.Services
             {
                 evt.Visibility = true;
             }
-            this.Save(evt);   
+            this.Save(evt);
         }
 
         /// <summary>
@@ -113,12 +107,22 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.StartFollow,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user1.Id, Content = user1.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user2.Id, Content = user2.Pseudo},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user1.Id,
+                        Content = user1.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user2.Id,
+                        Content = user2.Pseudo
+                    },
+                }
             });
         }
 
@@ -134,12 +138,22 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.CreateConf,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = conf.Owner.Id, Content = conf.Owner.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, 
-                            TargetId = conf.Id, Content = conf.Name},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = conf.Owner.Id,
+                        Content = conf.Owner.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.Conference,
+                        TargetId = conf.Id,
+                        Content = conf.Name
+                    },
+                }
             });
         }
 
@@ -157,11 +171,16 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.BilanCreateConfMonth,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user.Id, Content = user.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Int, Content = nbConf.ToString()},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user.Id,
+                        Content = user.Pseudo
+                    },
+                    new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Int, Content = nbConf.ToString()},
+                }
             });
         }
 
@@ -178,11 +197,16 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.BilanCreateConfWeek,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user.Id, Content = user.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Int, Content = nbConf.ToString()},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user.Id,
+                        Content = user.Pseudo
+                    },
+                    new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Int, Content = nbConf.ToString()},
+                }
             });
         }
 
@@ -198,11 +222,21 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.BilanFollowers,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user.Id, Content = user.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Int, Content = user.Followers.Count.ToString()},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user.Id,
+                        Content = user.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.Int,
+                        Content = user.Followers.Count.ToString()
+                    },
+                }
             });
         }
 
@@ -219,11 +253,21 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.BilanFollowingMonth,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user.Id, Content = user.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Int, Content = nbFollowing.ToString()},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user.Id,
+                        Content = user.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.Int,
+                        Content = nbFollowing.ToString()
+                    },
+                }
             });
         }
 
@@ -240,11 +284,21 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.BilanFollowingWeek,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user.Id, Content = user.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Int, Content = nbFollowing.ToString()},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user.Id,
+                        Content = user.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.Int,
+                        Content = nbFollowing.ToString()
+                    },
+                }
             });
         }
 
@@ -261,11 +315,16 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.BilanParticipateConfMonth,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user.Id, Content = user.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Int, Content = nbConf.ToString()},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user.Id,
+                        Content = user.Pseudo
+                    },
+                    new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Int, Content = nbConf.ToString()},
+                }
             });
         }
 
@@ -282,11 +341,16 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.BilanParticipateConfMonth,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user.Id, Content = user.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Int, Content = nbConf.ToString()},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user.Id,
+                        Content = user.Pseudo
+                    },
+                    new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Int, Content = nbConf.ToString()},
+                }
             });
         }
 
@@ -302,11 +366,21 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.BilanReputation,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user.Id, Content = user.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Int, Content = user.Reputation.ToString()},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user.Id,
+                        Content = user.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.Int,
+                        Content = user.Reputation.ToString()
+                    },
+                }
             });
         }
 
@@ -322,10 +396,15 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.ChangePhoto,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user.Id, Content = user.Pseudo},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user.Id,
+                        Content = user.Pseudo
+                    },
+                }
             });
         }
 
@@ -341,14 +420,29 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.ConfDate,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = conf.Owner.Id, Content = conf.Owner.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference,
-                            TargetId = conf.Id, Content = conf.Name},
-                        new EventItem {Pos = 2, TargetType = DataBaseEnums.EventItemType.DateTime,
-                            TargetId = conf.Id, Content = conf.Time.ToString()},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = conf.Owner.Id,
+                        Content = conf.Owner.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.Conference,
+                        TargetId = conf.Id,
+                        Content = conf.Name
+                    },
+                    new EventItem
+                    {
+                        Pos = 2,
+                        TargetType = DataBaseEnums.EventItemType.DateTime,
+                        TargetId = conf.Id,
+                        Content = conf.Time.ToString()
+                    },
+                }
             });
         }
 
@@ -364,12 +458,22 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.ConfDescription,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = conf.Owner.Id, Content = conf.Owner.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference,
-                            TargetId = conf.Id, Content = conf.Name},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = conf.Owner.Id,
+                        Content = conf.Owner.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.Conference,
+                        TargetId = conf.Id,
+                        Content = conf.Name
+                    },
+                }
             });
         }
 
@@ -385,12 +489,22 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.ConferenceEnd,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.Conference,
-                            TargetId = conf.Id, Content = conf.Name},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = conf.Owner.Id, Content = conf.Owner.Pseudo},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.Conference,
+                        TargetId = conf.Id,
+                        Content = conf.Name
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = conf.Owner.Id,
+                        Content = conf.Owner.Pseudo
+                    },
+                }
             });
         }
 
@@ -406,12 +520,22 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.ConferenceEnd,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.Conference,
-                            TargetId = conf.Id, Content = conf.Name},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = conf.Owner.Id, Content = conf.Owner.Pseudo},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.Conference,
+                        TargetId = conf.Id,
+                        Content = conf.Name
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = conf.Owner.Id,
+                        Content = conf.Owner.Pseudo
+                    },
+                }
             });
         }
 
@@ -428,14 +552,29 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.ConfTime,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = conf.Owner.Id, Content = conf.Owner.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference,
-                            TargetId = conf.Id, Content = conf.Name},
-                        new EventItem {Pos = 2, TargetType = DataBaseEnums.EventItemType.DateTime,
-                            TargetId = conf.Id, Content = conf.Time.Hour.ToString()},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = conf.Owner.Id,
+                        Content = conf.Owner.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.Conference,
+                        TargetId = conf.Id,
+                        Content = conf.Name
+                    },
+                    new EventItem
+                    {
+                        Pos = 2,
+                        TargetType = DataBaseEnums.EventItemType.DateTime,
+                        TargetId = conf.Id,
+                        Content = conf.Time.Hour.ToString()
+                    },
+                }
             });
         }
 
@@ -452,12 +591,22 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.ConfTitle,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = conf.Owner.Id, Content = conf.Owner.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference,
-                            TargetId = conf.Id, Content = conf.Name},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = conf.Owner.Id,
+                        Content = conf.Owner.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.Conference,
+                        TargetId = conf.Id,
+                        Content = conf.Name
+                    },
+                }
             });
         }
 
@@ -474,12 +623,22 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.FirstFollower,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user1.Id, Content = user1.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.User,
-                            TargetId = user2.Id, Content = user2.Pseudo},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user1.Id,
+                        Content = user1.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user2.Id,
+                        Content = user2.Pseudo
+                    },
+                }
             });
         }
 
@@ -496,12 +655,22 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.FirstFollower,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user.Id, Content = user.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.User,
-                            TargetId = conf.Id, Content = conf.Name},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user.Id,
+                        Content = user.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = conf.Id,
+                        Content = conf.Name
+                    },
+                }
             });
         }
 
@@ -519,14 +688,29 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.RateConf,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user.Id, Content = user.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Int,
-                            TargetId = conf.Id, Content = stars.ToString()},
-                        new EventItem {Pos = 2, TargetType = DataBaseEnums.EventItemType.Conference,
-                            TargetId = conf.Id, Content = conf.Name},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user.Id,
+                        Content = user.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.Int,
+                        TargetId = conf.Id,
+                        Content = stars.ToString()
+                    },
+                    new EventItem
+                    {
+                        Pos = 2,
+                        TargetType = DataBaseEnums.EventItemType.Conference,
+                        TargetId = conf.Id,
+                        Content = conf.Name
+                    },
+                }
             });
         }
 
@@ -543,12 +727,22 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.Recommand,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user.Id, Content = user.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference,
-                            TargetId = conf.Id, Content = conf.Name},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user.Id,
+                        Content = user.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.Conference,
+                        TargetId = conf.Id,
+                        Content = conf.Name
+                    },
+                }
             });
         }
 
@@ -565,16 +759,36 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.ShareConf,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user.Id, Content = user.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference,
-                            TargetId = conf.Id, Content = conf.Name},
-                        new EventItem {Pos = 2, TargetType = DataBaseEnums.EventItemType.User,
-                            TargetId = conf.OwnerId, Content = conf.Owner.Pseudo},
-                        new EventItem {Pos = 3, TargetType = DataBaseEnums.EventItemType.DateTime,
-                            TargetId = conf.Id, Content = conf.Time.ToString()},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user.Id,
+                        Content = user.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.Conference,
+                        TargetId = conf.Id,
+                        Content = conf.Name
+                    },
+                    new EventItem
+                    {
+                        Pos = 2,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = conf.OwnerId,
+                        Content = conf.Owner.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 3,
+                        TargetType = DataBaseEnums.EventItemType.DateTime,
+                        TargetId = conf.Id,
+                        Content = conf.Time.ToString()
+                    },
+                }
             });
         }
 
@@ -591,12 +805,22 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.SuscribeConf,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user.Id, Content = user.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference,
-                            TargetId = conf.Id, Content = conf.Name},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user.Id,
+                        Content = user.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.Conference,
+                        TargetId = conf.Id,
+                        Content = conf.Name
+                    },
+                }
             });
         }
 
@@ -612,12 +836,22 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.UpdateMsgPerso,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user.Id, Content = user.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.String,
-                            TargetId = user.Id, Content = user.Description},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user.Id,
+                        Content = user.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.String,
+                        TargetId = user.Id,
+                        Content = user.Description
+                    },
+                }
             });
         }
 
@@ -634,14 +868,29 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.UpdateMsgPerso,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user.Id, Content = user.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference,
-                            TargetId = conf.Id, Content = conf.Name},
-                        new EventItem {Pos = 2, TargetType = DataBaseEnums.EventItemType.User,
-                            TargetId = conf.Owner.Id, Content = conf.Owner.Pseudo},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user.Id,
+                        Content = user.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.Conference,
+                        TargetId = conf.Id,
+                        Content = conf.Name
+                    },
+                    new EventItem
+                    {
+                        Pos = 2,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = conf.Owner.Id,
+                        Content = conf.Owner.Pseudo
+                    },
+                }
             });
         }
 
@@ -658,16 +907,36 @@ namespace Streameus.DataAbstractionLayer.Services
                 Type = DataBaseEnums.EventType.WillParticipateConf,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
+                {
+                    new EventItem
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, 
-                            TargetId = user.Id, Content = user.Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference,
-                            TargetId = conf.Id, Content = conf.Name},
-                        new EventItem {Pos = 2, TargetType = DataBaseEnums.EventItemType.DateTime,
-                            TargetId = conf.Id, Content = conf.Time.Date.ToString()},
-                        new EventItem {Pos = 3, TargetType = DataBaseEnums.EventItemType.DateTime,
-                            TargetId = conf.Id, Content = conf.Time.Hour.ToString()},
-                    }
+                        Pos = 0,
+                        TargetType = DataBaseEnums.EventItemType.User,
+                        TargetId = user.Id,
+                        Content = user.Pseudo
+                    },
+                    new EventItem
+                    {
+                        Pos = 1,
+                        TargetType = DataBaseEnums.EventItemType.Conference,
+                        TargetId = conf.Id,
+                        Content = conf.Name
+                    },
+                    new EventItem
+                    {
+                        Pos = 2,
+                        TargetType = DataBaseEnums.EventItemType.DateTime,
+                        TargetId = conf.Id,
+                        Content = conf.Time.Date.ToString()
+                    },
+                    new EventItem
+                    {
+                        Pos = 3,
+                        TargetType = DataBaseEnums.EventItemType.DateTime,
+                        TargetId = conf.Id,
+                        Content = conf.Time.Hour.ToString()
+                    },
+                }
             });
         }
     }

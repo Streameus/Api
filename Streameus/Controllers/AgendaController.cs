@@ -63,21 +63,19 @@ namespace Streameus.Controllers
         public IEnumerable<Conf> Get()
         {
             var owner = this._userServices.GetAll().First(); //TODO changer une fois l'Auth implementee.
-            var conferences = owner.ConferencesRegistered.OrderBy(c => c.Time).ToList();
-            // test in order to have results
-            //var conferences = owner.ConferencesCreated.OrderBy(c => c.Time).ToList(); //todo penser a remplacer par owner.Registered
+            var conferences = owner.ConferencesRegistered.OrderBy(c => c.Time);
             var confList = new List<Conf>();
-            foreach (var c in conferences)
+            foreach (var conference in conferences)
             {
-                if (c.Status != DataBaseEnums.ConfStatus.Finie)
+                if (conference.Status != DataBaseEnums.ConfStatus.Finie)
                 {
-                    var t = new Conf
+                    var confInfo = new Conf
                     {
-                        Name = c.Name,
-                        Date = c.Time,
-                        Id = c.Id,
+                        Name = conference.Name,
+                        Date = conference.Time,
+                        Id = conference.Id,
                     };
-                    confList.Add(t);
+                    confList.Add(confInfo);
                 }
             }
             return confList;
@@ -91,26 +89,24 @@ namespace Streameus.Controllers
         /// <returns></returns>
         /// <responseCode></responseCode>
         /// <exception cref="NotFoundException">Conference not found</exception>
-        /// <exception cref="Exception">Conference is already done</exception>
+        /// <exception cref="ForbiddenException">Conference is already done</exception>
         [Route("subscribe/{id}")]
-        public HttpResponseMessage Post(int id)
+        public IEnumerable<Conf> Post(int id)
         {
             var conf = this._conferenceServices.GetById(id);
             if (conf == null)
                 throw new NotFoundException(Translation.ConferenceNotFound);
-
-            var owner = this._userServices.GetAll().First(); //TODO changer une fois l'Auth implementee.
-
+            var participant = this._userServices.GetAll().First(); //TODO changer une fois l'Auth implementee.
             if (conf.Status == DataBaseEnums.ConfStatus.Finie)
             {
                // throw new Exception("You can not subscribe to a conference in the past.");
-                return Request.CreateResponse(HttpStatusCode.Forbidden);
+                throw new ForbiddenException("Je te laisse faire la trad thai ;)"); //TODO
             }
             else
             {
-                owner.ConferencesRegistered.Add(conf);
-                this._userServices.UpdateUser(owner);
-                return Request.CreateResponse(HttpStatusCode.OK);
+                participant.ConferencesRegistered.Add(conf);
+                this._userServices.UpdateUser(participant);
+                return this.Get();
             }
         }
 

@@ -71,10 +71,12 @@ namespace Streameus.Controllers
         /// <exception cref="NoResultException">No results</exception>
         [Authorize]
         [Route("author/{id}")]
-        public IEnumerable<EventViewModel> GetByAuthorId(int id, ODataQueryOptions<Event> options)
+        public IEnumerable<EventViewModel> GetByAuthorId(int id, ODataQueryOptions<Event> options = null)
         {
             var eventList = new List<EventViewModel>();
-            var events = options.ApplyTo(this._eventServices.GetEventsForUser(id)) as IQueryable<Event>;
+            var events = this._eventServices.GetEventsForUser(id);
+            if (options != null)
+                events = options.ApplyTo(events) as IQueryable<Event>;
             events.ForEach(e => eventList.Add(new EventViewModel(e)));
             if (!eventList.Any())
                 throw new Exceptions.HttpErrors.NoResultException("Empty Set");

@@ -45,7 +45,7 @@ namespace Streameus.Tests.Controllers
             var returnedList = this.GetDummyEventsList().OrderBy(ev => ev.Id).Where(ev => ev.AuthorId == id);
             eventServicesMock.Setup(e => e.GetEventsForUser(id)).Returns(returnedList);
             var controller = new EventController(eventServicesMock.Object);
-            var list = controller.GetByAuthorId(id);
+            var list = controller.GetByAuthorId(id, null);
             foreach (var eventViewModel in list) {
                 Assert.AreEqual(id, eventViewModel.AuthorId);
             }

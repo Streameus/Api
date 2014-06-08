@@ -40,12 +40,7 @@ namespace Streameus.ViewModels
         /// <summary>
         /// The time the conference is/was scheduled
         /// </summary>
-        public string Time { get; set; }
-
-        /// <summary>
-        /// The date the conference is/was scheduled
-        /// </summary>
-        public string Date { get; set; }
+        public System.DateTime Time { get; set; }
 
         /// <summary>
         /// The conference's scheduled duration
@@ -73,8 +68,7 @@ namespace Streameus.ViewModels
             this.Name = conf.Name;
             this.Description = conf.Description;
             this.Status = conf.Status;
-            this.Time = conf.Time.ToShortTimeString();
-            this.Date = conf.Time.ToShortDateString();
+            this.Time = conf.Time;
             this.ScheduledDuration = conf.ScheduledDuration;
             this.FinalDuration = conf.FinalDuration;
             this.Category = new ConferenceCategoryViewModel(conf.Category);

@@ -4,8 +4,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.OData.Query;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.Exceptions.HttpErrors;
+using Streameus.Models;
 using Streameus.ViewModels;
 using WebGrease.Css.Extensions;
 
@@ -64,16 +66,18 @@ namespace Streameus.Controllers
         /// Get all event for a specific author
         /// </summary>
         /// <param name="id">Author Id</param>
+        /// <param name="options">Odata options</param>
         /// <returns></returns>
         /// <exception cref="NoResultException">No results</exception>
         [Authorize]
         [Route("author/{id}")]
-        public IEnumerable<EventViewModel> GetByAuthorId(int id)
+        public IEnumerable<EventViewModel> GetByAuthorId(int id, ODataQueryOptions<Event> options)
         {
             var eventList = new List<EventViewModel>();
-            this._eventServices.GetEventsForUser(id).ForEach(e => eventList.Add(new EventViewModel(e)));
+            var events = options.ApplyTo(this._eventServices.GetEventsForUser(id)) as IQueryable<Event>;
+            events.ForEach(e => eventList.Add(new EventViewModel(e)));
             if (!eventList.Any())
-                throw new Exceptions.NoResultException("Empty set");
+                throw new Exceptions.HttpErrors.NoResultException("Empty Set");
             return eventList;
         }
     }

@@ -37,6 +37,7 @@ namespace Streameus
                     c.OperationFilter<AddAuthorizationResponseMessages>();
                     c.IncludeXmlComments(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/StreameusDocumentation.xml");
                     // Custom mapping for ODataQueryOptions
+                    c.MapType<ODataQueryOptions<Event>>(() => queryOptionDataType);
                     c.MapType<ODataQueryOptions<Message>>(() => queryOptionDataType);
                     c.MapType<ODataQueryOptions<MessageGroup>>(() => queryOptionDataType);
                 });

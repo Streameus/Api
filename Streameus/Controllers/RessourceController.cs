@@ -24,7 +24,7 @@ namespace Streameus.Controllers
         }
 
         /// <summary>
-        /// Get the Faq
+        /// Get the Faq through the api
         /// </summary>
         /// <returns>the Faq</returns>
         public ActionResult Faq()
@@ -33,7 +33,7 @@ namespace Streameus.Controllers
         }
 
         /// <summary>
-        /// Get the team
+        /// Get the team through the api
         /// </summary>
         /// <returns>the Faq</returns>
         public ActionResult Team()

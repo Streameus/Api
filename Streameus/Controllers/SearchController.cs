@@ -67,7 +67,7 @@ namespace Streameus.Controllers
 
         // GET api/search/user
         /// <summary>
-        /// Search on users
+        /// Search on conferences
         /// </summary>
         /// <returns></returns>
         [Route("Conferences")]

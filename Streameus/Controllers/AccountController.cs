@@ -59,7 +59,7 @@ namespace Streameus.Controllers
 
         // GET api/Account/UserInfo
         /// <summary>
-        /// Return the info available on the logged in user
+        /// Return the info available on the authenticated user
         /// </summary>
         /// <returns></returns>
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
@@ -91,7 +91,7 @@ namespace Streameus.Controllers
 
         // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
         /// <summary>
-        /// ?
+        /// GetManageInfo
         /// </summary>
         /// <param name="returnUrl"></param>
         /// <param name="generateState"></param>
@@ -220,10 +220,10 @@ namespace Streameus.Controllers
 
         // GET api/Account/ExternalLogin
         /// <summary>
-        /// Renvoie l'url d'authentification du provider si non authentifie,
+        /// GET authentification URL of provider, if don't authenticated.
         /// </summary>
-        /// <param name="provider">Nom du provider</param>
-        /// <param name="error">erreurs possibles rencontree lors de l'OAuth</param>
+        /// <param name="provider">Name of the provider</param>
+        /// <param name="error">Errors during OAuth</param>
         /// <returns></returns>
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalCookie)]
@@ -301,10 +301,10 @@ namespace Streameus.Controllers
 
         // GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true
         /// <summary>
-        /// Renvoie la liste des provider d'OAuth disponibles sur l'API
+        /// Get OAuth providers list available on the API 
         /// </summary>
-        /// <param name="returnUrl">L'url vers laquelle on veut etre redirige</param>
-        /// <param name="generateState">permet de generer un valeur state pour l'OAuth (mettre a true, c'est plus simple)</param>
+        /// <param name="returnUrl">URL where we want to be redirected</param>
+        /// <param name="generateState">Allows to generate a state value for OAuth (put on true, it's easier)</param>
         /// <returns></returns>
         [AllowAnonymous]
         [Route("ExternalLogins")]

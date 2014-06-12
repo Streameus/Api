@@ -45,7 +45,7 @@ namespace Streameus.Controllers
 
         // GET api/conference
         /// <summary>
-        /// Retourne toutes les conferences
+        /// Get all conferences
         /// </summary>
         /// <returns></returns>
         /// <responseCode></responseCode>
@@ -58,7 +58,7 @@ namespace Streameus.Controllers
 
         // GET api/Conference/Categories
         /// <summary>
-        /// Retourne toutes les categories de conferences
+        /// Get all conference's categories
         /// </summary>
         /// <returns></returns>
         /// <responseCode></responseCode>
@@ -72,8 +72,9 @@ namespace Streameus.Controllers
 
         // GET api/Conference/Category/5
         /// <summary>
-        /// Retourne toutes les conferences
+        /// Get all conferences of one specified category
         /// </summary>
+        /// <param name="id">the id of the category</param>
         /// <returns></returns>
         /// <responseCode></responseCode>
         [Route("Category/{id}")]
@@ -106,7 +107,7 @@ namespace Streameus.Controllers
         /// <summary>
         /// Create a new conference
         /// </summary>
-        /// <param name="conference">the infos for the new conference</param>
+        /// <param name="conference">data for the new conference</param>
         /// <returns></returns>
         [Authorize]
         public ConferenceViewModel Post([FromBody] ConferenceFormViewModel conference)
@@ -132,7 +133,7 @@ namespace Streameus.Controllers
         /// <summary>
         /// Update a conference
         /// </summary>
-        /// <param name="conference"></param>
+        /// <param name="conference">data to update the conference</param>
         /// <returns></returns>
         /// <exception cref="NotFoundException"></exception>
         /// <exception cref="ForbiddenException"></exception>

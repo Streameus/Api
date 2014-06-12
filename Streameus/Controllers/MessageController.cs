@@ -60,7 +60,7 @@ namespace Streameus.Controllers
         }
 
         /// <summary>
-        /// Return the currently connected user message groups
+        /// Return the currently authenticated user message groups
         /// </summary>
         /// <param name="options">options for sorting and filtering</param>
         /// <returns></returns>
@@ -201,7 +201,7 @@ namespace Streameus.Controllers
         }
 
         /// <summary>
-        /// Check if the connected user can access to this message group
+        /// Check if the authenticated user can access to this message group
         /// </summary>
         /// <param name="group">Message group</param>
         private User CheckUser(MessageGroup group)

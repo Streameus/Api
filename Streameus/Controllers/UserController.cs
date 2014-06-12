@@ -76,7 +76,7 @@ namespace Streameus.Controllers
 
         // GET api/user/AmIFollowing/{id}
         /// <summary>
-        /// Check if the user connected follow the specified user
+        /// Check if the user authenticated follows the specified user
         /// </summary>
         /// <param name="id">the id of the user to be checked</param>
         /// <returns></returns>
@@ -89,7 +89,7 @@ namespace Streameus.Controllers
         }
 
         /// <summary>
-        /// Return the currently connected user
+        /// Return the currently authenticated user
         /// </summary>
         /// <returns></returns>
         [Route("me")]
@@ -145,7 +145,7 @@ namespace Streameus.Controllers
 
         // DELETE api/user/5
         /// <summary>
-        /// Delete a user
+        /// Delete an user
         /// </summary>
         /// <param name="id"></param>
         /// <exception cref="ForbiddenException"></exception>
@@ -163,9 +163,9 @@ namespace Streameus.Controllers
         }
 
         /// <summary>
-        /// Get all conferences created by a user
+        /// Get all conferences created by a specified user
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">User id</param>
         /// <returns></returns>
         [Route("{id}/conferences")]
         public IEnumerable<ConferenceViewModel> GetConferencesOfUser(int id)

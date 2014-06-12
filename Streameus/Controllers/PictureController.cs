@@ -94,7 +94,7 @@ namespace Streameus.Controllers
 
         // POST api/picture
         /// <summary>
-        ///     PostFormData
+        ///     Post a new picture
         /// </summary>
         /// <returns></returns>
         /// <exception cref="HttpStatusCode.UnsupportedMediaType">This type of media is not supported</exception>

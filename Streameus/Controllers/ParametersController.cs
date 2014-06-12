@@ -49,10 +49,10 @@ namespace Streameus.Controllers
 
         // POST api/parameters
         /// <summary>
-        /// Create parameters
+        /// Create parameters for an user
         /// </summary>
         /// <param name="parametersViewModel"></param>
-        /// <param name="id"></param>
+        /// <param name="id">id of user</param>
         /// <returns></returns>
         public void Post(int id, [FromBody] ParametersViewModel parametersViewModel)
         {

@@ -28,6 +28,16 @@ namespace Streameus.Models.Mapping
                     m.MapLeftKey("Group_Id");
                     m.MapRightKey("Member_Id");
                 });
+
+            this.HasMany(t => t.UnreadBy)
+                .WithMany(t => t.UnreadMessages)
+                .Map(m =>
+                {
+                    m.ToTable("MessageGroupReaders");
+                    m.MapLeftKey("MessageGroup_Id");
+                    m.MapRightKey("User_Id");
+                });
+
         }
     }
 }

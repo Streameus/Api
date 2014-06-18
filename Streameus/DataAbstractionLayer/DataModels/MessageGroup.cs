@@ -24,6 +24,7 @@ namespace Streameus.Models
         public MessageGroup()
         {
             this.Members = new HashSet<User>();
+            this.UnreadBy = new HashSet<User>();
             this.Messages = new HashSet<Message>();
         }
 
@@ -41,5 +42,10 @@ namespace Streameus.Models
         /// The users in this message group
         /// </summary>
         public virtual ICollection<User> Members { get; set; }
+
+        /// <summary>
+        /// The users who read the messages in this group
+        /// </summary>
+        public virtual ICollection<User> UnreadBy { get; set; }
     }
 }

@@ -66,13 +66,13 @@ namespace Streameus.Controllers
         /// <returns></returns>
         [Route("Group/My")]
         [Authorize]
-        public IEnumerable<MessageGroupViewModel> GetMy(ODataQueryOptions<MessageGroup> options)
+        public IEnumerable<MessageGroupViewModel> GetMy(ODataQueryOptions<MessageGroupViewModel> options)
         {
             var userId = Convert.ToInt32(this.User.Identity.GetUserId());
-            var userGroups = options.ApplyTo(this._messageGroupServices.GetAll().Where(g => g.Members.Any(m => m.Id == userId)).AsQueryable()) as IQueryable<MessageGroup>;
+            var userGroups = this._messageGroupServices.GetAll().Where(g => g.Members.Any(m => m.Id == userId)).AsQueryable();
             var messageGroupList = new List<MessageGroupViewModel>();
             userGroups.ForEach(u => messageGroupList.Add(new MessageGroupViewModel(u, userId)));
-            return messageGroupList;
+            return options.ApplyTo(messageGroupList.AsQueryable()) as IQueryable<MessageGroupViewModel>;
         }
 
         // GET api/message/group/5
@@ -105,7 +105,12 @@ namespace Streameus.Controllers
         public IEnumerable<MessageViewModel> GetMessages(int id, ODataQueryOptions<Message> options)
         {
             var group = this._messageGroupServices.GetById(id);
-            this.CheckUser(group);
+            var user = this.CheckUser(group);
+            if (group.UnreadBy.Contains(user))
+            {
+                group.UnreadBy.Remove(user);
+                this._messageGroupServices.UpdateMessageGroup(group);
+            }
             var messages = group.Messages.AsQueryable();
             messages = options.ApplyTo(messages) as IQueryable<Message>;
             var messagesList = new List<MessageViewModel>();
@@ -135,12 +140,15 @@ namespace Streameus.Controllers
                 msgGroup = new MessageGroup();
                 foreach (var recipientId in newMessageViewModel.Recipients)
                 {
-                    var user = this._userServices.GetById(recipientId);
-                    msgGroup.Members.Add(user);
+                    msgGroup.Members.Add(this._userServices.GetById(recipientId));
                 }
                 this._messageGroupServices.AddMessageGroup(msgGroup);
             }
-            this.CheckUser(msgGroup);
+            var user = this.CheckUser(msgGroup);
+            msgGroup.UnreadBy.Clear();
+            this._messageGroupServices.UpdateMessageGroup(msgGroup);
+            msgGroup.Members.Where(i => i != user).ForEach(i => msgGroup.UnreadBy.Add(i));
+            this._messageGroupServices.UpdateMessageGroup(msgGroup);
             var sender = _userServices.GetById(Convert.ToInt32(this.User.Identity.GetUserId()));
             var msg = new Message
             {
@@ -186,7 +194,7 @@ namespace Streameus.Controllers
                 this._messageGroupServices.AddMessageGroup(group);
                 return new NewMessageGroupViewModel(group, userId);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exceptions.HttpErrors.NoResultException(e.Message);
             }

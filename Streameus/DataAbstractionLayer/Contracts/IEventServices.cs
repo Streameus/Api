@@ -20,12 +20,6 @@ namespace Streameus.DataAbstractionLayer.Contracts
         void AddEvent(Event evt);
 
         /// <summary>
-        /// Update an event
-        /// </summary>
-        /// <param name="evt">Event to be updated</param>
-        void UpdateEvent(Event evt);
-
-        /// <summary>
         /// get events with event items
         /// </summary>
         /// <returns></returns>
@@ -62,7 +56,7 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <param name="user">The user who created the conferences</param>
         /// <param name="nbConf">The number of conference created by the user this month</param>
         void BilanCreateConfMonth(User user, int nbConf);
-        
+
         /// <summary>
         /// Create BilanCreateConfWeek event
         /// </summary>
@@ -82,7 +76,7 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <param name="user">The user who follows people</param>
         /// <param name="nbFollowing">number of people who have been following during the month</param>
         void BilanFollowingMonth(User user, int nbFollowing);
-        
+
         /// <summary>
         /// Create BilanFollowingWeek event
         /// </summary>

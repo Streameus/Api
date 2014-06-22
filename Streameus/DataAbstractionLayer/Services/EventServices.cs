@@ -47,19 +47,6 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="evt">The event to be added</param>
         public void AddEvent(Event evt)
         {
-            if (evt.Visibility != true && evt.Visibility != false)
-            {
-                evt.Visibility = true;
-            }
-            this.Save(evt);
-        }
-
-        /// <summary>
-        /// Update an event
-        /// </summary>
-        /// <param name="evt">Event to be updated</param>
-        public void UpdateEvent(Event evt)
-        {
             this.Save(evt);
         }
 
@@ -106,6 +93,7 @@ namespace Streameus.DataAbstractionLayer.Services
                 Author = user1,
                 Type = DataBaseEnums.EventType.StartFollow,
                 Date = DateTime.Now,
+                Visibility = user1.AbonnementsVisibility,
                 EventItems = new List<EventItem>
                 {
                     new EventItem
@@ -137,6 +125,7 @@ namespace Streameus.DataAbstractionLayer.Services
                 Author = conf.Owner,
                 Type = DataBaseEnums.EventType.CreateConf,
                 Date = DateTime.Now,
+                Visibility = true,
                 EventItems = new List<EventItem>
                 {
                     new EventItem
@@ -170,6 +159,7 @@ namespace Streameus.DataAbstractionLayer.Services
                 Author = user,
                 Type = DataBaseEnums.EventType.BilanCreateConfMonth,
                 Date = DateTime.Now,
+                Visibility = true,
                 EventItems = new List<EventItem>
                 {
                     new EventItem
@@ -194,6 +184,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = user,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.BilanCreateConfWeek,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -219,6 +210,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = user,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.BilanFollowers,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -250,6 +242,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = user,
+                Visibility = user.AbonnementsVisibility,
                 Type = DataBaseEnums.EventType.BilanFollowingMonth,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -281,6 +274,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = user,
+                Visibility = user.AbonnementsVisibility,
                 Type = DataBaseEnums.EventType.BilanFollowingWeek,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -312,6 +306,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = user,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.BilanParticipateConfMonth,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -338,6 +333,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = user,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.BilanParticipateConfMonth,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -363,6 +359,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = user,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.BilanReputation,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -393,6 +390,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = user,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.ChangePhoto,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -417,6 +415,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = conf.Owner,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.ConfDate,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -455,6 +454,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = conf.Owner,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.ConfDescription,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -486,6 +486,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = conf.Owner,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.ConferenceEnd,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -517,6 +518,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = conf.Owner,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.ConferenceEnd,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -549,6 +551,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = conf.Owner,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.ConfTime,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -588,6 +591,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = conf.Owner,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.ConfTitle,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -620,6 +624,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = user1,
+                Visibility = user2.AbonnementsVisibility,
                 Type = DataBaseEnums.EventType.FirstFollower,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -652,6 +657,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = user,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.FirstFollower,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -685,6 +691,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = user,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.RateConf,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -724,6 +731,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = user,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.Recommand,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -756,6 +764,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = user,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.ShareConf,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -802,6 +811,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = user,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.SuscribeConf,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -833,6 +843,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = user,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.UpdateMsgPerso,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -865,6 +876,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = user,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.UpdateMsgPerso,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>
@@ -904,6 +916,7 @@ namespace Streameus.DataAbstractionLayer.Services
             this.AddEvent(new Event
             {
                 Author = user,
+                Visibility = true,
                 Type = DataBaseEnums.EventType.WillParticipateConf,
                 Date = DateTime.Now,
                 EventItems = new List<EventItem>

@@ -26,7 +26,7 @@ namespace Streameus.Controllers
         /// <exception cref="ArgumentNullException"></exception>
         public RecommendationController(IUserServices userServices)
         {
-            if (userServices == null) throw new ArgumentNullException("userServices");
+            if (userServices == null) throw new ArgumentNullException("userServices"); 
             this._userServices = userServices;
         }
 

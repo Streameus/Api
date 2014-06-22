@@ -56,7 +56,8 @@ namespace Streameus.Controllers
             }
             catch (EmptyResultException e)
             {
-                throw new Exceptions.HttpErrors.NoResultException(e.Message);
+                //Now this case doesn't matter anymore.
+                //Sends back an empty array instead
             }
             return abonnementsViewModels;
         }

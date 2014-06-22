@@ -47,13 +47,14 @@ namespace Streameus.Controllers
                 var followers = this._userServices.GetFollowersForUser(id);
                 followers.ForEach(f => followersViewModels.Add(new UserViewModel(f)));
             }
+            catch (EmptyResultException)
+            {
+                //Now this case doesn't matter anymore.
+                //Sends back an empty array instead
+            }
             catch (NoResultException e)
             {
                 throw new Exceptions.HttpErrors.NotFoundException(e.Message);
-            }
-            catch (EmptyResultException e)
-            {
-                throw new Exceptions.HttpErrors.NoResultException(e.Message);
             }
             return followersViewModels;
         }

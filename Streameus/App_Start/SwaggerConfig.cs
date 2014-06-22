@@ -6,6 +6,7 @@ using System.Web.Http.OData.Query;
 using Streameus;
 using Streameus.Documentation;
 using Streameus.Models;
+using Streameus.ViewModels;
 using Swashbuckle.Application;
 using Swashbuckle.Swagger;
 
@@ -40,6 +41,7 @@ namespace Streameus
                     c.MapType<ODataQueryOptions<Event>>(() => queryOptionDataType);
                     c.MapType<ODataQueryOptions<Message>>(() => queryOptionDataType);
                     c.MapType<ODataQueryOptions<MessageGroup>>(() => queryOptionDataType);
+                    c.MapType<ODataQueryOptions<MessageGroupViewModel>>(() => queryOptionDataType);
                 });
             SwaggerUiConfig.Customize(c =>
             {

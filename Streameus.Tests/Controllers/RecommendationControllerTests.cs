@@ -17,9 +17,20 @@ namespace Streameus.Controllers.Tests
         public void GetUserRecommendationsTest()
         {
             var userServicesMock = new Mock<IUserServices>();
+            var conferenceServiceMock = new Mock<IConferenceServices>();
 
-            var controller = new RecommendationController(userServicesMock.Object);
+            var controller = new RecommendationController(userServicesMock.Object, conferenceServiceMock.Object);
             controller.GetUserRecommendations();
+        }
+
+        [TestMethod()]
+        public void GetConferenceRecommendationsTest()
+        {
+            var userServicesMock = new Mock<IUserServices>();
+            var conferenceServiceMock = new Mock<IConferenceServices>();
+
+            var controller = new RecommendationController(userServicesMock.Object, conferenceServiceMock.Object);
+            controller.GetConferenceRecommendations();
         }
     }
 }

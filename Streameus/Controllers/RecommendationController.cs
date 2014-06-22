@@ -18,16 +18,20 @@ namespace Streameus.Controllers
     public class RecommendationController : BaseController
     {
         private readonly IUserServices _userServices;
+        private readonly IConferenceServices _conferenceServices;
 
         /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="userServices"></param>
+        /// <param name="conferenceServices"></param>
         /// <exception cref="ArgumentNullException"></exception>
-        public RecommendationController(IUserServices userServices)
+        public RecommendationController(IUserServices userServices, IConferenceServices conferenceServices)
         {
-            if (userServices == null) throw new ArgumentNullException("userServices"); 
+            if (userServices == null) throw new ArgumentNullException("userServices");
+            if (conferenceServices == null) throw new ArgumentNullException("conferenceServices");
             this._userServices = userServices;
+            this._conferenceServices = conferenceServices;
         }
 
         /// <summary>
@@ -45,6 +49,26 @@ namespace Streameus.Controllers
             {
                 suggestions = this._userServices.GetUsersWithBestReputation();
                 suggestions.ForEach(s => suggestionList.Add(new UserViewModel(s)));
+            }
+            return suggestionList;
+        }
+
+        /// <summary>
+        /// Get recommended conferences to attend
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [Route("conferences")]
+        public IEnumerable<ConferenceViewModel> GetConferenceRecommendations()
+        {
+            var suggestionList = new List<ConferenceViewModel>();
+            var suggestions = this._conferenceServices.GetSuggestionsForUser(this.GetCurrentUserId());
+
+            suggestions.ForEach(s => suggestionList.Add(new ConferenceViewModel(s)));
+            if (!suggestionList.Any())
+            {
+                suggestions = this._conferenceServices.GetMostPopularConfs();
+                suggestions.ForEach(s => suggestionList.Add(new ConferenceViewModel(s)));
             }
             return suggestionList;
         }

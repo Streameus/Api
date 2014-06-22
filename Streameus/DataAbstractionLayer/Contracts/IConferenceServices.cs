@@ -30,5 +30,18 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <param name="updatedConf"></param>
         /// <param name="userId">The id of the user who wants to update this conference</param>
         void UpdateConference(Conference updatedConf, int userId);
+
+        /// <summary>
+        /// Get conferences suggested for a user depending on its interests
+        /// </summary>
+        /// <param name="userId">the targeted user</param>
+        /// <returns></returns>
+        IEnumerable<Conference> GetSuggestionsForUser(int userId);
+
+        /// <summary>
+        /// Get the 5 most popular confs
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<Conference> GetMostPopularConfs();
     }
 }

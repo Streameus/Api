@@ -13,6 +13,7 @@ using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.Exceptions;
 using Streameus.Exceptions.HttpErrors;
 using Streameus.Models;
+using Streameus.ViewModels;
 using NoResultException = Streameus.Exceptions.HttpErrors.NoResultException;
 
 
@@ -47,7 +48,6 @@ namespace Streameus.Tests.Controllers
         }
 
         [TestMethod]
-        [ExpectedException(typeof (NoResultException))]
         public void GetTestUserEmptyResult()
         {
             var userServicesMock = new Mock<IUserServices>();
@@ -55,7 +55,8 @@ namespace Streameus.Tests.Controllers
             userServicesMock.Setup(s => s.GetAbonnementsForUser(1)).Throws<Streameus.Exceptions.EmptyResultException>();
 
             var controller = new FollowingController(userServicesMock.Object);
-            controller.Get(1);
+            var result = controller.Get(1);
+            CollectionAssert.AreEqual(new List<UserViewModel>(), result);
         }
 
         [TestMethod()]

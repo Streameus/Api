@@ -88,6 +88,15 @@ namespace Streameus.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can not subscribe to a conference in the past..
+        /// </summary>
+        internal static string ErrorSuscribePastConference {
+            get {
+                return ResourceManager.GetString("ErrorSuscribePastConference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Id provided is invalid.
         /// </summary>
         internal static string InvalidId {

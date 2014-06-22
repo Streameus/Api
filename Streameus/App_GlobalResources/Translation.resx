@@ -126,6 +126,9 @@
   <data name="ForbiddenUserDelete" xml:space="preserve">
     <value>You can only delete your account</value>
   </data>
+  <data name="ErrorSuscribePastConference" xml:space="preserve">
+    <value>You can not subscribe to a conference in the past.</value>
+  </data>
   <data name="InvalidId" xml:space="preserve">
     <value>The Id provided is invalid</value>
   </data>

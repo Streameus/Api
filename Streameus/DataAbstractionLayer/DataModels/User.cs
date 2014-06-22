@@ -53,7 +53,6 @@ namespace Streameus.Models
             this.Abonnements = new HashSet<User>();
             this.Followers = new HashSet<User>();
             this.MessageGroups = new HashSet<MessageGroup>();
-            this.UnreadMessages = new HashSet<MessageGroup>();
             this.SentMessages = new HashSet<Message>();
             this.Parameters = new Parameters();
         }
@@ -203,10 +202,6 @@ namespace Streameus.Models
         /// User followers
         /// </summary>
         public virtual ICollection<User> Followers { get; set; }
-        /// <summary>
-        /// User unread messages
-        /// </summary>
-        public virtual ICollection<MessageGroup> UnreadMessages { get; set; }
         /// <summary>
         /// User sent messages
         /// </summary>

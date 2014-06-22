@@ -40,12 +40,7 @@ namespace Streameus.ViewModels
         /// <summary>
         /// MessageGroup last message date
         /// </summary>
-        public DateTime Date { get; set; }
-
-        /// <summary>
-        /// Flag if the message was read
-        /// </summary>
-        public bool Read { get; set; }
+        public string Date { get; set; }
 
         /// <summary>
         /// default constructor
@@ -68,13 +63,11 @@ namespace Streameus.ViewModels
             {
                 this.Members = messageGroup.Members.ToDictionary(m => m.Id, m => m.FullName);
                 this.ImageId = messageGroup.Members.First().Id;
-                this.Read = true;
             }
             else
             {
                 this.Members = messageGroup.Members.Where(i => i.Id != userId).ToDictionary(m => m.Id, m => m.FullName);
                 this.ImageId = messageGroup.Members.First(i => i.Id != userId).Id;
-                this.Read = !(messageGroup.UnreadBy.Any(u => u.Id == userId));
             }
             if (messageGroup.Messages.Count > 0)
             {
@@ -83,7 +76,7 @@ namespace Streameus.ViewModels
                     this.Message = lastMessage.Content.Substring(0, 63) + "...";
                 else
                     this.Message = lastMessage.Content;
-                this.Date = lastMessage.Date;
+                this.Date = lastMessage.Date.ToShortDateString() + " " + lastMessage.Date.ToShortTimeString();
             }
         }
     }

@@ -119,11 +119,6 @@ namespace Streameus.ViewModels
         public int Conferences { get; set; }
 
         /// <summary>
-        /// User unread messages
-        /// </summary>
-        public int UnreadMessages { get; set; }
-
-        /// <summary>
         /// default constructor
         /// </summary>
         public UserViewModel()
@@ -154,7 +149,6 @@ namespace Streameus.ViewModels
             this.Followers = user.Followers.Count;
             this.Followings = user.Abonnements.Count;
             this.Conferences = user.ConferencesCreated.Count;
-            this.UnreadMessages = user.UnreadMessages.Count;
 
             this.DisplayName = this.FullName.Trim().Length > 0 ? this.FullName : this.Pseudo;
         }

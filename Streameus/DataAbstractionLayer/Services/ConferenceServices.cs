@@ -19,6 +19,7 @@ namespace Streameus.DataAbstractionLayer.Services
     {
         private readonly IConferenceParametersServices _conferenceParametersServices;
         private readonly IEventServices _eventServices;
+        private readonly IUserServices _userServices;
 
         /// <summary>
         /// default constructor
@@ -26,12 +27,19 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="unitOfWork"></param>
         /// <param name="conferenceParametersServices"></param>
         /// <param name="eventServices"></param>
+        /// <param name="userServices"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         public ConferenceServices(IUnitOfWork unitOfWork, IConferenceParametersServices conferenceParametersServices,
-            IEventServices eventServices)
+            IEventServices eventServices, IUserServices userServices)
             : base(unitOfWork)
         {
+            if (unitOfWork == null) throw new ArgumentNullException("unitOfWork");
+            if (conferenceParametersServices == null) throw new ArgumentNullException("conferenceParametersServices");
+            if (eventServices == null) throw new ArgumentNullException("eventServices");
+            if (userServices == null) throw new ArgumentNullException("userServices");
             this._conferenceParametersServices = conferenceParametersServices;
             this._eventServices = eventServices;
+            this._userServices = userServices;
         }
 
         /// <summary>
@@ -91,6 +99,39 @@ namespace Streameus.DataAbstractionLayer.Services
             {
                 throw new ForbiddenException(Translation.ForbiddenConfUpdate);
             }
+        }
+
+        /// <summary>
+        /// Get conferences suggested for a user depending on its interests
+        /// </summary>
+        /// <param name="userId">the targeted user</param>
+        /// <returns></returns>
+        public IEnumerable<Conference> GetSuggestionsForUser(int userId)
+        {
+            var user = this._userServices.GetById(userId);
+            var results = user.ConferencesRegistered
+                .Where(potentialConf =>
+                    !user.ConferencesRegistered.Contains(potentialConf) &&
+                    potentialConf.Time > DateTime.Now)
+                .GroupBy(uniqueConf => uniqueConf)
+                .Select(uniqueConf => new {uniqueConf.Key, Count = uniqueConf.Count()})
+                .OrderByDescending(group => group.Count)
+                .Take(5)
+                .Select(group => group.Key);
+            return results;
+        }
+
+        /// <summary>
+        /// Get the 5 most popular confs
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Conference> GetMostPopularConfs()
+        {
+            return
+                this.GetDbSet<Conference>()
+                    .Where(c => c.Time > DateTime.Now)
+                    .OrderByDescending(c => c.Participants.Count)
+                    .Take(5);
         }
     }
 }

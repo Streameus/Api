@@ -142,6 +142,20 @@ namespace Streameus.DataAbstractionLayer.Services
                         TargetId = conf.Id,
                         Content = conf.Name
                     },
+                    new EventItem
+                    {
+                        Pos = 2,
+                        TargetType = DataBaseEnums.EventItemType.DateTime,
+                        TargetId = conf.Id,
+                        Content = conf.Time.Day.ToString() + "/" + conf.Time.Month.ToString()
+                    },
+                    new EventItem
+                    {
+                        Pos = 3,
+                        TargetType = DataBaseEnums.EventItemType.DateTime,
+                        TargetId = conf.Id,
+                        Content = conf.Time.Hour.ToString()
+                    },
                 }
             });
         }

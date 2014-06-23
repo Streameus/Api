@@ -166,6 +166,8 @@ namespace Streameus.DataAbstractionLayer.Initializers
                     {
                         new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[2].Id, Content = users[2].Pseudo},
                         new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference[2].Id, Content = conference[2].Name},
+                        new EventItem {Pos = 2, TargetType = DataBaseEnums.EventItemType.DateTime, TargetId = conference[2].Id, Content = conference[2].Time.Day.ToString() + "/" + conference[4].Time.Month.ToString()},
+                        new EventItem {Pos = 3, TargetType = DataBaseEnums.EventItemType.DateTime, TargetId = conference[2].Id, Content = conference[2].Time.Hour.ToString()},
                     }
                 },
                 new Event {Author = users[1], Type = DataBaseEnums.EventType.StartFollow, Date = DateTime.Now,
@@ -189,6 +191,8 @@ namespace Streameus.DataAbstractionLayer.Initializers
                     {
                         new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[5].Id, Content = users[5].Pseudo},
                         new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference[4].Id, Content = conference[4].Name},
+                        new EventItem {Pos = 2, TargetType = DataBaseEnums.EventItemType.DateTime, TargetId = conference[4].Id, Content = conference[4].Time.Day.ToString() + "/" + conference[4].Time.Month.ToString()},
+                        new EventItem {Pos = 3, TargetType = DataBaseEnums.EventItemType.DateTime, TargetId = conference[4].Id, Content = conference[4].Time.Hour.ToString()},
                     }
                 },
                 new Event {Author = users[5], Type = DataBaseEnums.EventType.StartFollow, Date = DateTime.Now,

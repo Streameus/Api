@@ -70,6 +70,15 @@ namespace Streameus.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can not subscribe to a conference in the past..
+        /// </summary>
+        internal static string ErrorSuscribePastConference {
+            get {
+                return ResourceManager.GetString("ErrorSuscribePastConference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You do not have the rights to update this conference.
         /// </summary>
         internal static string ForbiddenConfUpdate {
@@ -84,15 +93,6 @@ namespace Streameus.App_GlobalResources {
         internal static string ForbiddenUserDelete {
             get {
                 return ResourceManager.GetString("ForbiddenUserDelete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You can not subscribe to a conference in the past..
-        /// </summary>
-        internal static string ErrorSuscribePastConference {
-            get {
-                return ResourceManager.GetString("ErrorSuscribePastConference", resourceCulture);
             }
         }
         

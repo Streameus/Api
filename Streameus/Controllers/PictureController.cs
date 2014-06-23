@@ -23,6 +23,12 @@ namespace Streameus.Controllers
         private readonly IUserServices _userServices;
         private readonly IConferenceServices _conferenceServices;
 
+        private enum PictureType
+        {
+            User,
+            Conference
+        }
+
         /// <summary>
         ///     Default constructor
         /// </summary>
@@ -213,7 +219,7 @@ namespace Streameus.Controllers
             File.Delete(path);
         }
 
-        private HttpResponseMessage ReturnPicture(string filename)
+        private HttpResponseMessage ReturnPicture(string filename, PictureType pictureType)
         {
             string path;
             string type;
@@ -230,7 +236,20 @@ namespace Streameus.Controllers
             }
             else
             {
-                var defaultPicture = HttpContext.Current.Server.MapPath("~/Content/defaultUser.png");
+                string defaultPicture;
+                switch (pictureType)
+                {
+                    case PictureType.Conference:
+                        defaultPicture = HttpContext.Current.Server.MapPath("~/Content/defaultUser.png");
+                            //Todo gerer l'image par defaut des confs!
+                        break;
+                    case PictureType.User:
+                        defaultPicture = HttpContext.Current.Server.MapPath("~/Content/defaultUser.png");
+                        break;
+                    default:
+                        defaultPicture = HttpContext.Current.Server.MapPath("~/Content/defaultUser.png");
+                        break;
+                }
                 path = defaultPicture;
                 type = "png";
             }

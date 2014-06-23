@@ -84,7 +84,7 @@ namespace Streameus.Controllers
         {
             var root = HttpContext.Current.Server.MapPath("~/App_Data/Picture/");
             var file = root + id;
-            return this.ReturnPicture(file);
+            return this.ReturnPicture(file, PictureType.User);
         }
 
         // GET api/picture/{id}
@@ -98,7 +98,7 @@ namespace Streameus.Controllers
         {
             var root = HttpContext.Current.Server.MapPath("~/App_Data/Picture/");
             var file = root + "conference" + id;
-            return this.ReturnPicture(file);
+            return this.ReturnPicture(file, PictureType.Conference);
         }
 
 
@@ -241,7 +241,7 @@ namespace Streameus.Controllers
                 {
                     case PictureType.Conference:
                         defaultPicture = HttpContext.Current.Server.MapPath("~/Content/defaultUser.png");
-                            //Todo gerer l'image par defaut des confs!
+                        //Todo gerer l'image par defaut des confs!
                         break;
                     case PictureType.User:
                         defaultPicture = HttpContext.Current.Server.MapPath("~/Content/defaultUser.png");

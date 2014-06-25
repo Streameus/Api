@@ -79,6 +79,15 @@ namespace Streameus.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File not found!.
+        /// </summary>
+        internal static string FileNotFound {
+            get {
+                return ResourceManager.GetString("FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You do not have the rights to update this conference.
         /// </summary>
         internal static string ForbiddenConfUpdate {

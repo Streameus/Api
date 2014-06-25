@@ -141,4 +141,7 @@
   <data name="UserWithSameEmailAlreadyExists" xml:space="preserve">
     <value>Un utilisateur avec la meme email existe deja</value>
   </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>Fichier non trouve</value>
+  </data>
 </root>

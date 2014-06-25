@@ -80,10 +80,9 @@ namespace Streameus.Controllers
         /// <returns></returns>
         /// <exception cref="ApiController.NotFound">Picture not found</exception>
         [Route("api/Picture/User/{id}")]
-        public HttpResponseMessage Get(int id)
+        public HttpResponseMessage GetUser(int id)
         {
-            var root = HttpContext.Current.Server.MapPath("~/App_Data/Picture/");
-            var file = root + id;
+            var file = id;
             return this.ReturnPicture(file, PictureType.User);
         }
 
@@ -96,9 +95,7 @@ namespace Streameus.Controllers
         [Route("api/Picture/Conference/{id}")]
         public HttpResponseMessage GetConference(int id)
         {
-            var root = HttpContext.Current.Server.MapPath("~/App_Data/Picture/");
-            var file = root + "conference" + id;
-            return this.ReturnPicture(file, PictureType.Conference);
+            return this.ReturnPicture(id, PictureType.Conference);
         }
 
 
@@ -219,19 +216,26 @@ namespace Streameus.Controllers
             File.Delete(path);
         }
 
-        private HttpResponseMessage ReturnPicture(string filename, PictureType pictureType)
+        private HttpResponseMessage ReturnPicture(int fileId, PictureType pictureType)
         {
             string path;
             string type;
+            string fileName;
+            var root = HttpContext.Current.Server.MapPath("~/App_Data/Picture/");
 
-            if (File.Exists(filename + ".jpg"))
+            if (pictureType == PictureType.Conference)
+                fileName = root + "conference" + fileId;
+            else
+                fileName = root + fileId;
+
+            if (File.Exists(fileName + ".jpg"))
             {
-                path = filename + ".jpg";
+                path = fileName + ".jpg";
                 type = "jpeg";
             }
-            else if (File.Exists(filename + ".png"))
+            else if (File.Exists(fileName + ".png"))
             {
-                path = filename + ".png";
+                path = fileName + ".png";
                 type = "png";
             }
             else
@@ -240,8 +244,16 @@ namespace Streameus.Controllers
                 switch (pictureType)
                 {
                     case PictureType.Conference:
-                        defaultPicture = HttpContext.Current.Server.MapPath("~/Content/defaultUser.png");
-                        //Todo gerer l'image par defaut des confs!
+                        try
+                        {
+                            var conference = this._conferenceServices.GetById(fileId);
+                            defaultPicture =
+                                HttpContext.Current.Server.MapPath("~/Content/category" + conference.CategoryId + ".png");
+                        }
+                        catch (NotFoundException)
+                        {
+                            defaultPicture = HttpContext.Current.Server.MapPath("~/Content/defaultConference.png");
+                        }
                         break;
                     case PictureType.User:
                         defaultPicture = HttpContext.Current.Server.MapPath("~/Content/defaultUser.png");
@@ -254,16 +266,22 @@ namespace Streameus.Controllers
                 type = "png";
             }
 
-            var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-
-            return new HttpResponseMessage(HttpStatusCode.OK)
+            try
             {
-                Content =
-                    new StreamContent(fileStream)
-                    {
-                        Headers = {ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/" + type)}
-                    }
-            };
+                var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+                return new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content =
+                        new StreamContent(fileStream)
+                        {
+                            Headers = {ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/" + type)}
+                        }
+                };
+            }
+            catch (FileNotFoundException)
+            {
+                throw new NotFoundException(Translation.FileNotFound);
+            }
         }
     }
 }

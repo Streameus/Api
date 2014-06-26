@@ -227,5 +227,18 @@ namespace Streameus.Controllers
                 //We don't do anything because the result is the same
             }
         }
+
+        /// <summary>
+        /// Start a conf, changes its status from AVenir to enCours
+        /// </summary>
+        /// <param name="id"></param>
+        /// <exception cref="ForbiddenException"></exception>
+        [Route("{id}/start")]
+        [Authorize]
+        public void GetStartConference(int id)
+        {
+            if (!this._conferenceServices.StartConference(id, this.GetCurrentUserId()))
+                throw new ForbiddenException(Translation.ForbiddenConfUpdate);
+        }
     }
 }

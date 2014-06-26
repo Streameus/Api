@@ -1,4 +1,5 @@
 ﻿using System;
+using Streameus.Models;
 
 namespace Streameus.ViewModels
 {
@@ -21,5 +22,23 @@ namespace Streameus.ViewModels
         /// Date conf
         /// </summary>
         public DateTime Date;
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public ConferenceAgendaViewModel()
+        {
+        }
+
+        /// <summary>
+        /// Construct the object from a conference
+        /// </summary>
+        /// <param name="c"></param>
+        public ConferenceAgendaViewModel(Conference c)
+        {
+            Id = c.Id;
+            Name = c.Name;
+            Date = c.Time;
+        }
     }
 }

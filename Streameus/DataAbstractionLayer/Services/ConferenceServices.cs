@@ -156,10 +156,11 @@ namespace Streameus.DataAbstractionLayer.Services
             var conference = this.GetById(conferenceId);
             var user = this._userServices.GetById(userId);
 
-            if (conference.Time > DateTime.Now)
+            if (conference.Time > DateTime.Now || conference.Status == DataBaseEnums.ConfStatus.EnCours ||
+                conference.Status == DataBaseEnums.ConfStatus.AVenir)
             {
-                if (!conference.Participants.Contains(user))
-                    conference.Participants.Add(user);
+                if (!conference.Registred.Contains(user))
+                    conference.Registred.Add(user);
                 else
                     throw new DuplicateEntryException(Translation.UserHasAlreadySuscribed);
 
@@ -183,9 +184,9 @@ namespace Streameus.DataAbstractionLayer.Services
 
             if (conference.Time > DateTime.Now)
             {
-                if (!conference.Participants.Contains(user))
+                if (!conference.Registred.Contains(user))
                     throw new DuplicateEntryException(Translation.UserIsNotEnlisted);
-                if (conference.Participants.Remove(user))
+                if (conference.Registred.Remove(user))
                 {
                     this.Save(conference);
                 }
@@ -196,6 +197,14 @@ namespace Streameus.DataAbstractionLayer.Services
             }
             else
                 throw new ForbiddenException(Translation.ErrorSuscribePastConference);
+        }
+
+        public IEnumerable<Conference> GetLiveConferenceForUser(int userId)
+        {
+            var user = this._userServices.GetById(userId);
+            return
+                user.ConferencesRegistered.Where(
+                    c => c.Time > DateTime.Now && c.Status == DataBaseEnums.ConfStatus.EnCours);
         }
     }
 }

@@ -159,9 +159,7 @@ namespace Streameus.DataAbstractionLayer.Services
             if (!conference.Participants.Contains(user))
                 conference.Participants.Add(user);
             else
-            {
                 throw new DuplicateEntryException(Translation.UserHasAlreadySuscribed);
-            }
             this.Save(conference);
         }
 

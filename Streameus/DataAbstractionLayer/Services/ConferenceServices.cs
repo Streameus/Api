@@ -139,9 +139,19 @@ namespace Streameus.DataAbstractionLayer.Services
         /// </summary>
         /// <param name="id">The conference Id</param>
         /// <returns></returns>
-        public IQueryable<User> GetParticipantsById(int id)
+        public IQueryable<User> GetParticipantsByConferenceId(int id)
         {
             return this.GetById(id).Participants.AsQueryable();
+        }
+
+        /// <summary>
+        /// Get all users registered to a conference
+        /// </summary>
+        /// <param name="id">The conference Id</param>
+        /// <returns></returns>
+        public IQueryable<User> GetRegisteredUsersByConferenceId(int id)
+        {
+            return this.GetById(id).Registred.AsQueryable();
         }
 
         /// <summary>
@@ -204,7 +214,7 @@ namespace Streameus.DataAbstractionLayer.Services
             var user = this._userServices.GetById(userId);
             return
                 user.ConferencesRegistered.Where(
-                    c => c.Time > DateTime.Now && c.Status == DataBaseEnums.ConfStatus.EnCours);
+                    c => c.Time <= DateTime.Now && c.Status == DataBaseEnums.ConfStatus.EnCours);
         }
     }
 }

@@ -172,10 +172,24 @@ namespace Streameus.Controllers
         [Route("{id}/Participants")]
         public IEnumerable<UserViewModel> GetParticipants(int id)
         {
-            IQueryable<User> participantsList = this._conferenceServices.GetParticipantsById(id);
+            IQueryable<User> participantsList = this._conferenceServices.GetParticipantsByConferenceId(id);
             var participantsVmList = new List<UserViewModel>();
             participantsList.ForEach(p => participantsVmList.Add(new UserViewModel(p)));
             return participantsVmList;
+        }
+
+        /// <summary>
+        /// Get all the user registered to a conference
+        /// </summary>
+        /// <param name="id">The conference Id</param>
+        /// <returns></returns>
+        [Route("{id}/Registered")]
+        public IEnumerable<UserViewModel> GetRegistered(int id)
+        {
+            IQueryable<User> registeredParticipantsList = this._conferenceServices.GetRegisteredUsersByConferenceId(id);
+            var registeredParticipantsVmList = new List<UserViewModel>();
+            registeredParticipantsList.ForEach(p => registeredParticipantsVmList.Add(new UserViewModel(p)));
+            return registeredParticipantsVmList;
         }
 
         /// <summary>

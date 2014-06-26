@@ -50,7 +50,14 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// </summary>
         /// <param name="id">The conference Id</param>
         /// <returns></returns>
-        IQueryable<User> GetParticipantsById(int id);
+        IQueryable<User> GetParticipantsByConferenceId(int id);
+
+        /// <summary>
+        /// Get all users registered to a conference
+        /// </summary>
+        /// <param name="id">The conference Id</param>
+        /// <returns></returns>
+        IQueryable<User> GetRegisteredUsersByConferenceId(int id);
 
         /// <summary>
         /// Suscribe a user to a conference
@@ -76,5 +83,6 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <param name="userId">the id of the user</param>
         /// <returns></returns>
         IEnumerable<Conference> GetLiveConferenceForUser(int userId);
+
     }
 }

@@ -69,5 +69,12 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <param name="userId">The user Id</param>
         /// <exception cref="DuplicateEntryException">The user is not participating to this conf</exception>
         void UnsuscribeUserFromConference(int conferenceId, int userId);
+
+        /// <summary>
+        /// Returns all the currently live conferences a user suscribed to
+        /// </summary>
+        /// <param name="userId">the id of the user</param>
+        /// <returns></returns>
+        IEnumerable<Conference> GetLiveConferenceForUser(int userId);
     }
 }

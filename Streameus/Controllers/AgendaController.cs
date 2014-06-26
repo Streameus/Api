@@ -9,7 +9,9 @@ using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.Enums;
 using Streameus.Exceptions;
 using Streameus.Exceptions.HttpErrors;
+using Streameus.Models;
 using Streameus.ViewModels;
+using WebGrease.Css.Extensions;
 
 
 namespace Streameus.Controllers
@@ -86,6 +88,17 @@ namespace Streameus.Controllers
             participant.ConferencesRegistered.Add(conf);
             this._userServices.UpdateUser(participant);
             return this.Get();
+        }
+
+        [Route("live")]
+        public IEnumerable<ConferenceAgendaViewModel> GetLive(int userId)
+        {
+            var conferences = this._conferenceServices.GetLiveConferenceForUser(userId);
+            List<ConferenceAgendaViewModel> liveConferences = new List<ConferenceAgendaViewModel>();
+            var test = conferences.Select(c => new ConferenceAgendaViewModel() {Date = c.Time, Id = c.Id, Name = c.Name});
+
+//            conferences.ForEach(c => liveConferences.Add(new ConferenceAgendaViewModel(c)));
+            return test;
         }
     }
 }

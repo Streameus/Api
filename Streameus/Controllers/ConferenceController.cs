@@ -233,7 +233,7 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <exception cref="ForbiddenException"></exception>
-        [Route("{id}/start")]
+        [Route("{id}/Start")]
         [Authorize]
         public void GetStartConference(int id)
         {

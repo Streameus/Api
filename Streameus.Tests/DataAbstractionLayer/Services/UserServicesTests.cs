@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataAbstractionLayer.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Streameus.DataBaseAccess;
 using Streameus.Models;
-using Streameus.Tests;
 
-namespace Streameus.DataAbstractionLayer.Services.Tests
+namespace Streameus.Tests.DataAbstractionLayer.Services
 {
     [TestClass()]
     public class UserServicesTests

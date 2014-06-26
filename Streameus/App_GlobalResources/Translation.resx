@@ -144,4 +144,10 @@
   <data name="FileNotFound" xml:space="preserve">
     <value>File not found!</value>
   </data>
+  <data name="UserHasAlreadySuscribed" xml:space="preserve">
+    <value>You have already suscribed to this conference</value>
+  </data>
+  <data name="UserIsNotEnlisted" xml:space="preserve">
+    <value>You haven't suscribed to this conference</value>
+  </data>
 </root>

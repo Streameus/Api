@@ -181,6 +181,7 @@
     <Compile Include="Controllers\FollowingControllerTests.cs" />
     <Compile Include="Controllers\RecommendationControllerTests.cs" />
     <Compile Include="Controllers\ResourceControllerTests.cs" />
+    <Compile Include="DataAbstractionLayer\Services\ConferenceServicesTests.cs" />
     <Compile Include="DataAbstractionLayer\Services\UserServicesTests.cs" />
     <Compile Include="IdentityMocker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -133,5 +133,60 @@ namespace Streameus.DataAbstractionLayer.Services
                     .OrderByDescending(c => c.Participants.Count)
                     .Take(5);
         }
+
+        /// <summary>
+        /// Get all users participating to a conference
+        /// </summary>
+        /// <param name="id">The conference Id</param>
+        /// <returns></returns>
+        public IQueryable<User> GetParticipantsById(int id)
+        {
+            return this.GetById(id).Participants.AsQueryable();
+        }
+
+        /// <summary>
+        /// Suscribe a user to a conference
+        /// </summary>
+        /// <remarks>This method adds the user to the Participants List</remarks>
+        /// <param name="conferenceId">The conference Id</param>
+        /// <param name="userId">The user Id</param>
+        /// <exception cref="DuplicateEntryException">The use has already suscribed to the conf</exception>
+        public void SuscribeUserToConference(int conferenceId, int userId)
+        {
+            var conference = this.GetById(conferenceId);
+            var user = this._userServices.GetById(userId);
+
+            if (!conference.Participants.Contains(user))
+                conference.Participants.Add(user);
+            else
+            {
+                throw new DuplicateEntryException(Translation.UserHasAlreadySuscribed);
+            }
+            this.Save(conference);
+        }
+
+        /// <summary>
+        /// Unsuscribe a user from a conference
+        /// </summary>
+        /// <remarks>This method removes the user from the Participants List</remarks>
+        /// <param name="conferenceId">The conference Id</param>
+        /// <param name="userId">The user Id</param>
+        /// <exception cref="DuplicateEntryException">The user is not participating to this conf</exception>
+        public void UnsuscribeUserFromConference(int conferenceId, int userId)
+        {
+            var conference = this.GetById(conferenceId);
+            var user = this._userServices.GetById(userId);
+
+            if (!conference.Participants.Contains(user))
+                throw new DuplicateEntryException(Translation.UserIsNotEnlisted);
+            if (conference.Participants.Remove(user))
+            {
+                this.Save(conference);
+            }
+            else
+            {
+                throw new Exception("Can't delete user from collection");
+            }
+        }
     }
 }

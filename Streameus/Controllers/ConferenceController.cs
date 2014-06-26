@@ -201,8 +201,8 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="id">the id of the conference you want to unsuscribe from</param>
         [Authorize]
-        [Route("{id}/Suscribe")]
-        public void DeleteUnSuscribe(int id)
+        [Route("{id}/Unsuscribe")]
+        public void GetUnSuscribe(int id)
         {
             try
             {

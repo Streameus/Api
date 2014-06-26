@@ -182,14 +182,13 @@ namespace Streameus.Controllers
         /// Suscribe to a conference
         /// </summary>
         /// <param name="id">the id of the conference you want to suscribe to</param>
-        /// <param name="userId"></param>
         [Route("{id}/Suscribe")]
-        public void GetSuscribe(int id, int userId)
+        [Authorize]
+        public void GetSuscribe(int id)
         {
             try
             {
-                //todo Mettre le authorize!
-                this._conferenceServices.SuscribeUserToConference(id, userId);
+                this._conferenceServices.SuscribeUserToConference(id, this.GetCurrentUserId());
             }
             catch (DuplicateEntryException)
             {
@@ -201,14 +200,13 @@ namespace Streameus.Controllers
         /// Unsuscribe from a conference
         /// </summary>
         /// <param name="id">the id of the conference you want to unsuscribe from</param>
-        /// <param name="userId"></param>
+        [Authorize]
         [Route("{id}/Suscribe")]
-        public void DeleteUnSuscribe(int id, int userId)
+        public void DeleteUnSuscribe(int id)
         {
             try
             {
-                //todo Mettre le authorize!
-                this._conferenceServices.UnsuscribeUserFromConference(id, userId);
+                this._conferenceServices.UnsuscribeUserFromConference(id, this.GetCurrentUserId());
             }
             catch (DuplicateEntryException)
             {

@@ -156,11 +156,17 @@ namespace Streameus.DataAbstractionLayer.Services
             var conference = this.GetById(conferenceId);
             var user = this._userServices.GetById(userId);
 
-            if (!conference.Participants.Contains(user))
-                conference.Participants.Add(user);
+            if (conference.Time > DateTime.Now)
+            {
+                if (!conference.Participants.Contains(user))
+                    conference.Participants.Add(user);
+                else
+                    throw new DuplicateEntryException(Translation.UserHasAlreadySuscribed);
+
+                this.Save(conference);
+            }
             else
-                throw new DuplicateEntryException(Translation.UserHasAlreadySuscribed);
-            this.Save(conference);
+                throw new ForbiddenException(Translation.ErrorSuscribePastConference);
         }
 
         /// <summary>
@@ -175,16 +181,21 @@ namespace Streameus.DataAbstractionLayer.Services
             var conference = this.GetById(conferenceId);
             var user = this._userServices.GetById(userId);
 
-            if (!conference.Participants.Contains(user))
-                throw new DuplicateEntryException(Translation.UserIsNotEnlisted);
-            if (conference.Participants.Remove(user))
+            if (conference.Time > DateTime.Now)
             {
-                this.Save(conference);
+                if (!conference.Participants.Contains(user))
+                    throw new DuplicateEntryException(Translation.UserIsNotEnlisted);
+                if (conference.Participants.Remove(user))
+                {
+                    this.Save(conference);
+                }
+                else
+                {
+                    throw new Exception("Can't delete user from collection");
+                }
             }
             else
-            {
-                throw new Exception("Can't delete user from collection");
-            }
+                throw new ForbiddenException(Translation.ErrorSuscribePastConference);
         }
     }
 }

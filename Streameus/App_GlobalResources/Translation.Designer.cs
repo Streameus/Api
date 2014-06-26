@@ -133,6 +133,24 @@ namespace Streameus.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have already suscribed to this conference.
+        /// </summary>
+        internal static string UserHasAlreadySuscribed {
+            get {
+                return ResourceManager.GetString("UserHasAlreadySuscribed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You haven&apos;t suscribed to this conference.
+        /// </summary>
+        internal static string UserIsNotEnlisted {
+            get {
+                return ResourceManager.GetString("UserIsNotEnlisted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User with the same email already exists.
         /// </summary>
         internal static string UserWithSameEmailAlreadyExists {

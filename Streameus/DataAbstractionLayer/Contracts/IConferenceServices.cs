@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Streameus.Exceptions;
 using Streameus.Models;
 
 namespace Streameus.DataAbstractionLayer.Contracts
@@ -43,5 +44,30 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// </summary>
         /// <returns></returns>
         IEnumerable<Conference> GetMostPopularConfs();
+
+        /// <summary>
+        /// Get all users participating to a conference
+        /// </summary>
+        /// <param name="id">The conference Id</param>
+        /// <returns></returns>
+        IQueryable<User> GetParticipantsById(int id);
+
+        /// <summary>
+        /// Suscribe a user to a conference
+        /// </summary>
+        /// <remarks>This method adds the user to the Participants List</remarks>
+        /// <param name="conferenceId">The conference Id</param>
+        /// <param name="userId">The user Id</param>
+        /// <exception cref="DuplicateEntryException">The use has already suscribed to the conf</exception>
+        void SuscribeUserToConference(int conferenceId, int userId);
+
+        /// <summary>
+        /// Unsuscribe a user from a conference
+        /// </summary>
+        /// <remarks>This method removes the user from the Participants List</remarks>
+        /// <param name="conferenceId">The conference Id</param>
+        /// <param name="userId">The user Id</param>
+        /// <exception cref="DuplicateEntryException">The user is not participating to this conf</exception>
+        void UnsuscribeUserFromConference(int conferenceId, int userId);
     }
 }

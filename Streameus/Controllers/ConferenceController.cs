@@ -143,9 +143,9 @@ namespace Streameus.Controllers
             var updatedConf = this._conferenceServices.GetById(conference.Id);
             if (updatedConf == null)
                 throw new NotFoundException("Conference not found");
-                updatedConf.Name = conference.Name;
-                updatedConf.Description = conference.Description;
-                updatedConf.ScheduledDuration = conference.ScheduledDuration;
+            updatedConf.Name = conference.Name;
+            updatedConf.Description = conference.Description;
+            updatedConf.ScheduledDuration = conference.ScheduledDuration;
             if (conference.Time != null)
                 updatedConf.Time = conference.Time.Value;
             this._conferenceServices.UpdateConference(updatedConf, this.GetCurrentUserId());
@@ -162,6 +162,58 @@ namespace Streameus.Controllers
         public void Delete(int id)
         {
             this._conferenceServices.Delete(id);
+        }
+
+        /// <summary>
+        /// Get all the user participating to a conference
+        /// </summary>
+        /// <param name="id">The conference Id</param>
+        /// <returns></returns>
+        [Route("{id}/Participants")]
+        public IEnumerable<UserViewModel> GetParticipants(int id)
+        {
+            IQueryable<User> participantsList = this._conferenceServices.GetParticipantsById(id);
+            var participantsVmList = new List<UserViewModel>();
+            participantsList.ForEach(p => participantsVmList.Add(new UserViewModel(p)));
+            return participantsVmList;
+        }
+
+        /// <summary>
+        /// Suscribe to a conference
+        /// </summary>
+        /// <param name="id">the id of the conference you want to suscribe to</param>
+        /// <param name="userId"></param>
+        [Route("{id}/Suscribe")]
+        public void GetSuscribe(int id, int userId)
+        {
+            try
+            {
+                //todo Mettre le authorize!
+                this._conferenceServices.SuscribeUserToConference(id, userId);
+            }
+            catch (DuplicateEntryException)
+            {
+                //We don't do anything because the result is the same
+            }
+        }
+
+        /// <summary>
+        /// Unsuscribe from a conference
+        /// </summary>
+        /// <param name="id">the id of the conference you want to unsuscribe from</param>
+        /// <param name="userId"></param>
+        [Route("{id}/Suscribe")]
+        public void DeleteUnSuscribe(int id, int userId)
+        {
+            try
+            {
+                //todo Mettre le authorize!
+                this._conferenceServices.UnsuscribeUserFromConference(id, userId);
+            }
+            catch (DuplicateEntryException)
+            {
+                //We don't do anything because the result is the same
+            }
         }
     }
 }

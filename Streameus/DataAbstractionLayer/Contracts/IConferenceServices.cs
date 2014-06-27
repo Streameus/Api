@@ -85,6 +85,13 @@ namespace Streameus.DataAbstractionLayer.Contracts
         IEnumerable<Conference> GetLiveConferenceForUser(int userId);
 
         /// <summary>
+        /// Returns all the conferences a user suscribed to airing in the next 24 hours
+        /// </summary>
+        /// <param name="userId">the id of the user</param>
+        /// <returns></returns>
+        IEnumerable<Conference> GetSoonConferenceForUser(int userId);
+
+        /// <summary>
         /// Start a conference, change its status from AVenir to EnCours
         /// </summary>
         /// <remarks>User needs to be the owner</remarks>

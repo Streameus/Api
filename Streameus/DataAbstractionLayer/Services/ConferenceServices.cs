@@ -166,6 +166,9 @@ namespace Streameus.DataAbstractionLayer.Services
             var conference = this.GetById(conferenceId);
             var user = this._userServices.GetById(userId);
 
+            if (conference.OwnerId == userId)
+                throw new ForbiddenException(Translation.OwnerCannotSuscribeToItsConf);
+
             if (conference.Time > DateTime.Now || conference.Status == DataBaseEnums.ConfStatus.EnCours ||
                 conference.Status == DataBaseEnums.ConfStatus.AVenir)
             {
@@ -215,6 +218,16 @@ namespace Streameus.DataAbstractionLayer.Services
             return
                 user.ConferencesRegistered.Where(
                     c => c.Time <= DateTime.Now && c.Status == DataBaseEnums.ConfStatus.EnCours);
+        }
+
+        public IEnumerable<Conference> GetSoonConferenceForUser(int userId)
+        {
+            var user = this._userServices.GetById(userId);
+            var today = DateTime.Now;
+            var tomorrow = DateTime.Now.AddDays(1);
+            return
+                user.ConferencesRegistered.Where(
+                    c => c.Time >= today && c.Time <= tomorrow);
         }
 
         /// <summary>

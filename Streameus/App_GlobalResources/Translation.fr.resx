@@ -150,4 +150,7 @@
   <data name="UserIsNotEnlisted" xml:space="preserve">
     <value>Vous n'etes pas inscrit a cette conference</value>
   </data>
+  <data name="OwnerCannotSuscribeToItsConf" xml:space="preserve">
+    <value>Vous ne pouvez pas vous inscrire a votre propre conference!</value>
+  </data>
 </root>

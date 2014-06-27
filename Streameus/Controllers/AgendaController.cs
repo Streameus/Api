@@ -66,40 +66,54 @@ namespace Streameus.Controllers
             return confList;
         }
 
-        // POST api/agenda/subscribe/5
-        /// <summary>
-        /// Souscription a une conference
-        /// </summary>
-        /// <param name="id">Conference ID</param>
-        /// <returns></returns>
-        /// <responseCode></responseCode>
-        /// <exception cref="NotFoundException">Conference not found</exception>
-        /// <exception cref="ForbiddenException">Conference is already done</exception>
-        [Route("subscribe/{id}")]
-        [Authorize]
-        public IEnumerable<ConferenceAgendaViewModel> Post(int id)
-        {
-            var conf = this._conferenceServices.GetById(id);
-            if (conf == null)
-                throw new NotFoundException(Translation.ConferenceNotFound);
-            var participant = this._userServices.GetById(this.GetCurrentUserId());
-            if (conf.Status == DataBaseEnums.ConfStatus.Finie)
-                throw new ForbiddenException(Translation.ErrorSuscribePastConference);
-            participant.ConferencesRegistered.Add(conf);
-            this._userServices.UpdateUser(participant);
-            return this.Get();
-        }
+//        // POST api/agenda/subscribe/5
+//        /// <summary>
+//        /// Souscription a une conference
+//        /// </summary>
+//        /// <param name="id">Conference ID</param>
+//        /// <returns></returns>
+//        /// <responseCode></responseCode>
+//        /// <exception cref="NotFoundException">Conference not found</exception>
+//        /// <exception cref="ForbiddenException">Conference is already done</exception>
+//        [Route("Subscribe/{id}")]
+//        [Authorize]
+//        public IEnumerable<ConferenceAgendaViewModel> Post(int id)
+//        {
+//            var conf = this._conferenceServices.GetById(id);
+//            if (conf == null)
+//                throw new NotFoundException(Translation.ConferenceNotFound);
+//            var participant = this._userServices.GetById(this.GetCurrentUserId());
+//            if (conf.Status == DataBaseEnums.ConfStatus.Finie)
+//                throw new ForbiddenException(Translation.ErrorSuscribePastConference);
+//            participant.ConferencesRegistered.Add(conf);
+//            this._userServices.UpdateUser(participant);
+//            return this.Get();
+//        }
 
         /// <summary>
         /// Get all the ongoing conferences the user suscribed to
         /// </summary>
         /// <returns></returns>
-        [Route("live")]
+        [Route("Live")]
         [Authorize]
         public IEnumerable<ConferenceAgendaViewModel> GetLive()
         {
             var conferences =
                 this._conferenceServices.GetLiveConferenceForUser(this.GetCurrentUserId())
+                    .Select(c => new ConferenceAgendaViewModel() {Date = c.Time, Id = c.Id, Name = c.Name});
+            return conferences;
+        }
+
+        /// <summary>
+        /// Get all conference the user suscribed to airing in the next 24 hours
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [Route("Soon")]
+        public IEnumerable<ConferenceAgendaViewModel> GetSoon()
+        {
+            var conferences =
+                this._conferenceServices.GetSoonConferenceForUser(this.GetCurrentUserId())
                     .Select(c => new ConferenceAgendaViewModel() {Date = c.Time, Id = c.Id, Name = c.Name});
             return conferences;
         }

@@ -133,6 +133,15 @@ namespace Streameus.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The owner of the conference cannot suscribe to its own conference.
+        /// </summary>
+        internal static string OwnerCannotSuscribeToItsConf {
+            get {
+                return ResourceManager.GetString("OwnerCannotSuscribeToItsConf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You have already suscribed to this conference.
         /// </summary>
         internal static string UserHasAlreadySuscribed {

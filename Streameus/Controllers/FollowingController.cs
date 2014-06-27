@@ -71,7 +71,7 @@ namespace Streameus.Controllers
         [Authorize]
         public bool Post(int id)
         {
-            var userId = Convert.ToInt32(this.User.Identity.GetUserId());
+            var userId = this.GetCurrentUserId();
             return this._userServices.AddFollowing(userId, id);
         }
 
@@ -84,7 +84,7 @@ namespace Streameus.Controllers
         [Authorize]
         public bool Delete(int id)
         {
-            var userId = Convert.ToInt32(this.User.Identity.GetUserId());
+            var userId = this.GetCurrentUserId();
             return this._userServices.RemoveFollowing(userId, id);
         }
     }

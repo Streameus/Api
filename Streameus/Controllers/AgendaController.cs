@@ -90,15 +90,18 @@ namespace Streameus.Controllers
             return this.Get();
         }
 
+        /// <summary>
+        /// Get all the ongoing conferences the user suscribed to
+        /// </summary>
+        /// <returns></returns>
         [Route("live")]
-        public IEnumerable<ConferenceAgendaViewModel> GetLive(int userId)
+        [Authorize]
+        public IEnumerable<ConferenceAgendaViewModel> GetLive()
         {
-            var conferences = this._conferenceServices.GetLiveConferenceForUser(userId);
-            List<ConferenceAgendaViewModel> liveConferences = new List<ConferenceAgendaViewModel>();
-            var test = conferences.Select(c => new ConferenceAgendaViewModel() {Date = c.Time, Id = c.Id, Name = c.Name});
-
-//            conferences.ForEach(c => liveConferences.Add(new ConferenceAgendaViewModel(c)));
-            return test;
+            var conferences =
+                this._conferenceServices.GetLiveConferenceForUser(this.GetCurrentUserId())
+                    .Select(c => new ConferenceAgendaViewModel() {Date = c.Time, Id = c.Id, Name = c.Name});
+            return conferences;
         }
     }
 }

@@ -173,8 +173,8 @@ namespace Streameus.DataAbstractionLayer.Services
                     conference.Registred.Add(user);
                 else
                     throw new DuplicateEntryException(Translation.UserHasAlreadySuscribed);
-
                 this.Save(conference);
+                this._eventServices.SuscribeConf(user, conference);
             }
             else
                 throw new ForbiddenException(Translation.ErrorSuscribePastConference);

@@ -84,7 +84,7 @@ namespace Streameus.Controllers
         [Route("AmIFollowing/{id}")]
         public Boolean GetAmI(int id)
         {
-            var currentUserId = Convert.ToInt32(this.User.Identity.GetUserId());
+            var currentUserId = this.GetCurrentUserId();
             return this._userServices.IsUserFollowing(currentUserId, id);
         }
 
@@ -154,8 +154,8 @@ namespace Streameus.Controllers
         {
             if (this.GetCurrentUserId() == id)
             {
-            this._userServices.Delete(id);
-        }
+                this._userServices.Delete(id);
+            }
             else
             {
                 throw new ForbiddenException(Translation.ForbiddenUserDelete);

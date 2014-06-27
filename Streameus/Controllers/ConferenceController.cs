@@ -112,7 +112,7 @@ namespace Streameus.Controllers
         [Authorize]
         public ConferenceViewModel Post([FromBody] ConferenceFormViewModel conference)
         {
-            var userId = Convert.ToInt32(this.User.Identity.GetUserId());
+            var userId = this.GetCurrentUserId();
             var user = _userServices.GetById(userId);
             var category = _conferenceCategoryServices.GetById(conference.CategoryId);
             var newConf = new Conference()

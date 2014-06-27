@@ -33,7 +33,8 @@ namespace Streameus.Controllers
         /// <param name="messageGroupServices"></param>
         /// <param name="messageServices"></param>
         /// <param name="userServices"></param>
-        public MessageController(IMessageServices messageServices, IMessageGroupServices messageGroupServices, IUserServices userServices)
+        public MessageController(IMessageServices messageServices, IMessageGroupServices messageGroupServices,
+            IUserServices userServices)
         {
             if (messageGroupServices == null) throw new ArgumentNullException("messageGroupServices");
             this._messageGroupServices = messageGroupServices;
@@ -68,8 +69,11 @@ namespace Streameus.Controllers
         [Authorize]
         public IEnumerable<MessageGroupViewModel> GetMy(ODataQueryOptions<MessageGroup> options)
         {
-            var userId = Convert.ToInt32(this.User.Identity.GetUserId());
-            var userGroups = options.ApplyTo(this._messageGroupServices.GetAll().Where(g => g.Members.Any(m => m.Id == userId)).AsQueryable()) as IQueryable<MessageGroup>;
+            var userId = this.GetCurrentUserId();
+            var userGroups =
+                options.ApplyTo(
+                    this._messageGroupServices.GetAll().Where(g => g.Members.Any(m => m.Id == userId)).AsQueryable()) as
+                    IQueryable<MessageGroup>;
             var messageGroupList = new List<MessageGroupViewModel>();
             userGroups.ForEach(u => messageGroupList.Add(new MessageGroupViewModel(u, userId)));
             return messageGroupList;
@@ -129,7 +133,7 @@ namespace Streameus.Controllers
             {
                 msgGroup = _messageGroupServices.GetById(newMessageViewModel.MessageGroupId);
             }
-            // Create a new message group
+                // Create a new message group
             else
             {
                 msgGroup = new MessageGroup();
@@ -141,7 +145,7 @@ namespace Streameus.Controllers
                 this._messageGroupServices.AddMessageGroup(msgGroup);
             }
             this.CheckUser(msgGroup);
-            var sender = _userServices.GetById(Convert.ToInt32(this.User.Identity.GetUserId()));
+            var sender = _userServices.GetById(this.GetCurrentUserId());
             var msg = new Message
             {
                 Content = System.Uri.UnescapeDataString(newMessageViewModel.Content.Trim()),
@@ -163,14 +167,15 @@ namespace Streameus.Controllers
         [Route("Group")]
         public NewMessageGroupViewModel Post(int[] userIds, ODataQueryOptions<Message> options)
         {
-            var userId = Convert.ToInt32(this.User.Identity.GetUserId());
+            var userId = this.GetCurrentUserId();
             var users = userIds.Select(id => this._userServices.GetById(id)).ToList();
             if (users.Count == 1 && users.First().Id == userId)
                 throw new InvalidOperationException("You cannot send a message to yourself");
             var messageGroups = this._messageGroupServices.GetAll();
             try
             {
-                var existingGroup = messageGroups.SingleOrDefault(g => g.Members.Intersect(users).Count() == users.Count());
+                var existingGroup =
+                    messageGroups.SingleOrDefault(g => g.Members.Intersect(users).Count() == users.Count());
                 // Search if a group already exists with those users
                 if (existingGroup != null)
                 {
@@ -182,11 +187,11 @@ namespace Streameus.Controllers
                     return new NewMessageGroupViewModel(existingGroup, userId, totalMsgs);
                 }
                 // Create a new one
-                var group = new MessageGroup { Members = users };
+                var group = new MessageGroup {Members = users};
                 this._messageGroupServices.AddMessageGroup(group);
                 return new NewMessageGroupViewModel(group, userId);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exceptions.HttpErrors.NoResultException(e.Message);
             }
@@ -198,12 +203,11 @@ namespace Streameus.Controllers
         /// <param name="group">Message group</param>
         private User CheckUser(MessageGroup group)
         {
-            var userId = Convert.ToInt32(this.User.Identity.GetUserId());
+            var userId = this.GetCurrentUserId();
             var user = this._userServices.GetById(userId);
             if (!group.Members.Contains(user))
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
             return user;
         }
-
     }
 }

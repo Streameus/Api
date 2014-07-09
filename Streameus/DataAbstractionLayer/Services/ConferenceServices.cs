@@ -212,6 +212,11 @@ namespace Streameus.DataAbstractionLayer.Services
                 throw new ForbiddenException(Translation.ErrorSuscribePastConference);
         }
 
+        /// <summary>
+        /// Get all the conference the user suscribed to which are live
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public IEnumerable<Conference> GetLiveConferenceForUser(int userId)
         {
             var user = this._userServices.GetById(userId);
@@ -220,6 +225,11 @@ namespace Streameus.DataAbstractionLayer.Services
                     c => c.Time <= DateTime.Now && c.Status == DataBaseEnums.ConfStatus.EnCours);
         }
 
+        /// <summary>
+        /// Get all the conferences the user suscribed to happening in the next 24hours
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public IEnumerable<Conference> GetSoonConferenceForUser(int userId)
         {
             var user = this._userServices.GetById(userId);

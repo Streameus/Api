@@ -54,7 +54,7 @@ namespace Streameus.Controllers
             {
                 throw new NotFoundException(e.Message);
             }
-            catch (EmptyResultException e)
+            catch (EmptyResultException)
             {
                 //Now this case doesn't matter anymore.
                 //Sends back an empty array instead

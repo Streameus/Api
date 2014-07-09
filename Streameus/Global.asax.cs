@@ -78,7 +78,9 @@ namespace Streameus
 
         private void RegisterAutoMapping()
         {
-            Mapper.CreateMap<UserViewModel, User>();
+            Mapper.CreateMap<UserViewModel, User>()
+                .ForSourceMember(m => m.Followers, config => config.Ignore())
+                .ForSourceMember(m => m.Followings, config => config.Ignore());
         }
     }
 }

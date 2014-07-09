@@ -58,6 +58,11 @@ namespace Streameus.ViewModels
         public ConferenceCategoryViewModel Category { get; set; }
 
         /// <summary>
+        /// Id of the room for streaming
+        /// </summary>
+        public string RoomId { get; set; }
+
+        /// <summary>
         /// Create a vm based on a conference
         /// </summary>
         /// <param name="conf"></param>
@@ -66,12 +71,15 @@ namespace Streameus.ViewModels
             this.Id = conf.Id;
             this.Owner = conf.OwnerId;
             this.Name = conf.Name;
+            
             this.Description = conf.Description;
             this.Status = conf.Status;
             this.Time = conf.Time;
             this.ScheduledDuration = conf.ScheduledDuration;
             this.FinalDuration = conf.FinalDuration;
             this.Category = new ConferenceCategoryViewModel(conf.Category);
+            // TODO, mettre RoomId une fois le stream en place
+            this.RoomId = conf.Id.ToString();
         }
     }
 }

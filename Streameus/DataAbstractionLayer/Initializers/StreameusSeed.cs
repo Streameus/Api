@@ -15,6 +15,15 @@ namespace Streameus.DataAbstractionLayer.Initializers
     /// </summary>
     public static class StreameusSeeder
     {
+
+#if DEBUG
+        public static int userCount = 22;
+        public static int conferencesCount = 22;
+#else
+        public static int userCount = 100;
+        public static int conferencesCount = 100;
+#endif
+
         /// <summary>
         /// This methods fills the database with dummy datas
         /// </summary>
@@ -37,173 +46,200 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 new User {Parameters = new Parameters(), FirstName = "Laura", LastName = "Norman", Gender = false},
                 new User {Parameters = new Parameters(), FirstName = "Nino", LastName = "Olivetto", Gender = true}
             };
+            for (var i = 0; i < userCount; i++)
+            {
+                users.Add(new User
+                {
+                    Parameters = new Parameters(),
+                    FirstName = Faker.Name.First(),
+                    LastName = Faker.Name.Last(),
+                    Email = Faker.Internet.Email(),
+                    Description = Faker.Lorem.Sentence(),
+                    Country = Faker.Address.Country(),
+                    City = Faker.Address.City(),
+                    Address = Faker.Address.StreetAddress(),
+                    Phone = Faker.Phone.Number(),
+                    Website = Faker.Internet.DomainName(),
+                    Profession = Faker.Company.Name(),
+                });
+                users.Last().Pseudo = (users.Last().FirstName + users.Last().LastName).Replace(" ", "");
+            }
             var userManager = new StreameusUserManager(new StreameusUserStore(context));
             users.ForEach(s =>
             {
-                s.Pseudo = s.FullName.Replace(" ", "");
-                s.Email = s.FirstName + "." + s.LastName + "@epitech.eu";
-                var result = userManager.Create(s, "123123");
-                if (!result.Succeeded)
-                    throw new Exception("Seed user failed");
+                // Static users
+                if (String.IsNullOrWhiteSpace(s.Email))
+                {
+                    s.Pseudo = s.FullName.Replace(" ", "");
+                    s.Email = s.FirstName + "." + s.LastName + "@epitech.eu";
+                    var result = userManager.Create(s, "123123");
+                    if (!result.Succeeded)
+                        throw new Exception("Seed user failed");
+                }
             });
             context.SaveChanges();
-            users.First().Followers.Add(users[2]);
-            users.First().Followers.Add(users[4]);
-            users.First().Followers.Add(users[3]);
-            users.First().Followers.Add(users[5]);
-            users.First().Followers.Add(users[1]);
 
-            users[1].Followers.Add(users[0]);
-            users[1].Followers.Add(users[3]);
-            users[1].Followers.Add(users[4]);
-
-            users[4].Followers.Add(users[6]);
-            users[4].Followers.Add(users[5]);
-            users[4].Followers.Add(users[1]);
+            foreach (var user in users)
+            {
+                var i = 0;
+                foreach (var follower in users)
+                {
+                    if (i++ % 3 == 0)
+                        user.Followers.Add(follower);
+                }
+            }
             context.SaveChanges();
 
 
             // Categories
-            var confCategoriesDictionnary = new Dictionary<string, string>
-            {
-                {"IT", "Description of IT"},
-                {"Economics", "Description of Economics"},
-                {"Science", "Description of Science"},
-                {"Life", "Description of Life"},
-                {"Politics", "Description of Politics"},
-                {"Arts", "Description of Arts"},
-                {"Miscellaneous", "Description of Miscellaneous"}
+            var confCategories = new List<string> {
+                "IT",
+                "Economics",
+                "Science",
+                "Life",
+                "Politics",
+                "Arts",
+                "Miscellaneous",
             };
-            var confCategoriesList = confCategoriesDictionnary.Select(confCategory => new ConferenceCategory
+            confCategories.Select(confCategory => context.ConferenceCategories.Add(new ConferenceCategory
             {
-                Name = confCategory.Key, Description = confCategory.Value,
-            }).ToList();
-            context.ConferenceCategories.AddRange(confCategoriesList);
+                Name = confCategory,
+                Description = Faker.Lorem.Sentence(),
+            }));
             context.SaveChanges();
-
 
             // Conferences
-            var conference = new List<Conference>
-            {
-                new Conference
-                {
-                    Owner = users[0],
-                    ConferenceParameters = new ConferenceParameters(),
-                    Name = "Chemistry",
-                    ScheduledDuration = 3,
-                    Category = confCategoriesList.Single(c => c.Name == "Science"),
-                },
-                new Conference
-                {
-                    Owner = users[1],
-                    ConferenceParameters = new ConferenceParameters(),
-                    Name = "Microeconomics",
-                    ScheduledDuration = 3,
-                    Category = confCategoriesList.Single(c => c.Name == "Economics"),
-                },
-                new Conference
-                {
-                    Owner = users[2],
-                    ConferenceParameters = new ConferenceParameters(),
-                    Name = "Macroeconomics",
-                    ScheduledDuration = 3,
-                    Category = confCategoriesList.Single(c => c.Name == "Economics"),
-                },
-                new Conference
-                {
-                    Owner = users[3],
-                    ConferenceParameters = new ConferenceParameters(),
-                    Name = "Calculus",
-                    ScheduledDuration = 4,
-                    Category = confCategoriesList.Single(c => c.Name == "Science"),
-                },
-                new Conference
-                {
-                    Owner = users[4],
-                    ConferenceParameters = new ConferenceParameters(),
-                    Name = "Trigonometry",
-                    ScheduledDuration = 4,
-                    Category = confCategoriesList.Single(c => c.Name == "Science"),
-                },
-                new Conference
-                {
-                    Owner = users[5],
-                    ConferenceParameters = new ConferenceParameters(),
-                    Name = "Composition",
-                    ScheduledDuration = 3,
-                    Category = confCategoriesList.Single(c => c.Name == "Arts"),
-                },
-                new Conference
-                {
-                    Owner = users[6],
-                    ConferenceParameters = new ConferenceParameters(),
-                    Name = "Literature",
-                    ScheduledDuration = 4,
-                    Category = confCategoriesList.Single(c => c.Name == "Arts"),
-                }
+            var conferences = new List<string> {
+                "Introduction au Javascript",
+                "Integration de Swagger",
+                "Les changements windows 8",
+                "Economiser la batterie de son portable",
+                "Changer son disque dur",
+                "Echange autour de la bourse de Paris",
+                "Les taxes, comment s'en sortir ?",
+                "Introduction à la comptabilité",
+                "Comment trouver un bon business plan ",
+                "commerce international, les premières notions",
+                "Discussion autour des lois de Newton",
+                "Le réchauffement climatique en chiffres",
+                "Imprimante 3D, vers l'impression d'organes ?",
+                "Les différentes planêtes de l'univers",
+                "Préparation au bac : Le nucléaire",
+                "Un régime facile et efficace",
+                "Comment bien dormir",
+                "Mode : Comment s'habiller pour pas chère",
+                "Les conseils pour parfaire sa silhouete",
+                "Coaching yoga, détente et relaxation",
+                "Pourquoi Nicolas Sarkozy risque gros",
+                "Etude de la monté du FN lors des européennes",
+                "Discussion autour de l'UMP",
+                "Le système banquaire des USA",
+                "Le conflit israélo-palestinien",
+                "L'art, reflet de la société",
+                "Interpréter l'art : entre voir et savoirs",
+                "l'allégorie de la caverne",
+                "Les tableaux de dali",
+                "Kant : Qu'est ce que les lumières",
+                "Créer un meuble télé pour les nuls",
+                "Des conseils pour s'organiser dans la vie",
+                "Présentation d'un pays : la Suède",
+                "Que demander lors de l'achat d'une voiture d'occasion",
+                "Romans de fiction : présentation et recommandation",
+
             };
-            conference.ForEach(s =>
+            var confNumber = 0;
+            userCount = context.Users.Count();
+                var random = new Random();
+            foreach (var conference in conferences)
             {
-                s.OwnerId = s.Owner.Id;
-                s.Description = "Description de " + s.Name;
-                s.Time = DateTime.Now;
-                context.Conferences.Add(s);
-            });
+                var index = random.Next(userCount);
+                var user = context.Users.Find(index);
+                context.Conferences.Add(new Conference
+                {
+                    Category = context.ConferenceCategories.Find(confNumber / 5),
+                    Name = conference,
+                    Owner = user,
+                });
+            }
+
             context.SaveChanges();
-            var events = new List<Event>
+            foreach (var user in context.Users)
             {
-                new Event
+
+                for (var i = 0; i < 5; i++)
                 {
-                    Author = users[1], Type = DataBaseEnums.EventType.ParticipateConf, Date = DateTime.Now,
-                    EventItems = new List<EventItem>
+                    context.Events.Add(new Event
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[1].Id, Content = users[1].Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference[1].Id, Content = conference[1].Name},
-                    }
-                },
-                new Event {Author = users[1], Type = DataBaseEnums.EventType.CreateConf, Date = DateTime.Now,
-                    EventItems = new List<EventItem>
+                        Author = users[1],
+                        Type = DataBaseEnums.EventType.ParticipateConf,
+                        Date = DateTime.Now,
+                        EventItems = new List<EventItem>
+                            {
+                                new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = user.Id, Content = users[1].Pseudo},
+                                new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = context.Conferences.ElementAt(i).Id, Content = context.Conferences.ElementAt(i).Name},
+                            }
+                    });
+                    context.Events.Add(new Event
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[2].Id, Content = users[2].Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference[2].Id, Content = conference[2].Name},
-                        new EventItem {Pos = 2, TargetType = DataBaseEnums.EventItemType.DateTime, TargetId = conference[2].Id, Content = conference[2].Time.Day.ToString() + "/" + conference[4].Time.Month.ToString()},
-                        new EventItem {Pos = 3, TargetType = DataBaseEnums.EventItemType.DateTime, TargetId = conference[2].Id, Content = conference[2].Time.Hour.ToString()},
-                    }
-                },
-                new Event {Author = users[1], Type = DataBaseEnums.EventType.StartFollow, Date = DateTime.Now,
-                    EventItems = new List<EventItem>
+                        Author = users[1],
+                        Type = DataBaseEnums.EventType.CreateConf,
+                        Date = DateTime.Now,
+                        EventItems = new List<EventItem>
+                        {
+                            new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[2].Id, Content = users[2].Pseudo},
+                            new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = context.Conferences.ElementAt(i).Id, Content = context.Conferences.ElementAt(i).Name},
+                            new EventItem {Pos = 2, TargetType = DataBaseEnums.EventItemType.DateTime, TargetId = context.Conferences.ElementAt(i).Id, Content = context.Conferences.ElementAt(i).Time.Day.ToString() + "/" + context.Conferences.ElementAt(i).Time.Month.ToString()},
+                            new EventItem {Pos = 3, TargetType = DataBaseEnums.EventItemType.DateTime, TargetId = context.Conferences.ElementAt(i).Id, Content = context.Conferences.ElementAt(i).Time.Hour.ToString()},
+                        }
+                    });
+                    context.Events.Add(new Event
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[2].Id, Content = users[2].Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[3].Id, Content = users[3].Pseudo},
-                    }
-                },
-                new Event
-                {
-                    Author = users[2], Type = DataBaseEnums.EventType.SuscribeConf, Date = DateTime.Now,
-                    EventItems = new List<EventItem>
+                        Author = users[1],
+                        Type = DataBaseEnums.EventType.StartFollow,
+                        Date = DateTime.Now,
+                        EventItems = new List<EventItem>
+                        {
+                            new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[2].Id, Content = users[2].Pseudo},
+                            new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[3].Id, Content = users[3].Pseudo},
+                        }
+                    });
+                    context.Events.Add(new Event
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[3].Id, Content = users[3].Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference[3].Id, Content = conference[3].Name},
-                    }
-                },
-                new Event {Author = users[4], Type = DataBaseEnums.EventType.CreateConf, Date = DateTime.Now,
-                    EventItems = new List<EventItem>
+                        Author = users[2],
+                        Type = DataBaseEnums.EventType.SuscribeConf,
+                        Date = DateTime.Now,
+                        EventItems = new List<EventItem>
+                            {
+                                new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[3].Id, Content = users[3].Pseudo},
+                                new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = context.Conferences.ElementAt(i).Id, Content = context.Conferences.ElementAt(i).Name},
+                            }
+                    });
+                    context.Events.Add(new Event
                     {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[5].Id, Content = users[5].Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference[4].Id, Content = conference[4].Name},
-                        new EventItem {Pos = 2, TargetType = DataBaseEnums.EventItemType.DateTime, TargetId = conference[4].Id, Content = conference[4].Time.Day.ToString() + "/" + conference[4].Time.Month.ToString()},
-                        new EventItem {Pos = 3, TargetType = DataBaseEnums.EventItemType.DateTime, TargetId = conference[4].Id, Content = conference[4].Time.Hour.ToString()},
-                    }
-                },
-                new Event {Author = users[5], Type = DataBaseEnums.EventType.StartFollow, Date = DateTime.Now,
-                    EventItems = new List<EventItem>
-            {
-                        new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[6].Id, Content = users[6].Pseudo},
-                        new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[1].Id, Content = users[1].Pseudo},
-                    }
+                        Author = users[4],
+                        Type = DataBaseEnums.EventType.CreateConf,
+                        Date = DateTime.Now,
+                        EventItems = new List<EventItem>
+                        {
+                            new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[5].Id, Content = users[5].Pseudo},
+                            new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = context.Conferences.ElementAt(i).Id, Content = context.Conferences.ElementAt(i).Name},
+                            new EventItem {Pos = 2, TargetType = DataBaseEnums.EventItemType.DateTime, TargetId = context.Conferences.ElementAt(i).Id, Content = context.Conferences.ElementAt(i).Time.Day.ToString() + "/" + context.Conferences.ElementAt(i).Time.Month.ToString()},
+                            new EventItem {Pos = 3, TargetType = DataBaseEnums.EventItemType.DateTime, TargetId = context.Conferences.ElementAt(i).Id, Content = context.Conferences.ElementAt(i).Time.Hour.ToString()},
+                        }
+                    });
+                    context.Events.Add(new Event
+                    {
+                        Author = users[5],
+                        Type = DataBaseEnums.EventType.StartFollow,
+                        Date = DateTime.Now,
+                        EventItems = new List<EventItem>
+                        {
+                            new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[6].Id, Content = users[6].Pseudo},
+                            new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[1].Id, Content = users[1].Pseudo},
+                        }
+                    });
                 }
-            };
-            events.ForEach(s => context.Events.Add(s));
+            }
             context.SaveChanges();
 
 
@@ -218,7 +254,7 @@ namespace Streameus.DataAbstractionLayer.Initializers
             {
                 for (var i = 0; i < msgPerGroup; i++)
                 {
-                    var user = i%2 == 0 ? group.Members.First() : group.Members.Last();
+                    var user = i % 2 == 0 ? group.Members.First() : group.Members.Last();
                     var content = String.Format("Message #{0} from '{1}' to group with Id '{2}'", i, user.UserName, group.Id);
                     var message = new Message { Content = content, Date = date.AddMinutes(i * 5), Sender = user };
                     group.Messages.Add(message);

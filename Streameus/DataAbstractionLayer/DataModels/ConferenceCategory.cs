@@ -21,6 +21,7 @@ namespace Streameus.Models
         /// </summary>
         public ConferenceCategory()
         {
+            this.Conferences = new HashSet<Conference>();
         }
 
         /// <summary>

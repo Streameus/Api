@@ -66,30 +66,6 @@ namespace Streameus.Controllers
             return confList;
         }
 
-//        // POST api/agenda/subscribe/5
-//        /// <summary>
-//        /// Souscription a une conference
-//        /// </summary>
-//        /// <param name="id">Conference ID</param>
-//        /// <returns></returns>
-//        /// <responseCode></responseCode>
-//        /// <exception cref="NotFoundException">Conference not found</exception>
-//        /// <exception cref="ForbiddenException">Conference is already done</exception>
-//        [Route("Subscribe/{id}")]
-//        [Authorize]
-//        public IEnumerable<ConferenceAgendaViewModel> Post(int id)
-//        {
-//            var conf = this._conferenceServices.GetById(id);
-//            if (conf == null)
-//                throw new NotFoundException(Translation.ConferenceNotFound);
-//            var participant = this._userServices.GetById(this.GetCurrentUserId());
-//            if (conf.Status == DataBaseEnums.ConfStatus.Finie)
-//                throw new ForbiddenException(Translation.ErrorSuscribePastConference);
-//            participant.ConferencesRegistered.Add(conf);
-//            this._userServices.UpdateUser(participant);
-//            return this.Get();
-//        }
-
         /// <summary>
         /// Get all the ongoing conferences the user suscribed to
         /// </summary>
@@ -116,6 +92,22 @@ namespace Streameus.Controllers
                 this._conferenceServices.GetSoonConferenceForUser(this.GetCurrentUserId())
                     .Select(c => new ConferenceAgendaViewModel() {Date = c.Time, Id = c.Id, Name = c.Name});
             return conferences;
+        }
+
+        /// <summary>
+        /// Get notifications for user
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [Route("Notifications")]
+        public NotificationsViewModel GetNotifications()
+        {
+            var userId = this.GetCurrentUserId();
+            var notifsVm = new NotificationsViewModel();
+            notifsVm.Soon = this.GetSoon();
+            notifsVm.Live = this.GetLive();
+            notifsVm.UnreadMessages = this._userServices.GetById(userId).UnreadMessages.Count;
+            return notifsVm;
         }
     }
 }

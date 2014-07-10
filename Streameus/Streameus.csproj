@@ -421,7 +421,9 @@
     <Content Include="Content\bootstrap.min.css">
       <DependentUpon>bootstrap.css</DependentUpon>
     </Content>
-    <Content Include="Content\defaultUser.png" />
+    <Content Include="Content\Images\Conferences\Categories\1.png" />
+    <Content Include="Content\Images\Conferences\default.png" />
+    <Content Include="Content\Images\Users\default.png" />
     <Content Include="App_GlobalResources\Faq.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Faq.designer.cs</LastGenOutput>

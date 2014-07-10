@@ -45,7 +45,7 @@ namespace Streameus.Controllers
         /// <returns>Retourne une List Conf (int Id, DateTime Time, String Name) ou une List vide si null</returns>
         /// <responseCode></responseCode>
         [Authorize]
-        public IEnumerable<ConferenceAgendaViewModel> Get()
+        public IOrderedEnumerable<KeyValuePair<DateTime, List<ConferenceAgendaViewModel>>> Get()
         {
             var owner = this._userServices.GetById(this.GetCurrentUserId());
             var conferences = owner.ConferencesRegistered.OrderBy(c => c.Time);
@@ -63,7 +63,18 @@ namespace Streameus.Controllers
                     confList.Add(confInfo);
                 }
             }
-            return confList;
+            var conflistDay = new Dictionary<DateTime, List<ConferenceAgendaViewModel>>();
+            foreach (var conferenceAgendaViewModel in confList)
+            {
+                if (!conflistDay.ContainsKey(conferenceAgendaViewModel.Date))
+                    conflistDay.Add(conferenceAgendaViewModel.Date,
+                        new List<ConferenceAgendaViewModel>() {conferenceAgendaViewModel});
+                else
+                {
+                    conflistDay[conferenceAgendaViewModel.Date].Add(conferenceAgendaViewModel);
+                }
+            }
+            return conflistDay.OrderBy(d => d.Key);
         }
 
         /// <summary>

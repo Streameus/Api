@@ -20,8 +20,8 @@ namespace Streameus.DataAbstractionLayer.Initializers
         public static int userCount = 22;
         public static int conferencesCount = 22;
 #else
-        public static int userCount = 100;
-        public static int conferencesCount = 100;
+        public static int userCount = 40;
+        public static int conferencesCount = 40;
 #endif
 
         /// <summary>
@@ -259,7 +259,7 @@ namespace Streameus.DataAbstractionLayer.Initializers
             {
                 foreach (var recipient in users)
                 {
-                    if (sender.Id < recipient.Id && random.Next(5) <= 3)
+                    if (sender.Id < recipient.Id && random.Next(5) == 0)
                         messagesGroups.Add(new MessageGroup { Members = { sender, recipient } });
                 }
             }
@@ -267,7 +267,7 @@ namespace Streameus.DataAbstractionLayer.Initializers
             context.MessagesGroups.AddRange(messagesGroups);
             context.SaveChanges();
             var date = DateTime.Now.Subtract(new TimeSpan(31, 0, 0, 0));
-            const int msgPerGroup = 70;
+            const int msgPerGroup = 52;
             foreach (var group in messagesGroups)
             {
                 for (var i = 0; i < msgPerGroup; i++)

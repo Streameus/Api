@@ -126,7 +126,7 @@ namespace Streameus.Controllers
                 Category = category,
             };
             this._conferenceServices.AddConference(newConf);
-            return this.Get(newConf.Id);
+            return new ConferenceViewModel(newConf);
         }
 
         // PUT api/conference/5

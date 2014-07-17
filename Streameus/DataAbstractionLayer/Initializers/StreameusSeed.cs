@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Streameus.Exceptions.HttpErrors;
@@ -16,11 +17,14 @@ namespace Streameus.DataAbstractionLayer.Initializers
     public static class StreameusSeeder
     {
 #if DEBUG
-        public static int userCount = 10;
-        public static int conferencesCount = 10;
+        private static int _userCount = 10;
+        private const int ConferencesCount = 10;
+        private const int MsgPerGroup = 10;
+
 #else
-        public static int userCount = 40;
-        public static int conferencesCount = 40;
+        private static int _userCount = 40;
+        private const int ConferencesCount = 40;
+        private const int MsgPerGroup = 52;
 #endif
 
         /// <summary>
@@ -45,7 +49,7 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 new User {Parameters = new Parameters(), FirstName = "Laura", LastName = "Norman", Gender = false},
                 new User {Parameters = new Parameters(), FirstName = "Nino", LastName = "Olivetto", Gender = true}
             };
-            for (var i = 0; i < userCount; i++)
+            for (var i = 0; i < _userCount; i++)
             {
                 users.Add(new User
                 {
@@ -152,11 +156,12 @@ namespace Streameus.DataAbstractionLayer.Initializers
             };
 
             var confNumber = 0;
-            userCount = context.Users.Count();
+            _userCount = context.Users.Count();
             var random = new Random();
+            var limit = 0;
             foreach (var conference in conferences)
             {
-                var index = random.Next(userCount - 1);
+                var index = random.Next(_userCount - 1);
                 var user = context.Users.Find(index + 1);
                 var category = context.ConferenceCategories.Find(confNumber/5 + 1);
                 var conferenceEntity = new Conference
@@ -170,6 +175,9 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 category.Conferences.Add(conferenceEntity);
                 context.Conferences.Add(conferenceEntity);
                 user.ConferencesCreated.Add(conferenceEntity);
+                limit++;
+                if (limit >= ConferencesCount)
+                    break;
             }
             var errors = context.GetValidationErrors();
             context.SaveChanges();
@@ -368,10 +376,9 @@ namespace Streameus.DataAbstractionLayer.Initializers
             }
             context.SaveChanges();
             var date = DateTime.Now.Subtract(new TimeSpan(31, 0, 0, 0));
-            const int msgPerGroup = 52;
             foreach (var group in messagesGroups)
             {
-                for (var i = 0; i < msgPerGroup; i++)
+                for (var i = 0; i < MsgPerGroup; i++)
                 {
                     var user = i%2 == 0 ? group.Members.First() : group.Members.Last();
                     var content = Faker.Lorem.Paragraph();

@@ -26,42 +26,42 @@ namespace Streameus.DataAbstractionLayer
         /// <summary>
         /// Comments Set
         /// </summary>
-        public DbSet<Comment> Comments { get; set; }
+        public IDbSet<Comment> Comments { get; set; }
 
         /// <summary>
         /// ConferenceParameters Set
         /// </summary>
-        public DbSet<ConferenceParameters> ConferenceParameters { get; set; }
+        public IDbSet<ConferenceParameters> ConferenceParameters { get; set; }
 
         /// <summary>
         /// ConferenceParameters Set
         /// </summary>
-        public DbSet<ConferenceCategory> ConferenceCategories { get; set; }
+        public IDbSet<ConferenceCategory> ConferenceCategories { get; set; }
 
         /// <summary>
         /// Conferences Set
         /// </summary>
-        public DbSet<Conference> Conferences { get; set; }
+        public IDbSet<Conference> Conferences { get; set; }
 
         /// <summary>
         /// Documents Set
         /// </summary>
-        public DbSet<Document> Documents { get; set; }
+        public IDbSet<Document> Documents { get; set; }
 
         /// <summary>
         /// Events Set
         /// </summary>
-        public DbSet<Event> Events { get; set; }
+        public IDbSet<Event> Events { get; set; }
 
         /// <summary>
         /// Messages Groups Set
         /// </summary>
-        public DbSet<MessageGroup> MessagesGroups { get; set; }
+        public IDbSet<MessageGroup> MessagesGroups { get; set; }
 
         /// <summary>
         /// Posts Set
         /// </summary>
-        public DbSet<Message> Messages { get; set; }
+        public IDbSet<Message> Messages { get; set; }
 
         /// <summary>
         /// Maps table names, and sets up relationships between the various user entities
@@ -102,7 +102,7 @@ namespace Streameus.DataAbstractionLayer
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <returns>The DbSet for the requested entity</returns>
-        public virtual DbSet<TEntity> GetDbSet<TEntity>() where TEntity : class
+        public virtual IDbSet<TEntity> GetDbSet<TEntity>() where TEntity : class
         {
             return this.Set<TEntity>();
         }

@@ -22,7 +22,7 @@ namespace Streameus.DataBaseAccess
         /// </summary>
         /// <typeparam name="TEntity">The type of set to retrieve</typeparam>
         /// <returns>The entity type set</returns>
-        DbSet<TEntity> GetDbSet<TEntity>() where TEntity : class;
+        IDbSet<TEntity> GetDbSet<TEntity>() where TEntity : class;
 
         /// <summary>
         /// Set a context's entry state

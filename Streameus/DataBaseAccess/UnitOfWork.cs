@@ -42,7 +42,7 @@ namespace Streameus.DataBaseAccess
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <returns></returns>
-        public DbSet<TEntity> GetDbSet<TEntity>() where TEntity : class
+        public IDbSet<TEntity> GetDbSet<TEntity>() where TEntity : class
         {
             return this._context.GetDbSet<TEntity>();
         }

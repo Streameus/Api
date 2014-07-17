@@ -169,8 +169,8 @@ namespace Streameus.DataAbstractionLayer.Services
             if (conference.OwnerId == userId)
                 throw new ForbiddenException(Translation.OwnerCannotSuscribeToItsConf);
 
-            if (conference.Time > DateTime.Now || conference.Status == DataBaseEnums.ConfStatus.EnCours ||
-                conference.Status == DataBaseEnums.ConfStatus.AVenir)
+            if ((conference.Time >= DateTime.Now && conference.Status == DataBaseEnums.ConfStatus.AVenir) ||
+                conference.Status == DataBaseEnums.ConfStatus.EnCours)
             {
                 if (!conference.Registred.Contains(user))
                     conference.Registred.Add(user);

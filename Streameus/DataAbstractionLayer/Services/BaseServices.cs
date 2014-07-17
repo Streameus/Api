@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Web;
+using Microsoft.Ajax.Utilities;
 using Streameus.App_GlobalResources;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataBaseAccess;
@@ -70,7 +71,7 @@ namespace Streameus.DataAbstractionLayer.Services
             if (id < 0)
                 throw new NotFoundException(Translation.InvalidId);
             //DO NOT EVER DO THAT
-            var entity = this.GetDbSet<TEntity>().Where("Id ==" + id).FirstOrDefault();
+            var entity = this.GetDbSet<TEntity>().Find(id);
             if (entity == null)
                 throw new NotFoundException("No such " + typeof (TEntity).Name);
             return entity;
@@ -115,7 +116,7 @@ namespace Streameus.DataAbstractionLayer.Services
         /// </summary>
         /// <typeparam name="TRequestedEntity"></typeparam>
         /// <returns></returns>
-        protected DbSet<TRequestedEntity> GetDbSet<TRequestedEntity>() where TRequestedEntity : class
+        protected IDbSet<TRequestedEntity> GetDbSet<TRequestedEntity>() where TRequestedEntity : class
         {
             return this._unitOfWork.GetDbSet<TRequestedEntity>();
         }

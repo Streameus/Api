@@ -39,10 +39,13 @@ namespace Streameus.Controllers
         /// <returns></returns>
         /// <exception cref="NoResultException"></exception>
         [Authorize]
-        public IEnumerable<EventViewModel> Get()
+        public IEnumerable<EventViewModel> Get(ODataQueryOptions<Event> options = null)
         {
             var eventList = new List<EventViewModel>();
-            this._eventServices.GetAllWithIncludes().ForEach(e => eventList.Add(new EventViewModel(e)));
+            var events = this._eventServices.GetAllWithIncludes();
+            if (options != null)
+                events = options.ApplyTo(events) as IQueryable<Event>;
+            events.ForEach(e => eventList.Add(new EventViewModel(e)));
             if (!eventList.Any())
                 throw new NoResultException("Empty Set");
             return eventList;

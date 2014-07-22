@@ -155,7 +155,6 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 "Romans de fiction : présentation et recommandation",
             };
 
-            var confNumber = 0;
             _userCount = context.Users.Count();
             var random = new Random();
             var limit = 0;
@@ -163,6 +162,7 @@ namespace Streameus.DataAbstractionLayer.Initializers
             {
                 var index = random.Next(_userCount - 1);
                 var user = context.Users.Find(index + 1);
+                var confNumber = index;
                 var category = context.ConferenceCategories.Find(confNumber/5 + 1);
                 var confDate = new TimeSpan(10, confNumber, 0, 0);
                 var conferenceEntity = new Conference
@@ -172,6 +172,7 @@ namespace Streameus.DataAbstractionLayer.Initializers
                     Description = Faker.Lorem.Sentence(),
                     Owner = user,
                     Time = (confNumber%2 == 0) ? DateTime.Now.Add(confDate) : DateTime.Now.Subtract(confDate),
+                    Status = (confNumber%2 == 0) ? DataBaseEnums.ConfStatus.AVenir : DataBaseEnums.ConfStatus.Finie
                 };
                 category.Conferences.Add(conferenceEntity);
                 context.Conferences.Add(conferenceEntity);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Streameus.Exceptions.HttpErrors;
@@ -15,13 +16,15 @@ namespace Streameus.DataAbstractionLayer.Initializers
     /// </summary>
     public static class StreameusSeeder
     {
-
 #if DEBUG
-        public static int userCount = 22;
-        public static int conferencesCount = 22;
+        private static int _userCount = 10;
+        private const int ConferencesCount = 10;
+        private const int MsgPerGroup = 10;
+
 #else
-        public static int userCount = 40;
-        public static int conferencesCount = 40;
+        private static int _userCount = 40;
+        private const int ConferencesCount = 40;
+        private const int MsgPerGroup = 52;
 #endif
 
         /// <summary>
@@ -46,7 +49,7 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 new User {Parameters = new Parameters(), FirstName = "Laura", LastName = "Norman", Gender = false},
                 new User {Parameters = new Parameters(), FirstName = "Nino", LastName = "Olivetto", Gender = true}
             };
-            for (var i = 0; i < userCount; i++)
+            for (var i = 0; i < _userCount; i++)
             {
                 users.Add(new User
                 {
@@ -84,7 +87,7 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 var i = 0;
                 foreach (var follower in users)
                 {
-                    if (i++ % 3 == 0)
+                    if (i++%3 == 0)
                         user.Followers.Add(follower);
                 }
             }
@@ -92,7 +95,8 @@ namespace Streameus.DataAbstractionLayer.Initializers
 
 
             // Categories
-            var confCategories = new List<string> {
+            var confCategories = new List<string>
+            {
                 "IT",
                 "Economics",
                 "Science",
@@ -112,7 +116,8 @@ namespace Streameus.DataAbstractionLayer.Initializers
             context.SaveChanges();
 
             // Conferences
-            var conferences = new List<string> {
+            var conferences = new List<string>
+            {
                 "Introduction au Javascript",
                 "Integration de Swagger",
                 "Les changements windows 8",
@@ -151,30 +156,34 @@ namespace Streameus.DataAbstractionLayer.Initializers
             };
 
             var confNumber = 0;
-            userCount = context.Users.Count();
+            _userCount = context.Users.Count();
             var random = new Random();
+            var limit = 0;
             foreach (var conference in conferences)
             {
-                var index = random.Next(userCount - 1);
+                var index = random.Next(_userCount - 1);
                 var user = context.Users.Find(index + 1);
-                var category = context.ConferenceCategories.Find(confNumber / 5 + 1);
+                var category = context.ConferenceCategories.Find(confNumber/5 + 1);
+                var confDate = new TimeSpan(10, confNumber, 0, 0);
                 var conferenceEntity = new Conference
                 {
                     Category = category,
                     Name = conference,
                     Description = Faker.Lorem.Sentence(),
                     Owner = user,
-                    Time = DateTime.Now.Subtract(new TimeSpan(1, confNumber, 0, 0)),
+                    Time = (confNumber%2 == 0) ? DateTime.Now.Add(confDate) : DateTime.Now.Subtract(confDate),
                 };
                 category.Conferences.Add(conferenceEntity);
                 context.Conferences.Add(conferenceEntity);
                 user.ConferencesCreated.Add(conferenceEntity);
+                limit++;
+                if (limit >= ConferencesCount)
+                    break;
             }
             var errors = context.GetValidationErrors();
             context.SaveChanges();
             foreach (var user in context.Users)
             {
-
                 for (var i = 0; i < 5; i++)
                 {
                     var conference = context.Conferences.Find(i + 1);
@@ -185,8 +194,20 @@ namespace Streameus.DataAbstractionLayer.Initializers
                         Date = DateTime.Now,
                         EventItems = new List<EventItem>
                         {
-                            new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = user.Id, Content = users[1].Pseudo},
-                            new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference.Id, Content = conference.Name},
+                            new EventItem
+                            {
+                                Pos = 0,
+                                TargetType = DataBaseEnums.EventItemType.User,
+                                TargetId = user.Id,
+                                Content = users[1].Pseudo
+                            },
+                            new EventItem
+                            {
+                                Pos = 1,
+                                TargetType = DataBaseEnums.EventItemType.Conference,
+                                TargetId = conference.Id,
+                                Content = conference.Name
+                            },
                         }
                     });
                     context.Events.Add(new Event
@@ -196,10 +217,34 @@ namespace Streameus.DataAbstractionLayer.Initializers
                         Date = DateTime.Now,
                         EventItems = new List<EventItem>
                         {
-                            new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[2].Id, Content = users[2].Pseudo},
-                            new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference.Id, Content = conference.Name},
-                            new EventItem {Pos = 2, TargetType = DataBaseEnums.EventItemType.DateTime, TargetId = conference.Id, Content = conference.Time.ToShortDateString()},
-                            new EventItem {Pos = 3, TargetType = DataBaseEnums.EventItemType.DateTime, TargetId = conference.Id, Content = conference.Time.ToShortTimeString()},
+                            new EventItem
+                            {
+                                Pos = 0,
+                                TargetType = DataBaseEnums.EventItemType.User,
+                                TargetId = users[2].Id,
+                                Content = users[2].Pseudo
+                            },
+                            new EventItem
+                            {
+                                Pos = 1,
+                                TargetType = DataBaseEnums.EventItemType.Conference,
+                                TargetId = conference.Id,
+                                Content = conference.Name
+                            },
+                            new EventItem
+                            {
+                                Pos = 2,
+                                TargetType = DataBaseEnums.EventItemType.DateTime,
+                                TargetId = conference.Id,
+                                Content = conference.Time.ToShortDateString()
+                            },
+                            new EventItem
+                            {
+                                Pos = 3,
+                                TargetType = DataBaseEnums.EventItemType.DateTime,
+                                TargetId = conference.Id,
+                                Content = conference.Time.ToShortTimeString()
+                            },
                         }
                     });
                     context.Events.Add(new Event
@@ -209,8 +254,20 @@ namespace Streameus.DataAbstractionLayer.Initializers
                         Date = DateTime.Now,
                         EventItems = new List<EventItem>
                         {
-                            new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[2].Id, Content = users[2].Pseudo},
-                            new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[3].Id, Content = users[3].Pseudo},
+                            new EventItem
+                            {
+                                Pos = 0,
+                                TargetType = DataBaseEnums.EventItemType.User,
+                                TargetId = users[2].Id,
+                                Content = users[2].Pseudo
+                            },
+                            new EventItem
+                            {
+                                Pos = 1,
+                                TargetType = DataBaseEnums.EventItemType.User,
+                                TargetId = users[3].Id,
+                                Content = users[3].Pseudo
+                            },
                         }
                     });
                     context.Events.Add(new Event
@@ -219,10 +276,22 @@ namespace Streameus.DataAbstractionLayer.Initializers
                         Type = DataBaseEnums.EventType.SuscribeConf,
                         Date = DateTime.Now,
                         EventItems = new List<EventItem>
+                        {
+                            new EventItem
                             {
-                                new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[3].Id, Content = users[3].Pseudo},
-                                new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference.Id, Content = conference.Name},
-                            }
+                                Pos = 0,
+                                TargetType = DataBaseEnums.EventItemType.User,
+                                TargetId = users[3].Id,
+                                Content = users[3].Pseudo
+                            },
+                            new EventItem
+                            {
+                                Pos = 1,
+                                TargetType = DataBaseEnums.EventItemType.Conference,
+                                TargetId = conference.Id,
+                                Content = conference.Name
+                            },
+                        }
                     });
                     context.Events.Add(new Event
                     {
@@ -231,10 +300,34 @@ namespace Streameus.DataAbstractionLayer.Initializers
                         Date = DateTime.Now,
                         EventItems = new List<EventItem>
                         {
-                            new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[5].Id, Content = users[5].Pseudo},
-                            new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.Conference, TargetId = conference.Id, Content = conference.Name},
-                            new EventItem {Pos = 2, TargetType = DataBaseEnums.EventItemType.DateTime, TargetId = conference.Id, Content = conference.Time.ToShortDateString()},
-                            new EventItem {Pos = 3, TargetType = DataBaseEnums.EventItemType.DateTime, TargetId = conference.Id, Content = conference.Time.ToShortTimeString()},
+                            new EventItem
+                            {
+                                Pos = 0,
+                                TargetType = DataBaseEnums.EventItemType.User,
+                                TargetId = users[5].Id,
+                                Content = users[5].Pseudo
+                            },
+                            new EventItem
+                            {
+                                Pos = 1,
+                                TargetType = DataBaseEnums.EventItemType.Conference,
+                                TargetId = conference.Id,
+                                Content = conference.Name
+                            },
+                            new EventItem
+                            {
+                                Pos = 2,
+                                TargetType = DataBaseEnums.EventItemType.DateTime,
+                                TargetId = conference.Id,
+                                Content = conference.Time.ToShortDateString()
+                            },
+                            new EventItem
+                            {
+                                Pos = 3,
+                                TargetType = DataBaseEnums.EventItemType.DateTime,
+                                TargetId = conference.Id,
+                                Content = conference.Time.ToShortTimeString()
+                            },
                         }
                     });
                     context.Events.Add(new Event
@@ -244,8 +337,20 @@ namespace Streameus.DataAbstractionLayer.Initializers
                         Date = DateTime.Now,
                         EventItems = new List<EventItem>
                         {
-                            new EventItem {Pos = 0, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[6].Id, Content = users[6].Pseudo},
-                            new EventItem {Pos = 1, TargetType = DataBaseEnums.EventItemType.User, TargetId = users[1].Id, Content = users[1].Pseudo},
+                            new EventItem
+                            {
+                                Pos = 0,
+                                TargetType = DataBaseEnums.EventItemType.User,
+                                TargetId = users[6].Id,
+                                Content = users[6].Pseudo
+                            },
+                            new EventItem
+                            {
+                                Pos = 1,
+                                TargetType = DataBaseEnums.EventItemType.User,
+                                TargetId = users[1].Id,
+                                Content = users[1].Pseudo
+                            },
                         }
                     });
                 }
@@ -260,21 +365,25 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 foreach (var recipient in users)
                 {
                     if (sender.Id < recipient.Id && random.Next(5) == 0)
-                        messagesGroups.Add(new MessageGroup { Members = { sender, recipient } });
+                        messagesGroups.Add(new MessageGroup {Members = {sender, recipient}});
                 }
             }
-            users.Where(u => u.Id > 1).ToList().ForEach(u => messagesGroups.Add(new MessageGroup { Members = { users[0], u } }));
-            context.MessagesGroups.AddRange(messagesGroups);
+            users.Where(u => u.Id > 1)
+                .ToList()
+                .ForEach(u => messagesGroups.Add(new MessageGroup {Members = {users[0], u}}));
+            foreach (var messagesGroup in messagesGroups)
+            {
+                context.MessagesGroups.Add(messagesGroup);
+            }
             context.SaveChanges();
             var date = DateTime.Now.Subtract(new TimeSpan(31, 0, 0, 0));
-            const int msgPerGroup = 52;
             foreach (var group in messagesGroups)
             {
-                for (var i = 0; i < msgPerGroup; i++)
+                for (var i = 0; i < MsgPerGroup; i++)
                 {
-                    var user = i % 2 == 0 ? group.Members.First() : group.Members.Last();
+                    var user = i%2 == 0 ? group.Members.First() : group.Members.Last();
                     var content = Faker.Lorem.Paragraph();
-                    var message = new Message { Content = content, Date = date.AddMinutes(i * 5), Sender = user };
+                    var message = new Message {Content = content, Date = date.AddMinutes(i*5), Sender = user};
                     group.Messages.Add(message);
                 }
             }

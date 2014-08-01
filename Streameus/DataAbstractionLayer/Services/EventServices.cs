@@ -88,6 +88,10 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="user2">The user who is followed</param>
         public void StartFollowing(User user1, User user2)
         {
+            if (user2.AbonnementsVisibility == false || user1.AbonnementsVisibility == false)
+            {
+                return;
+            }
             this.AddEvent(new Event
             {
                 Author = user1,
@@ -221,6 +225,10 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="user">The user who has followers</param>
         public void BilanFollowers(User user)
         {
+            if (user.AbonnementsVisibility == false)
+            {
+                return;
+            }
             this.AddEvent(new Event
             {
                 Author = user,
@@ -253,6 +261,10 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="nbFollowing">number of people who have been following during the month</param>
         public void BilanFollowingMonth(User user, int nbFollowing)
         {
+            if (user.AbonnementsVisibility == false)
+            {
+                return;
+            }
             this.AddEvent(new Event
             {
                 Author = user,
@@ -285,6 +297,10 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="nbFollowing">number of people who have been following during the week</param>
         public void BilanFollowingWeek(User user, int nbFollowing)
         {
+            if (user.AbonnementsVisibility == false)
+            {
+                return;
+            }
             this.AddEvent(new Event
             {
                 Author = user,
@@ -635,6 +651,10 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="user2">The user who is following</param>
         public void FirstFollower(User user1, User user2)
         {
+            if (user2.AbonnementsVisibility == false || user1.AbonnementsVisibility == false)
+            {
+                return;
+            }
             this.AddEvent(new Event
             {
                 Author = user1,
@@ -854,6 +874,8 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="user">The user who modified his personnal message</param>
         public void UpdateMsgPerso(User user)
         {
+            if (user.DescriptionVisibility == false)
+                return;
             this.AddEvent(new Event
             {
                 Author = user,

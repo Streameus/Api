@@ -164,15 +164,15 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 var user = context.Users.Find(index + 1);
                 var confNumber = index;
                 var category = context.ConferenceCategories.Find(confNumber/5 + 1);
-                var confDate = new TimeSpan(10, confNumber, 0, 0);
+                var confDate = new TimeSpan(10 + confNumber, confNumber, 0, 0);
                 var conferenceEntity = new Conference
                 {
                     Category = category,
                     Name = conference,
                     Description = Faker.Lorem.Sentence(),
                     Owner = user,
-                    Time = (confNumber%2 == 0) ? DateTime.Now.Add(confDate) : DateTime.Now.Subtract(confDate),
-                    Status = (confNumber%2 == 0) ? DataBaseEnums.ConfStatus.AVenir : DataBaseEnums.ConfStatus.Finie
+                    Time =  DateTime.Now.Add(confDate),
+                    Status = DataBaseEnums.ConfStatus.AVenir
                 };
                 category.Conferences.Add(conferenceEntity);
                 context.Conferences.Add(conferenceEntity);

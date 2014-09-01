@@ -70,9 +70,12 @@ namespace Streameus.DataAbstractionLayer
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             //Un initializer de db different est requis pour appHarbor, cf doc de la classe.
-            var appHarbor = ConfigurationManager.AppSettings["Environment"] == "AppHarbor";
-            if (appHarbor)
+            var appHarborDev = ConfigurationManager.AppSettings["Environment"] == "AppHarborDev";
+            var appHarbor = ConfigurationManager.AppSettings["Environment"] == "AppHarborDev";
+            if (appHarborDev)
                 Database.SetInitializer(new StreameusInitializerForAppHarbor());
+            else if (appHarbor)
+                Database.SetInitializer(new CreateDatabaseIfNotExists<StreameusContext>());
             else
                 Database.SetInitializer(new StreameusInitializer());
 

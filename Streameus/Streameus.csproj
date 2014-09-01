@@ -225,7 +225,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="AutofacMapping\" />
     <Folder Include="Resources\" />
     <Folder Include="Views\Parameters\" />
@@ -415,6 +414,7 @@
     <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\StreameusDocumentation.xml" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css">
@@ -424,9 +424,44 @@
     <Content Include="Content\bootstrap.min.css">
       <DependentUpon>bootstrap.css</DependentUpon>
     </Content>
-    <Content Include="Content\Images\Conferences\Categories\1.png" />
-    <Content Include="Content\Images\Conferences\default.png" />
-    <Content Include="Content\Images\Users\default.png" />
+    <Content Include="Content\Images\Conferences\Categories\1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Conferences\Categories\arts.jpg" />
+    <Content Include="Content\Images\Conferences\Categories\Economics.jpg" />
+    <Content Include="Content\Images\Conferences\Categories\IT.jpg" />
+    <Content Include="Content\Images\Conferences\Categories\life.jpg" />
+    <Content Include="Content\Images\Conferences\Categories\miscellaneous.jpg" />
+    <Content Include="Content\Images\Conferences\Categories\politics.jpg" />
+    <Content Include="Content\Images\Conferences\Categories\science.jpg" />
+    <Content Include="Content\Images\Conferences\default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Users\1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Users\10.jpg" />
+    <Content Include="Content\Images\Users\11.jpg" />
+    <Content Include="Content\Images\Users\12.jpg" />
+    <Content Include="Content\Images\Users\13.jpg" />
+    <Content Include="Content\Images\Users\14.jpg" />
+    <Content Include="Content\Images\Users\15.jpg" />
+    <Content Include="Content\Images\Users\16.jpg" />
+    <Content Include="Content\Images\Users\17.jpg" />
+    <Content Include="Content\Images\Users\18.jpg" />
+    <Content Include="Content\Images\Users\19.jpg" />
+    <Content Include="Content\Images\Users\2.jpg" />
+    <Content Include="Content\Images\Users\20.jpg" />
+    <Content Include="Content\Images\Users\3.jpg" />
+    <Content Include="Content\Images\Users\4.jpg" />
+    <Content Include="Content\Images\Users\5.jpg" />
+    <Content Include="Content\Images\Users\6.jpg" />
+    <Content Include="Content\Images\Users\7.jpg" />
+    <Content Include="Content\Images\Users\8.jpg" />
+    <Content Include="Content\Images\Users\9.jpg" />
+    <Content Include="Content\Images\Users\default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="App_GlobalResources\Faq.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Faq.designer.cs</LastGenOutput>
@@ -504,6 +539,9 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Web.AppHarbor.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+	    <Content Include="Web.AppHarborDev.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Ressource\About.cshtml" />

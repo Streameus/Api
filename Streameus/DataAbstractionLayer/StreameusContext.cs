@@ -82,6 +82,7 @@ namespace Streameus.DataAbstractionLayer
                 Database.SetInitializer(new StreameusInitializer());
 
             new LogEvent("les valeurs de appharbor sont: dev(" + appHarborDev + "), prod(" + appHarbor + ")").Raise();
+            new LogEvent("Environment: " + ConfigurationManager.AppSettings["Environment"] + ".").Raise();
 
             modelBuilder.Configurations.Add(new CommentMap());
             modelBuilder.Configurations.Add(new ConferenceParametersMap());

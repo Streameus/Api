@@ -71,7 +71,7 @@ namespace Streameus.DataAbstractionLayer
         {
             //Un initializer de db different est requis pour appHarbor, cf doc de la classe.
             var appHarborDev = ConfigurationManager.AppSettings["Environment"] == "AppHarborDev";
-            var appHarbor = ConfigurationManager.AppSettings["Environment"] == "AppHarborDev";
+            var appHarbor = ConfigurationManager.AppSettings["Environment"] == "AppHarbor";
             if (appHarborDev)
                 Database.SetInitializer(new StreameusInitializerForAppHarbor());
             else if (appHarbor)

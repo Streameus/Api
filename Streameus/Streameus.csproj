@@ -225,6 +225,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="AutofacMapping\" />
     <Folder Include="Resources\" />
     <Folder Include="Views\Parameters\" />
@@ -414,7 +415,9 @@
     <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\StreameusDocumentation.xml" />
+    <Content Include="App_Data\StreameusDocumentation.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css">
@@ -541,7 +544,7 @@
     <Content Include="Web.AppHarbor.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-	    <Content Include="Web.AppHarborDev.config">
+    <Content Include="Web.AppHarborDev.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Ressource\About.cshtml" />

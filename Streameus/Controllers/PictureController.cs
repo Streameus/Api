@@ -255,31 +255,57 @@ namespace Streameus.Controllers
                 {
                     case PictureType.Conference:
                         var conference = this._conferenceServices.GetById(fileId);
-                        if (File.Exists(HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/conference" + conference.Id + ".png")))
+                        if (
+                            File.Exists(
+                                HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/conference" +
+                                                                   conference.Id + ".png")))
                         {
-                            defaultPicture = HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/conference" + conference.Id + ".png");                            
+                            defaultPicture =
+                                HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/conference" +
+                                                                   conference.Id + ".png");
                         }
-                        else if (File.Exists(HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/Categories/" + conference.CategoryId + ".png")))
+                        else if (
+                            File.Exists(
+                                HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/Categories/" +
+                                                                   conference.CategoryId + ".png")))
                         {
-                            defaultPicture = HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/Categories/" +
-                                                               conference.CategoryId + ".png");
+                            defaultPicture =
+                                HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/Categories/" +
+                                                                   conference.CategoryId + ".png");
                         }
                         else
                         {
-                            defaultPicture = HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/default.png");
+                            defaultPicture =
+                                HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/default.png");
                         }
                         break;
                     case PictureType.Category:
-                        if (File.Exists(HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/Categories/" + fileId + ".png")))
+                        if (
+                            File.Exists(
+                                HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/Categories/" + fileId +
+                                                                   ".png")))
                         {
-                            defaultPicture = HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/Categories/" + fileId + ".png");
+                            defaultPicture =
+                                HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/Categories/" + fileId +
+                                                                   ".png");
                         }
-                        else{
-                        defaultPicture = HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/default.png");
+                        else
+                        {
+                            defaultPicture =
+                                HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/default.png");
                         }
                         break;
                     case PictureType.User:
-                        defaultPicture = HttpContext.Current.Server.MapPath("~/Content/Images/Users/default.png");
+                        if (File.Exists(HttpContext.Current.Server.MapPath("~/Content/Images/Users/" + fileId + ".png")))
+                            defaultPicture =
+                                HttpContext.Current.Server.MapPath("~/Content/Images/Users/" + fileId + ".png");
+                        else if (
+                            File.Exists(
+                                HttpContext.Current.Server.MapPath("~/Content/Images/Users/" + fileId + ".jpg")))
+                            defaultPicture =
+                                HttpContext.Current.Server.MapPath("~/Content/Images/Users/" + fileId + ".jpg");
+                        else
+                            defaultPicture = HttpContext.Current.Server.MapPath("~/Content/Images/Users/default.png");
                         break;
                     default:
                         defaultPicture = HttpContext.Current.Server.MapPath("~/Content/Images/Users/default.png");

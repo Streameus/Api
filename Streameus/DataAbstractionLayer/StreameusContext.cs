@@ -1,5 +1,7 @@
+using System;
 using System.Configuration;
 using System.Data.Entity;
+using System.Web.Management;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -79,6 +81,8 @@ namespace Streameus.DataAbstractionLayer
             else
                 Database.SetInitializer(new StreameusInitializer());
 
+            new LogEvent("les valeurs de appharbor sont: dev(" + appHarborDev + "), prod(" + appHarbor + ")").Raise();
+
             modelBuilder.Configurations.Add(new CommentMap());
             modelBuilder.Configurations.Add(new ConferenceParametersMap());
             modelBuilder.Configurations.Add(new DocumentMap());
@@ -87,6 +91,14 @@ namespace Streameus.DataAbstractionLayer
             modelBuilder.Configurations.Add(new ConferenceMap());
             modelBuilder.Configurations.Add(new MessageMap());
             modelBuilder.Configurations.Add(new MessageGroupMap());
+        }
+
+        public class LogEvent : WebRequestErrorEvent
+        {
+            public LogEvent(string message)
+                : base(null, null, 100001, new Exception(message))
+            {
+            }
         }
 
         /// <summary>

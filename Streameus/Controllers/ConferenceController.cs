@@ -200,7 +200,7 @@ namespace Streameus.Controllers
         /// Suscribe to a conference
         /// </summary>
         /// <param name="id">the id of the conference you want to suscribe to</param>
-        [Route("{id}/Suscribe")]
+        [Route("{id}/Subscribe")]
         [Authorize]
         public void GetSuscribe(int id)
         {
@@ -219,7 +219,7 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="id">the id of the conference you want to unsuscribe from</param>
         [Authorize]
-        [Route("{id}/Unsuscribe")]
+        [Route("{id}/Unsubscribe")]
         public void GetUnSuscribe(int id)
         {
             try

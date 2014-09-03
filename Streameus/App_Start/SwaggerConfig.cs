@@ -1,6 +1,5 @@
 using System;
 using System.Reflection;
-using System.Web;
 using System.Web.Http;
 using System.Web.Http.OData.Query;
 using Streameus;
@@ -9,8 +8,9 @@ using Streameus.Models;
 using Streameus.ViewModels;
 using Swashbuckle.Application;
 using Swashbuckle.Swagger;
+using WebActivatorEx;
 
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof (SwaggerConfig), "Register")]
+[assembly: PreApplicationStartMethod(typeof (SwaggerConfig), "Register")]
 
 namespace Streameus
 {
@@ -43,6 +43,8 @@ namespace Streameus
                     c.MapType<ODataQueryOptions<MessageGroup>>(() => queryOptionDataType);
                     c.MapType<ODataQueryOptions<MessageGroupViewModel>>(() => queryOptionDataType);
                 });
+
+
             SwaggerUiConfig.Customize(c =>
             {
                 c.InjectJavaScript(Assembly.GetExecutingAssembly(), "Streameus.Scripts.swagger.js");

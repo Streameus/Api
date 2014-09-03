@@ -390,6 +390,7 @@
     <Compile Include="ViewModels\AccountBindingModels.cs" />
     <Compile Include="ViewModels\AddExternalLoginBindingModel.cs" />
     <Compile Include="ViewModels\ConferenceAgendaViewModel.cs" />
+    <Compile Include="ViewModels\ConferenceViewModelUnique.cs" />
     <Compile Include="ViewModels\NotificationsViewModel.cs" />
     <Compile Include="ViewModels\SearchResultViewModel.cs" />
     <Compile Include="ViewModels\ConferenceCategoryViewModel.cs" />

@@ -242,5 +242,17 @@ namespace Streameus.DataAbstractionLayer.Services
         {
             return !this.GetDbSet<User>().Any(u => u.Email == user.Email && u.Id != user.Id);
         }
+
+        /// <summary>
+        /// Check if the current user is registered to the target conf
+        /// </summary>
+        /// <param name="currentUserId">The current user ID</param>
+        /// <param name="targetConfId">the target conf ID</param>
+        /// <returns></returns>
+        public bool IsUserRegistered(int currentUserId, int targetConfId)
+        {
+            var currentUser = this.GetById(currentUserId);
+            return currentUser.ConferencesRegistered.Any(a => a.Id == targetConfId);
+        }
     }
 }

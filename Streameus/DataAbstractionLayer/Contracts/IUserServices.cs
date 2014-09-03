@@ -94,13 +94,5 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <returns></returns>
         /// <param name="take">The max number of results desired</param>
         IQueryable<User> GetUsersWithBestReputation(int take = 5);
-
-        /// <summary>
-        /// Check if the current user is registered to the target conf
-        /// </summary>
-        /// <param name="currentUserId">The current user ID</param>
-        /// <param name="targetConfId">The target conf ID</param>
-        /// <returns></returns>
-        bool IsUserRegistered(int currentUserId, int targetConfId);
     }
 }

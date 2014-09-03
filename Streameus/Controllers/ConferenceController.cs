@@ -94,12 +94,16 @@ namespace Streameus.Controllers
         /// <param name="id">the id of the conference</param>
         /// <returns></returns>
         /// <exception cref="NotFoundException"></exception>
-        public ConferenceViewModel Get(int id)
+        public ConferenceViewModelUnique Get(int id)
         {
             var conf = this._conferenceServices.GetById(id);
             if (conf == null)
                 throw new NotFoundException(Translation.ConferenceNotFound);
-            ConferenceViewModel conference = new ConferenceViewModel(conf);
+            var conference = new ConferenceViewModelUnique(conf)
+            {
+                Registered = this._conferenceServices.IsUserRegistered(conf.Id, this.GetCurrentUserId())
+            };
+
             return conference;
         }
 
@@ -253,7 +257,7 @@ namespace Streameus.Controllers
         [Route("{id}/Registered/{userId}")]
         public Boolean GetAmIRegistered(int id, int userId)
         {
-            return this._userServices.IsUserRegistered(userId, id);
+            return this._conferenceServices.IsUserRegistered(id, userId);
         }
 
         // GET api/user/AmIRegistered/{id}
@@ -267,7 +271,7 @@ namespace Streameus.Controllers
         public Boolean GetAmIRegistered(int id)
         {
             var currentUserId = this.GetCurrentUserId();
-            return this._userServices.IsUserRegistered(currentUserId, id);
+            return this._conferenceServices.IsUserRegistered(id, currentUserId);
         }
     }
 }

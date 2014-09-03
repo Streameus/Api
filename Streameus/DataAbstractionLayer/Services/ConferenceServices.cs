@@ -260,5 +260,17 @@ namespace Streameus.DataAbstractionLayer.Services
             return false;
             //todo Gerer les autre cas autrements
         }
+
+        /// <summary>
+        /// Check if the user is registered to the conf
+        /// </summary>
+        /// <param name="userId">The user ID</param>
+        /// <param name="confId">The conf ID</param>
+        /// <returns></returns>
+        public bool IsUserRegistered(int confId, int userId)
+        {
+            var conf = this.GetById(confId);
+            return conf.Registred.Any(u => u.Id == userId);
+        }
     }
 }

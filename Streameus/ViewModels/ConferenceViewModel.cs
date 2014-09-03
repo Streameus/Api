@@ -71,7 +71,7 @@ namespace Streameus.ViewModels
             this.Id = conf.Id;
             this.Owner = conf.OwnerId;
             this.Name = conf.Name;
-            
+
             this.Description = conf.Description;
             this.Status = conf.Status;
             this.Time = conf.Time;
@@ -80,6 +80,25 @@ namespace Streameus.ViewModels
             this.Category = new ConferenceCategoryViewModel(conf.Category);
             // TODO, mettre RoomId une fois le stream en place
             this.RoomId = conf.Id.ToString();
+        }
+    }
+
+    /// <summary>
+    /// ViewModel used when returning only one object. Tells the user if he is registered to the conference.
+    /// </summary>
+    public class ConferenceViewModelUnique : ConferenceViewModel
+    {
+        /// <summary>
+        /// Is the user registered to this conference
+        /// </summary>
+        public bool Registered { get; set; }
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="conf"></param>
+        public ConferenceViewModelUnique(Conference conf) : base(conf)
+        {
         }
     }
 }

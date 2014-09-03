@@ -99,5 +99,13 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <param name="userId">the Id of the user who wants tho make the change</param>
         /// <returns>True if success false otherwise</returns>
         bool StartConference(int confId, int userId);
+
+        /// <summary>
+        /// Check if the user is registered to the conf
+        /// </summary>
+        /// <param name="userId">The user ID</param>
+        /// <param name="confId">The conf ID</param>
+        /// <returns></returns>
+        bool IsUserRegistered(int confId, int userId);
     }
 }

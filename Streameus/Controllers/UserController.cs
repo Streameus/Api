@@ -176,18 +176,5 @@ namespace Streameus.Controllers
             return conferencesListe;
         }
 
-        // GET api/user/AmIRegistered/{id}
-        /// <summary>
-        /// Check if the user authenticated is registered to the specified conference
-        /// </summary>
-        /// <param name="id">the id of the conf to be checked</param>
-        /// <returns></returns>
-        [Authorize]
-        [Route("AmIRegistered/{id}")]
-        public Boolean GetAmIRegistered(int id)
-        {
-            var currentUserId = this.GetCurrentUserId();
-            return this._userServices.IsUserRegistered(currentUserId, id);
-        }
     }
 }

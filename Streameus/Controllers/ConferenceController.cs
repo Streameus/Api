@@ -240,5 +240,34 @@ namespace Streameus.Controllers
             if (!this._conferenceServices.StartConference(id, this.GetCurrentUserId()))
                 throw new ForbiddenException(Translation.ForbiddenConfUpdate);
         }
+
+
+        // GET api/user/AmIRegistered/{id}
+        /// <summary>
+        /// Tells you if the user is registered to a conference
+        /// </summary>
+        /// <param name="id">the id of the conf to be checked</param>
+        /// <param name="userId">The id of the user</param>
+        /// <returns></returns>
+        [Authorize]
+        [Route("{id}/Registered/{userId}")]
+        public Boolean GetAmIRegistered(int id, int userId)
+        {
+            return this._userServices.IsUserRegistered(userId, id);
+        }
+
+        // GET api/user/AmIRegistered/{id}
+        /// <summary>
+        /// Tells you if you are registered to a conference
+        /// </summary>
+        /// <param name="id">the id of the conf to be checked</param>
+        /// <returns></returns>
+        [Authorize]
+        [Route("{id}/Registered/me")]
+        public Boolean GetAmIRegistered(int id)
+        {
+            var currentUserId = this.GetCurrentUserId();
+            return this._userServices.IsUserRegistered(currentUserId, id);
+        }
     }
 }

@@ -176,5 +176,32 @@ namespace Streameus.Controllers
             return conferencesListe;
         }
 
+        /// <summary>
+        /// Get all conferences created by a specified user
+        /// </summary>
+        /// <param name="id">User id</param>
+        /// <returns></returns>
+        [Route("{id}/Conferences/Registered")]
+        public IEnumerable<ConferenceViewModel> GetConferencesRegistered(int id)
+        {
+            var conferences = this._userServices.GetById(id).ConferencesRegistered;
+            var conferencesListe = new List<ConferenceViewModel>();
+            conferences.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c)));
+            return conferencesListe;
+        }
+
+        /// <summary>
+        /// Get all conferences created by a specified user
+        /// </summary>
+        /// <param name="id">User id</param>
+        /// <returns></returns>
+        [Route("{id}/Conferences/Attended")]
+        public IEnumerable<ConferenceViewModel> GetConferencesAttended(int id)
+        {
+            var conferences = this._userServices.GetById(id).ConferencesAttended;
+            var conferencesListe = new List<ConferenceViewModel>();
+            conferences.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c)));
+            return conferencesListe;
+        }
     }
 }

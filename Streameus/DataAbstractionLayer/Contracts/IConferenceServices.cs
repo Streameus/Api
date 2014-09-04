@@ -100,6 +100,16 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <returns>True if success false otherwise</returns>
         bool StartConference(int confId, int userId);
 
+
+        /// <summary>
+        /// Stop a conference, change its status from EnCours to Finie
+        /// </summary>
+        /// <remarks>User needs to be the owner</remarks>
+        /// <param name="confId">the Id of the conference</param>
+        /// <param name="userId">the Id of the user who wants tho make the change</param>
+        /// <returns>True if success false otherwise</returns>        
+        bool StopConference(int confId, int userId);
+
         /// <summary>
         /// Check if the user is registered to the conf
         /// </summary>

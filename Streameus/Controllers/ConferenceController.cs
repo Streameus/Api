@@ -239,9 +239,22 @@ namespace Streameus.Controllers
         /// <exception cref="ForbiddenException"></exception>
         [Route("{id}/Start")]
         [Authorize]
-        public void GetStartConference(int id)
+        public void PostStartConference(int id)
         {
             if (!this._conferenceServices.StartConference(id, this.GetCurrentUserId()))
+                throw new ForbiddenException(Translation.ForbiddenConfUpdate);
+        }
+
+        /// <summary>
+        /// Stop a conf, changes its status from EnCours to AVenir
+        /// </summary>
+        /// <param name="id"></param>
+        /// <exception cref="ForbiddenException"></exception>
+        [Route("{id}/Stop")]
+        [Authorize]
+        public void PostStopConference(int id)
+        {
+            if (!this._conferenceServices.StopConference(id, this.GetCurrentUserId()))
                 throw new ForbiddenException(Translation.ForbiddenConfUpdate);
         }
 

@@ -44,6 +44,7 @@ namespace Streameus.Controllers
         /// Search on users and conferences
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         public SearchResultViewModel Get(string query)
         {
             var keywords = QueryToKeywords(query);
@@ -57,6 +58,7 @@ namespace Streameus.Controllers
         /// Search on users
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [Route("Users")]
         public UserViewModel[] GetUsers(string query)
         {
@@ -70,6 +72,7 @@ namespace Streameus.Controllers
         /// Search on conferences
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [Route("Conferences")]
         public ConferenceViewModel[] GetConferences(string query)
         {

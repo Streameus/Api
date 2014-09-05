@@ -173,6 +173,7 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="id">The conference Id</param>
         /// <returns></returns>
+        [Authorize]
         [Route("{id}/Participants")]
         public IEnumerable<UserViewModel> GetParticipants(int id)
         {
@@ -187,6 +188,7 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="id">The conference Id</param>
         /// <returns></returns>
+        [Authorize]
         [Route("{id}/Registered")]
         public IEnumerable<UserViewModel> GetRegistered(int id)
         {

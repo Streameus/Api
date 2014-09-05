@@ -41,6 +41,7 @@ namespace Streameus.Controllers
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NoResultException"></exception>
+        [Authorize]
         public IEnumerable<UserViewModel> Get()
         {
             var userList = new List<UserViewModel>();
@@ -56,6 +57,7 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="id">the id of the user to get</param>
         /// <returns></returns>
+        [Authorize]
         public UserViewModel Get(int id)
         {
             var user = this._userServices.GetById(id);
@@ -129,6 +131,7 @@ namespace Streameus.Controllers
         /// <param name="userViewModel"></param>
         /// <returns></returns>
         /// <exception cref="ConflictdException">An user already exist with same infos</exception>
+        [Authorize]
         public UserViewModel Put(int id, [FromBody] UserViewModel userViewModel)
         {
             var newUser = Mapper.Map<User>(userViewModel);
@@ -167,6 +170,7 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="id">User id</param>
         /// <returns></returns>
+        [Authorize]
         [Route("{id}/conferences")]
         public IEnumerable<ConferenceViewModel> GetConferencesOfUser(int id)
         {
@@ -177,10 +181,11 @@ namespace Streameus.Controllers
         }
 
         /// <summary>
-        /// Get all conferences created by a specified user
+        /// Get all conferences registered by a specified user
         /// </summary>
         /// <param name="id">User id</param>
         /// <returns></returns>
+        [Authorize]
         [Route("{id}/Conferences/Registered")]
         public IEnumerable<ConferenceViewModel> GetConferencesRegistered(int id)
         {
@@ -191,10 +196,11 @@ namespace Streameus.Controllers
         }
 
         /// <summary>
-        /// Get all conferences created by a specified user
+        /// Get all conferences attended by a specified user
         /// </summary>
         /// <param name="id">User id</param>
         /// <returns></returns>
+        [Authorize]
         [Route("{id}/Conferences/Attended")]
         public IEnumerable<ConferenceViewModel> GetConferencesAttended(int id)
         {

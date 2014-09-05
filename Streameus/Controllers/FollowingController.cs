@@ -42,6 +42,7 @@ namespace Streameus.Controllers
         /// <param name="id">the user id</param>
         /// <returns></returns>
         /// <exception cref="NotFoundException"></exception>
+        [Authorize]
         public List<UserViewModel> Get(int id)
         {
             var abonnementsViewModels = new List<UserViewModel>();

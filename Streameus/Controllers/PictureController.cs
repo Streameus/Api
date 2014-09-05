@@ -80,6 +80,7 @@ namespace Streameus.Controllers
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ApiController.NotFound">Picture not found</exception>
+        [Authorize]
         [Route("api/Picture/User/{id}/{name?}")]
         public HttpResponseMessage GetUser(int id, string name = null)
         {

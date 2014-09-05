@@ -41,6 +41,7 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="id">the id of the user to get the parameters</param>
         /// <returns></returns>
+        [Authorize]
         public ParametersViewModel Get(int id)
         {
             var user = this._userServices.GetById(id);
@@ -54,6 +55,7 @@ namespace Streameus.Controllers
         /// <param name="parametersViewModel"></param>
         /// <param name="id">id of user</param>
         /// <returns></returns>
+        [Authorize]
         public void Post(int id, [FromBody] ParametersViewModel parametersViewModel)
         {
             var user = this._userServices.GetById(id);

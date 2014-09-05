@@ -45,6 +45,7 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="id">The id of the user to be updated</param>
         /// <param name="privacy">the view model</param>
+        [Authorize]
         public void Put(int id, [FromBody] PrivacyViewModel privacy)
         {
             var user = this._userServices.GetById(id);

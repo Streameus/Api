@@ -39,6 +39,7 @@ namespace Streameus.Controllers
         /// <returns></returns>
         /// <exception cref="NoResultException">If the user doesn't have any followers</exception>
         /// <exception cref="NotFoundException">If the user doesn't exists</exception>
+        [Authorize]
         public IEnumerable<UserViewModel> Get(int id)
         {
             var followersViewModels = new List<UserViewModel>();

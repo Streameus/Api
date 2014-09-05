@@ -51,6 +51,7 @@ namespace Streameus.Controllers
         /// <param name="options">options for sorting and filtering</param>
         /// <returns></returns>
         /// <exception cref="NoResultException"></exception>
+        [Authorize]
         [Route("Group")]
         public IEnumerable<MessageGroupViewModel> GetGroups(ODataQueryOptions<MessageGroup> options)
         {
@@ -102,6 +103,7 @@ namespace Streameus.Controllers
         /// <param name="id">id of the message group</param>
         /// <param name="options">options for sorting and filtering</param>
         /// <returns></returns>
+        [Authorize]
         [Route("{id}")]
         public IEnumerable<MessageViewModel> GetMessages(int id, ODataQueryOptions<Message> options)
         {
@@ -169,6 +171,7 @@ namespace Streameus.Controllers
         /// <param name="userIds">Array of users in the message group</param>
         /// <param name="options">options for sorting and filtering</param>
         /// <returns></returns>
+        [Authorize]
         [Route("Group")]
         public NewMessageGroupViewModel Post(int[] userIds, ODataQueryOptions<Message> options)
         {

@@ -203,12 +203,16 @@ namespace Streameus.Controllers
         /// Get all the user registered to a conference
         /// </summary>
         /// <param name="id">The conference Id</param>
+        /// <param name="options">Odata options</param>
         /// <returns></returns>
         [Authorize]
         [Route("{id}/Registered")]
-        public IEnumerable<UserViewModel> GetRegistered(int id)
+        public IEnumerable<UserViewModel> GetRegistered(int id, ODataQueryOptions<Event> options = null)
         {
-            IQueryable<User> registeredParticipantsList = this._conferenceServices.GetRegisteredUsersByConferenceId(id);
+            var registeredParticipantsList = this._conferenceServices.GetRegisteredUsersByConferenceId(id);
+            if (options != null)
+                registeredParticipantsList = options.ApplyTo(registeredParticipantsList) as IQueryable<User>;
+
             var registeredParticipantsVmList = new List<UserViewModel>();
             registeredParticipantsList.ForEach(p => registeredParticipantsVmList.Add(new UserViewModel(p)));
             return registeredParticipantsVmList;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.OData.Query;
 using Microsoft.AspNet.Identity;
 using Streameus.App_GlobalResources;
 using Streameus.DataAbstractionLayer.Contracts;
@@ -53,6 +54,21 @@ namespace Streameus.Controllers
         {
             var conferences = new List<ConferenceViewModel>();
             this._conferenceServices.GetAll().ForEach(c => conferences.Add(new ConferenceViewModel(c)));
+            return conferences;
+        }
+
+        // GET api/conference
+        /// <summary>
+        /// Get all conferences
+        /// </summary>
+        /// <returns></returns>
+        /// <responseCode></responseCode>
+        [Route("Soon")]
+        public IEnumerable<ConferenceViewModel> GetSoon(ODataQueryOptions<Conference> options)
+        {
+            var confs = options.ApplyTo(this._conferenceServices.GetSoonConfs()) as IQueryable<Conference>;
+            var conferences = new List<ConferenceViewModel>();
+            confs.ForEach(c => conferences.Add(new ConferenceViewModel(c)));
             return conferences;
         }
 

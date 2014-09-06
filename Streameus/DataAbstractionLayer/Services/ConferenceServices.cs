@@ -135,6 +135,19 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
+        /// Get popular confs comming soon
+        /// </summary>
+        /// <returns></returns>
+        public IQueryable<Conference> GetSoonConfs()
+        {
+            return
+                this.GetDbSet<Conference>()
+                    .Where(c => c.Time > DateTime.Now)
+                    .OrderByDescending(c => c.Participants.Count)
+                    .ThenBy(c => c.Time);
+        }
+
+        /// <summary>
         /// Get all users participating to a conference
         /// </summary>
         /// <param name="id">The conference Id</param>
@@ -220,9 +233,13 @@ namespace Streameus.DataAbstractionLayer.Services
         public IEnumerable<Conference> GetLiveConferenceForUser(int userId)
         {
             var user = this._userServices.GetById(userId);
-            return
-                user.ConferencesRegistered.Where(
+            var involved = user.ConferencesInvolved.Where(
+                c => c.Time <= DateTime.Now && c.Status == DataBaseEnums.ConfStatus.EnCours);
+            var created = user.ConferencesCreated.Where(
+                c => c.Time <= DateTime.Now && c.Status == DataBaseEnums.ConfStatus.EnCours);
+            var registred = user.ConferencesRegistered.Where(
                     c => c.Time <= DateTime.Now && c.Status == DataBaseEnums.ConfStatus.EnCours);
+            return created.Union(registred).Union(involved);
         }
 
         /// <summary>
@@ -255,6 +272,29 @@ namespace Streameus.DataAbstractionLayer.Services
             if (conference.Status == DataBaseEnums.ConfStatus.AVenir)
             {
                 conference.Status = DataBaseEnums.ConfStatus.EnCours;
+                this.UpdateConference(conference, userId);
+                return true;
+            }
+            return false;
+            //todo Gerer les autre cas autrements
+        }
+
+        /// <summary>
+        /// Stop a conference, change its status from EnCours to Finie
+        /// </summary>
+        /// <remarks>User needs to be the owner</remarks>
+        /// <param name="confId">the Id of the conference</param>
+        /// <param name="userId">the Id of the user who wants tho make the change</param>
+        /// <returns>True if success false otherwise</returns>        
+        public bool StopConference(int confId, int userId)
+        {
+            var conference = this.GetById(confId);
+            if (conference.OwnerId != userId)
+                return false;
+            if (conference.Status == DataBaseEnums.ConfStatus.EnCours)
+            {
+                conference.Status = DataBaseEnums.ConfStatus.Finie;
+                this.UpdateConference(conference, userId);
                 return true;
             }
             return false;

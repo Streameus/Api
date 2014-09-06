@@ -46,6 +46,12 @@ namespace Streameus.DataAbstractionLayer.Contracts
         IEnumerable<Conference> GetMostPopularConfs();
 
         /// <summary>
+        /// Get popular confs comming soon
+        /// </summary>
+        /// <returns></returns>
+        IQueryable<Conference> GetSoonConfs();
+
+        /// <summary>
         /// Get all users participating to a conference
         /// </summary>
         /// <param name="id">The conference Id</param>

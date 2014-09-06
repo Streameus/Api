@@ -207,7 +207,7 @@ namespace Streameus.Controllers
         /// <returns></returns>
         [Authorize]
         [Route("{id}/Registered")]
-        public IEnumerable<UserViewModel> GetRegistered(int id, ODataQueryOptions<Event> options = null)
+        public IEnumerable<UserViewModel> GetRegistered(int id, ODataQueryOptions<User> options = null)
         {
             var registeredParticipantsList = this._conferenceServices.GetRegisteredUsersByConferenceId(id);
             if (options != null)

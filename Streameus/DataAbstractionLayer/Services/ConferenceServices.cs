@@ -238,7 +238,7 @@ namespace Streameus.DataAbstractionLayer.Services
             var created = user.ConferencesCreated.Where(
                 c => c.Time <= DateTime.Now && c.Status == DataBaseEnums.ConfStatus.EnCours);
             var registred = user.ConferencesRegistered.Where(
-                    c => c.Time <= DateTime.Now && c.Status == DataBaseEnums.ConfStatus.EnCours);
+                c => c.Time <= DateTime.Now && c.Status == DataBaseEnums.ConfStatus.EnCours);
             return created.Union(registred).Union(involved);
         }
 
@@ -295,27 +295,6 @@ namespace Streameus.DataAbstractionLayer.Services
             {
                 conference.Status = DataBaseEnums.ConfStatus.Finie;
                 this.UpdateConference(conference, userId);
-                return true;
-            }
-            return false;
-            //todo Gerer les autre cas autrements
-        }
-
-        /// <summary>
-        /// Stop a conference, change its status from EnCours to Finie
-        /// </summary>
-        /// <remarks>User needs to be the owner</remarks>
-        /// <param name="confId">the Id of the conference</param>
-        /// <param name="userId">the Id of the user who wants tho make the change</param>
-        /// <returns>True if success false otherwise</returns>        
-        public bool StopConference(int confId, int userId)
-        {
-            var conference = this.GetById(confId);
-            if (conference.OwnerId != userId)
-                return false;
-            if (conference.Status == DataBaseEnums.ConfStatus.EnCours)
-            {
-                conference.Status = DataBaseEnums.ConfStatus.Finie;
                 return true;
             }
             return false;

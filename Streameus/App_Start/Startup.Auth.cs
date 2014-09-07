@@ -75,13 +75,13 @@ namespace Streameus
             //    consumerKey: "",
             //    consumerSecret: "");
 
-                        var facebookOptions = new FacebookAuthenticationOptions()
-                        {
-                            AppId = "680904668667685",
-                            AppSecret = "c4796a5ada641f66bc02b59f019c4e31",
-                        };
-                        facebookOptions.Scope.Add("email");
-                        app.UseFacebookAuthentication(facebookOptions);
+            var facebookOptions = new FacebookAuthenticationOptions()
+            {
+                AppId = ConfigurationManager.AppSettings.Get("facebookAppId"),
+                AppSecret = ConfigurationManager.AppSettings.Get("facebookAppSecret"),
+            };
+            facebookOptions.Scope.Add("email");
+            app.UseFacebookAuthentication(facebookOptions);
 
             var googleOAuth2AuthenticationOptions = new GoogleOAuth2AuthenticationOptions
             {

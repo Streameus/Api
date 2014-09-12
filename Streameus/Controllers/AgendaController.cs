@@ -52,7 +52,7 @@ namespace Streameus.Controllers
             var confList = new List<ConferenceAgendaViewModel>();
             foreach (var conference in conferences)
             {
-                if (conference.Status != DataBaseEnums.ConfStatus.Finie)
+                if (conference.Status == DataBaseEnums.ConfStatus.Finie)
                 {
                     var confInfo = new ConferenceAgendaViewModel
                     {

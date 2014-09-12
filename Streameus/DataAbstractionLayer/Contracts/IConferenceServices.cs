@@ -104,7 +104,7 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <param name="confId">the Id of the conference</param>
         /// <param name="userId">the Id of the user who wants tho make the change</param>
         /// <returns>True if success false otherwise</returns>
-        bool StartConference(int confId, int userId);
+        Conference StartConference(int confId, int userId);
 
 
         /// <summary>
@@ -123,5 +123,13 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <param name="confId">The conf ID</param>
         /// <returns></returns>
         bool IsUserRegistered(int confId, int userId);
+
+        /// <summary>
+        /// Get the token needed to access an active conference
+        /// </summary>
+        /// <param name="id">the conference ID</param>
+        /// <param name="userId">the id of the user who needs a token</param>
+        /// <returns></returns>
+        string GetTokenForConference(int id, int userId);
     }
 }

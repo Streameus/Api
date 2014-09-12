@@ -261,10 +261,12 @@ namespace Streameus.Controllers
         /// <exception cref="ForbiddenException"></exception>
         [Route("{id}/Start")]
         [Authorize]
-        public void PostStartConference(int id)
+        public string PostStartConference(int id)
         {
-            if (!this._conferenceServices.StartConference(id, this.GetCurrentUserId()))
+            var conf = this._conferenceServices.StartConference(id, this.GetCurrentUserId());
+            if (conf == null)
                 throw new ForbiddenException(Translation.ForbiddenConfUpdate);
+            return conf.RoomId;
         }
 
         /// <summary>
@@ -278,6 +280,18 @@ namespace Streameus.Controllers
         {
             if (!this._conferenceServices.StopConference(id, this.GetCurrentUserId()))
                 throw new ForbiddenException(Translation.ForbiddenConfUpdate);
+        }
+
+        /// <summary>
+        /// Get the token to watch a conference
+        /// </summary>
+        /// <param name="id"></param>
+        /// <exception cref="ForbiddenException"></exception>
+        [Route("{id}/Token")]
+        [Authorize]
+        public string GetTokenConference(int id)
+        {
+            return this._conferenceServices.GetTokenForConference(id, this.GetCurrentUserId());
         }
 
 

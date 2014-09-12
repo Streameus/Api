@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Web.UI.WebControls;
 using Newtonsoft.Json;
 using Streameus.Hooks;
 using Swashbuckle.Application;
@@ -61,7 +62,7 @@ namespace Streameus
             //Register api controllers
             builder.RegisterApiControllers(dataAccess);
             //Set UnitOfWork to exist for the whole duration of the API request
-            builder.Register(u => new UnitOfWork(new StreameusContext())).As<IUnitOfWork>().InstancePerApiRequest();
+            builder.Register(u => new UnitOfWork(new StreameusContext())).As<IUnitOfWork>().InstancePerRequest();
             //Register all the services
             builder.RegisterAssemblyTypes(dataAccess)
                 .Where(t => t.Name.EndsWith("Services"))

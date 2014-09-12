@@ -20,6 +20,7 @@ namespace Streameus.DataAbstractionLayer.Services
         private readonly IConferenceParametersServices _conferenceParametersServices;
         private readonly IEventServices _eventServices;
         private readonly IUserServices _userServices;
+        private readonly IRoomServices _roomServices;
 
         /// <summary>
         /// default constructor
@@ -28,18 +29,21 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="conferenceParametersServices"></param>
         /// <param name="eventServices"></param>
         /// <param name="userServices"></param>
+        /// <param name="roomServices"></param>
         /// <exception cref="ArgumentNullException"></exception>
         public ConferenceServices(IUnitOfWork unitOfWork, IConferenceParametersServices conferenceParametersServices,
-            IEventServices eventServices, IUserServices userServices)
+            IEventServices eventServices, IUserServices userServices, IRoomServices roomServices)
             : base(unitOfWork)
         {
             if (unitOfWork == null) throw new ArgumentNullException("unitOfWork");
             if (conferenceParametersServices == null) throw new ArgumentNullException("conferenceParametersServices");
             if (eventServices == null) throw new ArgumentNullException("eventServices");
             if (userServices == null) throw new ArgumentNullException("userServices");
+            if (roomServices == null) throw new ArgumentNullException("roomServices");
             this._conferenceParametersServices = conferenceParametersServices;
             this._eventServices = eventServices;
             this._userServices = userServices;
+            this._roomServices = roomServices;
         }
 
         /// <summary>
@@ -264,18 +268,19 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="confId">the Id of the conference</param>
         /// <param name="userId">the Id of the user who wants tho make the change</param>
         /// <returns>True if success false otherwise</returns>
-        public bool StartConference(int confId, int userId)
+        public Conference StartConference(int confId, int userId)
         {
             var conference = this.GetById(confId);
             if (conference.OwnerId != userId)
-                return false;
+                return null;
             if (conference.Status == DataBaseEnums.ConfStatus.AVenir)
             {
+                conference.RoomId = this._roomServices.CreateRoom(conference.Name).Result;
                 conference.Status = DataBaseEnums.ConfStatus.EnCours;
                 this.UpdateConference(conference, userId);
-                return true;
+                return conference;
             }
-            return false;
+            return null;
             //todo Gerer les autre cas autrements
         }
 
@@ -294,6 +299,7 @@ namespace Streameus.DataAbstractionLayer.Services
             if (conference.Status == DataBaseEnums.ConfStatus.EnCours)
             {
                 conference.Status = DataBaseEnums.ConfStatus.Finie;
+                conference.RoomId = null;
                 this.UpdateConference(conference, userId);
                 return true;
             }
@@ -311,6 +317,21 @@ namespace Streameus.DataAbstractionLayer.Services
         {
             var conf = this.GetById(confId);
             return conf.Registred.Any(u => u.Id == userId);
+        }
+
+        /// <summary>
+        /// Get the token needed to access an active conference
+        /// </summary>
+        /// <param name="id">the conference ID</param>
+        /// <param name="userId">the id of the user who needs a token</param>
+        /// <returns></returns>
+        public string GetTokenForConference(int id, int userId)
+        {
+            var conference = this.GetById(id);
+            var user = this._userServices.GetById(userId);
+            string role = conference.OwnerId != userId ? "viewerWithData" : "presenter";
+
+            return this._roomServices.CreateToken(conference.RoomId, user.UserName, role);
         }
     }
 }

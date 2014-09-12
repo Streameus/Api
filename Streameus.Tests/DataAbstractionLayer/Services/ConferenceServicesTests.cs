@@ -21,6 +21,7 @@ namespace Streameus.Tests.DataAbstractionLayer.Services
             var conferenceParametersServices = new Mock<IConferenceParametersServices>();
             var eventServices = new Mock<IEventServices>();
             var userServices = new Mock<IUserServices>();
+            var roomServices = new Mock<IRoomServices>();
 
             const int conferenceId = 41;
             const int userId = 42;
@@ -32,7 +33,7 @@ namespace Streameus.Tests.DataAbstractionLayer.Services
 
             var conferenceServices = new ConferenceServices(unitOfWorkMocker.UnitOfWork,
                 conferenceParametersServices.Object,
-                eventServices.Object, userServices.Object);
+                eventServices.Object, userServices.Object, roomServices.Object);
             conferenceServices.SuscribeUserToConference(conferenceId, userId);
             Assert.Equals(conference.Participants.Count, 1);
             Assert.Equals(conference.Participants.First().Id, userId);
@@ -48,6 +49,7 @@ namespace Streameus.Tests.DataAbstractionLayer.Services
             var conferenceParametersServices = new Mock<IConferenceParametersServices>();
             var eventServices = new Mock<IEventServices>();
             var userServices = new Mock<IUserServices>();
+            var roomServices = new Mock<IRoomServices>();
 
             const int conferenceId = 41;
             const int userId = 42;
@@ -59,7 +61,7 @@ namespace Streameus.Tests.DataAbstractionLayer.Services
             //Marche pas
             var conferenceServices = new ConferenceServices(unitOfWorkMocker.UnitOfWork,
                 conferenceParametersServices.Object,
-                eventServices.Object, userServices.Object);
+                eventServices.Object, userServices.Object, roomServices.Object);
             conferenceServices.SuscribeUserToConference(conferenceId, userId);
             Assert.Equals(conference.Participants.Count, 1);
             Assert.Equals(conference.Participants.First().Id, userId);

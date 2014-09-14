@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.OData.Query;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Streameus.DataAbstractionLayer.Contracts;
@@ -40,15 +41,18 @@ namespace Streameus.Controllers
         /// Get all the people this user is following
         /// </summary>
         /// <param name="id">the user id</param>
+        /// <param name="options">OData query options</param>
         /// <returns></returns>
         /// <exception cref="NotFoundException"></exception>
         [Authorize]
-        public List<UserViewModel> Get(int id)
+        public List<UserViewModel> Get(int id, ODataQueryOptions<User> options = null)
         {
             var abonnementsViewModels = new List<UserViewModel>();
             try
             {
                 var abonnements = this._userServices.GetAbonnementsForUser(id);
+                if (options != null)
+                    abonnements = options.ApplyTo(abonnements) as IQueryable<User>;
                 abonnements.ForEach(f => abonnementsViewModels.Add(new UserViewModel(f)));
             }
             catch (NoResultException e)

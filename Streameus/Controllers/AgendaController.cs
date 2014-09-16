@@ -48,11 +48,11 @@ namespace Streameus.Controllers
         public IOrderedEnumerable<KeyValuePair<DateTime, List<ConferenceAgendaViewModel>>> Get()
         {
             var owner = this._userServices.GetById(this.GetCurrentUserId());
-            var conferences = owner.ConferencesRegistered.OrderBy(c => c.Time);
+            var conferences = owner.ConferencesRegistered.Concat(owner.ConferencesCreated).Concat(owner.ConferencesInvolved).OrderBy(c => c.Time);
             var confList = new List<ConferenceAgendaViewModel>();
             foreach (var conference in conferences)
             {
-                if (conference.Status == DataBaseEnums.ConfStatus.Finie)
+                if (conference.Status != DataBaseEnums.ConfStatus.Finie)
                 {
                     var confInfo = new ConferenceAgendaViewModel
                     {

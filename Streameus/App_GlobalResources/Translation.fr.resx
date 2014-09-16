@@ -153,4 +153,7 @@
   <data name="OwnerCannotSuscribeToItsConf" xml:space="preserve">
     <value>Vous ne pouvez pas vous inscrire a votre propre conference!</value>
   </data>
+  <data name="TheConferenceIsNotStarted" xml:space="preserve">
+    <value>La conference n'a pas encore demarre</value>
+  </data>
 </root>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using Streameus.App_GlobalResources;
 using Streameus.DataAbstractionLayer.Contracts;
@@ -331,7 +332,9 @@ namespace Streameus.DataAbstractionLayer.Services
             var user = this._userServices.GetById(userId);
             string role = conference.OwnerId != userId ? "viewerWithData" : "presenter";
 
-            return this._roomServices.CreateToken(conference.RoomId, user.UserName, role);
+            if (conference.Status == DataBaseEnums.ConfStatus.EnCours)
+                return this._roomServices.CreateToken(conference.RoomId, user.UserName, role);
+            throw new ApiException(HttpStatusCode.Unauthorized, Translation.TheConferenceIsNotStarted);
         }
     }
 }

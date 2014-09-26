@@ -305,10 +305,12 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="returnUrl">URL where we want to be redirected</param>
         /// <param name="generateState">Allows to generate a state value for OAuth (put on true, it's easier)</param>
+        /// <remarks>specify "/authsuccess" in redirect url to be sent to a specific page in case of success</remarks>
         /// <returns></returns>
         [AllowAnonymous]
         [Route("ExternalLogins")]
-        public IEnumerable<ExternalLoginViewModel> GetExternalLogins(string returnUrl, bool generateState = false)
+        public IEnumerable<ExternalLoginViewModel> GetExternalLogins(string returnUrl,
+            bool generateState = false)
         {
             IEnumerable<AuthenticationDescription> descriptions = this.Authentication.GetExternalAuthenticationTypes();
             List<ExternalLoginViewModel> logins = new List<ExternalLoginViewModel>();
@@ -439,8 +441,10 @@ namespace Streameus.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityResult result = await UserManager.ChangePasswordAsync(Convert.ToInt32(this.User.Identity.GetUserId()), model.OldPassword,
-                model.NewPassword);
+            IdentityResult result =
+                await
+                    UserManager.ChangePasswordAsync(Convert.ToInt32(this.User.Identity.GetUserId()), model.OldPassword,
+                        model.NewPassword);
             IHttpActionResult errorResult = GetErrorResult(result);
 
             if (errorResult != null)
@@ -466,7 +470,8 @@ namespace Streameus.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityResult result = await UserManager.AddPasswordAsync(Convert.ToInt32(User.Identity.GetUserId()), model.NewPassword);
+            IdentityResult result =
+                await UserManager.AddPasswordAsync(Convert.ToInt32(User.Identity.GetUserId()), model.NewPassword);
             IHttpActionResult errorResult = GetErrorResult(result);
 
             if (errorResult != null)

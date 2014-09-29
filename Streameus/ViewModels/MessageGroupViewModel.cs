@@ -66,14 +66,15 @@ namespace Streameus.ViewModels
             this.Count = count == -1 ? messageGroup.Messages.Count : count;
             if (userId < 0)
             {
-                this.Members = messageGroup.Members.ToDictionary(m => m.Id, m => m.FullName);
+                this.Members = messageGroup.Members.ToDictionary(m => m.Id, m => m.Pseudo);
                 this.ImageId = messageGroup.Members.First().Id;
                 this.Read = true;
             }
             else
             {
-                this.Members = messageGroup.Members.Where(i => i.Id != userId).ToDictionary(m => m.Id, m => m.FullName);
-                this.ImageId = messageGroup.Members.First(i => i.Id != userId).Id;
+                var firstImage = messageGroup.Members.FirstOrDefault(i => i.Id != userId);
+                this.Members = messageGroup.Members.Where(i => i.Id != userId).ToDictionary(m => m.Id, m => m.Pseudo);
+                this.ImageId = firstImage != null ? firstImage.Id : 0;
                 this.Read = !(messageGroup.UnreadBy.Any(u => u.Id == userId));
             }
             if (messageGroup.Messages.Count > 0)

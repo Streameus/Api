@@ -51,7 +51,7 @@ namespace Streameus.Controllers
         /// <param name="options">options for sorting and filtering</param>
         /// <returns></returns>
         /// <exception cref="NoResultException"></exception>
-        [Authorize]
+        [System.Web.Http.Authorize]
         [Route("Group")]
         public IEnumerable<MessageGroupViewModel> GetGroups(ODataQueryOptions<MessageGroup> options)
         {
@@ -67,7 +67,7 @@ namespace Streameus.Controllers
         /// <param name="options">options for sorting and filtering</param>
         /// <returns></returns>
         [Route("Group/My")]
-        [Authorize]
+        [System.Web.Http.Authorize]
         public IEnumerable<MessageGroupViewModel> GetMy(ODataQueryOptions<MessageGroupViewModel> options)
         {
             var userId = this.GetCurrentUserId();
@@ -84,7 +84,7 @@ namespace Streameus.Controllers
         /// <param name="id">the id of the messageGroup to get</param>
         /// <param name="options">options for sorting and filtering</param>
         /// <returns></returns>
-        [Authorize]
+        [System.Web.Http.Authorize]
         [Route("Group/{id}")]
         public MessageGroupViewModel GetGroup(int id, ODataQueryOptions<Message> options)
         {
@@ -103,7 +103,7 @@ namespace Streameus.Controllers
         /// <param name="id">id of the message group</param>
         /// <param name="options">options for sorting and filtering</param>
         /// <returns></returns>
-        [Authorize]
+        [System.Web.Http.Authorize]
         [Route("{id}")]
         public IEnumerable<MessageViewModel> GetMessages(int id, ODataQueryOptions<Message> options)
         {
@@ -128,7 +128,7 @@ namespace Streameus.Controllers
         /// <param name="newMessageViewModel"></param>
         /// <returns></returns>
         /// <exception cref="ConflictdException">An message already exist with same infos</exception>
-        [Authorize]
+        [System.Web.Http.Authorize]
         public MessageViewModel Post([FromBody] NewMessageViewModel newMessageViewModel)
         {
             MessageGroup msgGroup;
@@ -171,19 +171,22 @@ namespace Streameus.Controllers
         /// <param name="userIds">Array of users in the message group</param>
         /// <param name="options">options for sorting and filtering</param>
         /// <returns></returns>
-        [Authorize]
+        [System.Web.Http.Authorize]
         [Route("Group")]
-        public NewMessageGroupViewModel Post(int[] userIds, ODataQueryOptions<Message> options)
+        public NewMessageGroupViewModel Post([FromBody] int[] userIds, ODataQueryOptions<Message> options)
         {
             var userId = this.GetCurrentUserId();
             var users = userIds.Select(id => this._userServices.GetById(id)).ToList();
+            if (users.Count < 2)
+                throw new InvalidOperationException("You must specify at least two users");
             if (users.Count == 1 && users.First().Id == userId)
                 throw new InvalidOperationException("You cannot send a message to yourself");
             var messageGroups = this._messageGroupServices.GetAll();
-            try
-            {
+            //try
+            //{
+            var usersCount = users.Count();
                 var existingGroup =
-                    messageGroups.SingleOrDefault(g => g.Members.Intersect(users).Count() == users.Count());
+                    messageGroups.FirstOrDefault(g => g.Members.All(i => userIds.Contains(i.Id)) && userIds.Count() == g.Members.Count);
                 // Search if a group already exists with those users
                 if (existingGroup != null)
                 {
@@ -198,11 +201,11 @@ namespace Streameus.Controllers
                 var group = new MessageGroup {Members = users};
                 this._messageGroupServices.AddMessageGroup(group);
                 return new NewMessageGroupViewModel(group, userId);
-            }
-            catch (Exception e)
-            {
-                throw new Exceptions.HttpErrors.NoResultException(e.Message);
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    throw new Exceptions.HttpErrors.NoResultException(e.Message);
+            //}
         }
 
         /// <summary>

@@ -49,5 +49,11 @@ namespace Streameus.ViewModels
         /// </summary>
         [Required]
         public int CategoryId { get; set; }
+
+        /// <summary>
+        /// Entrance fee to the conference.
+        /// </summary>
+        [Range(0, float.MaxValue)]
+        public float? EntranceFee { get; set; }
     }
 }

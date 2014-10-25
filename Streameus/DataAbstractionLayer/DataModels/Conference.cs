@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Streameus.Enums;
 
@@ -113,5 +114,12 @@ namespace Streameus.Models
         /// Users planning to participate to the Conference
         /// </summary>
         public virtual ICollection<User> Registred { get; set; }
+
+        /// <summary>
+        /// Entrance fee to the conference.
+        /// </summary>
+        [DefaultValue(0f)]
+        [Range(0, float.MaxValue)]
+        public virtual float EntranceFee { get; set; }
     }
 }

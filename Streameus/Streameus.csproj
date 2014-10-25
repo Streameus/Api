@@ -363,6 +363,9 @@
     <Compile Include="Exceptions\HttpErrors\ForbiddenException.cs" />
     <Compile Include="Exceptions\HttpErrors\NoResultException.cs" />
     <Compile Include="Exceptions\HttpErrors\NotFoundException.cs" />
+    <Compile Include="Exceptions\HttpErrors\PaymentRequiredException.cs" />
+    <Compile Include="Exceptions\HttpErrors\ServerErrorException.cs" />
+    <Compile Include="Exceptions\StripeError.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -583,6 +586,7 @@
     <EmbeddedResource Include="App_GlobalResources\Translation.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Translation.fr.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Translation.resx">
       <Generator>ResXFileCodeGenerator</Generator>

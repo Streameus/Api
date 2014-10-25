@@ -261,7 +261,7 @@ namespace Streameus.Models
         /// <summary>
         /// the stripe token of the user's credit card
         /// </summary>
-        public String StripeTokenId { get; set; }
+        public String StripeCustomerId { get; set; }
 
         /// <summary>
         /// User balance, used to pay conferences

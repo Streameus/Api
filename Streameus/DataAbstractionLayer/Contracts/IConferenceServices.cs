@@ -109,6 +109,7 @@ namespace Streameus.DataAbstractionLayer.Contracts
 
         /// <summary>
         /// Stop a conference, change its status from EnCours to Finie
+        /// Gives the money to the conference owner
         /// </summary>
         /// <remarks>User needs to be the owner</remarks>
         /// <param name="confId">the Id of the conference</param>

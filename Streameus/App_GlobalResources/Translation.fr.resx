@@ -159,4 +159,7 @@
   <data name="AddCardFirst" xml:space="preserve">
     <value>Vous devez ajouter une carte avant d'acheter des credits</value>
   </data>
+  <data name="BalanceTooLow" xml:space="preserve">
+    <value>Votre solde est trop bas. Vous devez avoir au moins {0}€ Pour acceder a cette conference.</value>
+  </data>
 </root>

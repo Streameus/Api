@@ -22,6 +22,7 @@ namespace Streameus.DataAbstractionLayer.Services
         private readonly IEventServices _eventServices;
         private readonly IUserServices _userServices;
         private readonly IRoomServices _roomServices;
+        private readonly IPayementServices _payementServices;
 
         /// <summary>
         /// default constructor
@@ -31,9 +32,11 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="eventServices"></param>
         /// <param name="userServices"></param>
         /// <param name="roomServices"></param>
+        /// <param name="payementServices"></param>
         /// <exception cref="ArgumentNullException"></exception>
         public ConferenceServices(IUnitOfWork unitOfWork, IConferenceParametersServices conferenceParametersServices,
-            IEventServices eventServices, IUserServices userServices, IRoomServices roomServices)
+            IEventServices eventServices, IUserServices userServices, IRoomServices roomServices,
+            IPayementServices payementServices)
             : base(unitOfWork)
         {
             if (unitOfWork == null) throw new ArgumentNullException("unitOfWork");
@@ -41,10 +44,12 @@ namespace Streameus.DataAbstractionLayer.Services
             if (eventServices == null) throw new ArgumentNullException("eventServices");
             if (userServices == null) throw new ArgumentNullException("userServices");
             if (roomServices == null) throw new ArgumentNullException("roomServices");
+            if (payementServices == null) throw new ArgumentNullException("payementServices");
             this._conferenceParametersServices = conferenceParametersServices;
             this._eventServices = eventServices;
             this._userServices = userServices;
             this._roomServices = roomServices;
+            this._payementServices = payementServices;
         }
 
         /// <summary>
@@ -287,6 +292,7 @@ namespace Streameus.DataAbstractionLayer.Services
 
         /// <summary>
         /// Stop a conference, change its status from EnCours to Finie
+        ///Gives the money to the conference owner
         /// </summary>
         /// <remarks>User needs to be the owner</remarks>
         /// <param name="confId">the Id of the conference</param>
@@ -302,10 +308,20 @@ namespace Streameus.DataAbstractionLayer.Services
                 conference.Status = DataBaseEnums.ConfStatus.Finie;
                 conference.RoomId = null;
                 this.UpdateConference(conference, userId);
+                this.PayConferenceOwner(conference);
                 return true;
             }
             return false;
             //todo Gerer les autre cas autrements
+        }
+
+        //We take a 10% fee on every conf
+        private void PayConferenceOwner(Conference conference)
+        {
+            var participantsNumber = conference.Participants.Count;
+            float total = (conference.EntranceFee*participantsNumber)*0.9f;
+            conference.Owner.Balance += total;
+            this._userServices.UpdateUser(conference.Owner);
         }
 
         /// <summary>
@@ -330,10 +346,19 @@ namespace Streameus.DataAbstractionLayer.Services
         {
             var conference = this.GetById(id);
             var user = this._userServices.GetById(userId);
-            string role = conference.OwnerId != userId ? "viewerWithData" : "presenter";
+            var isOwner = conference.OwnerId == userId;
+            var role = isOwner ? "presenter" : "viewerWithData";
 
             if (conference.Status == DataBaseEnums.ConfStatus.EnCours)
+            {
+                if (!isOwner && !conference.Participants.Contains(user))
+                {
+                    conference.Participants.Add(user);
+                    this.Save(conference);
+                    this._payementServices.ChargeUser(user, conference.EntranceFee);
+                }
                 return this._roomServices.CreateToken(conference.RoomId, user.UserName, role);
+            }
             throw new ApiException(HttpStatusCode.Unauthorized, Translation.TheConferenceIsNotStarted);
         }
     }

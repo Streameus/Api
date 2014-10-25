@@ -62,6 +62,11 @@ namespace Streameus.ViewModels
         /// </summary>
         public string RoomId { get; set; }
 
+        /// <summary>
+        /// Entrance fee to the conference.
+        /// </summary>
+        public float EntranceFee { get; set; }
+
 
         /// <summary>
         /// Create a vm based on a conference
@@ -80,6 +85,7 @@ namespace Streameus.ViewModels
             this.FinalDuration = conf.FinalDuration;
             this.Category = new ConferenceCategoryViewModel(conf.Category);
             this.RoomId = conf.RoomId;
+            this.EntranceFee = conf.EntranceFee;
         }
     }
 }

@@ -68,7 +68,7 @@ namespace Streameus.Controllers
         {
             try
             {
-                return this._payementServices.ChargeUser(this.GetCurrentUserId(), amount);
+                return this._payementServices.RefillUserBalance(this.GetCurrentUserId(), amount);
             }
             catch (StreameusStripeError e)
             {

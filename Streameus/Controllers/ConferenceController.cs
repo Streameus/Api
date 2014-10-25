@@ -144,6 +144,7 @@ namespace Streameus.Controllers
                 Status = DataBaseEnums.ConfStatus.AVenir,
                 Owner = user,
                 Category = category,
+                EntranceFee = conference.EntranceFee.HasValue ? conference.EntranceFee.Value : 0
             };
             this._conferenceServices.AddConference(newConf);
             return this.Get(newConf.Id);
@@ -166,6 +167,8 @@ namespace Streameus.Controllers
             updatedConf.Name = conference.Name;
             updatedConf.Description = conference.Description;
             updatedConf.ScheduledDuration = conference.ScheduledDuration;
+            if (conference.EntranceFee.HasValue)
+                updatedConf.EntranceFee = conference.EntranceFee.Value;
             if (conference.Time != null)
                 updatedConf.Time = conference.Time.Value;
             this._conferenceServices.UpdateConference(updatedConf, this.GetCurrentUserId());
@@ -270,7 +273,8 @@ namespace Streameus.Controllers
         }
 
         /// <summary>
-        /// Stop a conf, changes its status from EnCours to AVenir
+        /// Stop a conf, changes its status from EnCours to Finie
+        /// Pay the conference owner
         /// </summary>
         /// <param name="id"></param>
         /// <exception cref="ForbiddenException"></exception>
@@ -287,6 +291,8 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <exception cref="ForbiddenException"></exception>
+        /// <exception cref="PaymentRequiredException"></exception>
+        /// <response code="402">Payment required</response>
         [Route("{id}/Token")]
         [Authorize]
         public string GetTokenConference(int id)

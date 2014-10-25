@@ -4,6 +4,7 @@ using Streameus.App_GlobalResources;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.Exceptions;
 using Streameus.Exceptions.HttpErrors;
+using Streameus.Models;
 using Stripe;
 
 namespace Streameus.DataAbstractionLayer.Services
@@ -65,7 +66,7 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="userId"></param>
         /// <param name="amount"></param>
         /// <returns>the new balance</returns>
-        public float ChargeUser(int userId, float amount)
+        public float RefillUserBalance(int userId, float amount)
         {
             var user = this._userServices.GetById(userId);
 
@@ -80,6 +81,19 @@ namespace Streameus.DataAbstractionLayer.Services
                 user.Balance += charge.Amount.Value;
             this._userServices.UpdateUser(user);
             return user.Balance;
+        }
+
+        /// <summary>
+        /// charge an amount on the user's balance
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="amount"></param>
+        public void ChargeUser(User user, float amount)
+        {
+            if (amount > user.Balance)
+                throw new PaymentRequiredException(String.Format(Translation.BalanceTooLow, amount));
+            user.Balance -= amount;
+            this._userServices.UpdateUser(user);
         }
     }
 }

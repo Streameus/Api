@@ -1,4 +1,6 @@
-﻿namespace Streameus.DataAbstractionLayer.Contracts
+﻿using Streameus.Models;
+
+namespace Streameus.DataAbstractionLayer.Contracts
 {
     /// <summary>
     /// Payement services
@@ -18,6 +20,13 @@
         /// <param name="userId"></param>
         /// <param name="amount"></param>
         /// <returns>the new balance</returns>
-        float ChargeUser(int userId, float amount);
+        float RefillUserBalance(int userId, float amount);
+
+        /// <summary>
+        /// charge an amount on the user's balance
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="amount"></param>
+        void ChargeUser(User user, float amount);
     }
 }

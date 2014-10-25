@@ -70,6 +70,15 @@ namespace Streameus.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your balance is too low. You need at least {0}€ on your balance to access this conference.
+        /// </summary>
+        internal static string BalanceTooLow {
+            get {
+                return ResourceManager.GetString("BalanceTooLow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Conference not found!.
         /// </summary>
         internal static string ConferenceNotFound {

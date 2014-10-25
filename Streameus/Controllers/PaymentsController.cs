@@ -15,22 +15,22 @@ namespace Streameus.Controllers
     /// Controller in charge of all the payements
     /// </summary>
     [RoutePrefix("api")]
-    public class PayementsController : BaseController
+    public class PaymentsController : BaseController
     {
         private readonly IUserServices _userServices;
-        private readonly IPayementServices _payementServices;
+        private readonly IPaymentServices _paymentServices;
 
         /// <summary>
         /// Default controller
         /// </summary>
         /// <param name="userServices"></param>
-        /// <param name="payementServices"></param>
-        public PayementsController(IUserServices userServices, IPayementServices payementServices)
+        /// <param name="paymentServices"></param>
+        public PaymentsController(IUserServices userServices, IPaymentServices paymentServices)
         {
             if (userServices == null) throw new ArgumentNullException("userServices");
-            if (payementServices == null) throw new ArgumentNullException("payementServices");
+            if (paymentServices == null) throw new ArgumentNullException("paymentServices");
             this._userServices = userServices;
-            this._payementServices = payementServices;
+            this._paymentServices = paymentServices;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Streameus.Controllers
         [Route("User/me/Token")]
         public void PostAddCcToken(string token)
         {
-            this._payementServices.CreatePayementIdForUser(this.GetCurrentUserId(), token);
+            this._paymentServices.CreatePayementIdForUser(this.GetCurrentUserId(), token);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace Streameus.Controllers
         {
             try
             {
-                return this._payementServices.RefillUserBalance(this.GetCurrentUserId(), amount);
+                return this._paymentServices.RefillUserBalance(this.GetCurrentUserId(), amount);
             }
             catch (StreameusStripeError e)
             {

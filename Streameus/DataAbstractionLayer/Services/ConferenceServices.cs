@@ -22,7 +22,7 @@ namespace Streameus.DataAbstractionLayer.Services
         private readonly IEventServices _eventServices;
         private readonly IUserServices _userServices;
         private readonly IRoomServices _roomServices;
-        private readonly IPayementServices _payementServices;
+        private readonly IPaymentServices _paymentServices;
 
         /// <summary>
         /// default constructor
@@ -32,11 +32,11 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="eventServices"></param>
         /// <param name="userServices"></param>
         /// <param name="roomServices"></param>
-        /// <param name="payementServices"></param>
+        /// <param name="paymentServices"></param>
         /// <exception cref="ArgumentNullException"></exception>
         public ConferenceServices(IUnitOfWork unitOfWork, IConferenceParametersServices conferenceParametersServices,
             IEventServices eventServices, IUserServices userServices, IRoomServices roomServices,
-            IPayementServices payementServices)
+            IPaymentServices paymentServices)
             : base(unitOfWork)
         {
             if (unitOfWork == null) throw new ArgumentNullException("unitOfWork");
@@ -44,12 +44,12 @@ namespace Streameus.DataAbstractionLayer.Services
             if (eventServices == null) throw new ArgumentNullException("eventServices");
             if (userServices == null) throw new ArgumentNullException("userServices");
             if (roomServices == null) throw new ArgumentNullException("roomServices");
-            if (payementServices == null) throw new ArgumentNullException("payementServices");
+            if (paymentServices == null) throw new ArgumentNullException("paymentServices");
             this._conferenceParametersServices = conferenceParametersServices;
             this._eventServices = eventServices;
             this._userServices = userServices;
             this._roomServices = roomServices;
-            this._payementServices = payementServices;
+            this._paymentServices = paymentServices;
         }
 
         /// <summary>
@@ -355,7 +355,7 @@ namespace Streameus.DataAbstractionLayer.Services
                 {
                     conference.Participants.Add(user);
                     this.Save(conference);
-                    this._payementServices.ChargeUser(user, conference.EntranceFee);
+                    this._paymentServices.ChargeUser(user, conference.EntranceFee);
                 }
                 return this._roomServices.CreateToken(conference.RoomId, user.UserName, role);
             }

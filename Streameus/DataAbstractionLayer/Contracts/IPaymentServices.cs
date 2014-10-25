@@ -5,7 +5,7 @@ namespace Streameus.DataAbstractionLayer.Contracts
     /// <summary>
     /// Payement services
     /// </summary>
-    public interface IPayementServices
+    public interface IPaymentServices
     {
         /// <summary>
         /// Create 

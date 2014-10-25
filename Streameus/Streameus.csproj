@@ -303,7 +303,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ConferenceController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\PayementsController.cs" />
+    <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\RecommendationController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\EventController.cs" />
@@ -325,7 +325,7 @@
     <Compile Include="DataAbstractionLayer\Contracts\IConferenceParametersServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IConferenceServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IParametersServices.cs" />
-    <Compile Include="DataAbstractionLayer\Contracts\IPayementServices.cs" />
+    <Compile Include="DataAbstractionLayer\Contracts\IPaymentServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IRoomService.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IUserServices.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\ConferenceCategory.cs" />

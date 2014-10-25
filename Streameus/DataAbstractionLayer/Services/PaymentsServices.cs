@@ -12,7 +12,7 @@ namespace Streameus.DataAbstractionLayer.Services
     /// <summary>
     ///     Service in charge of all the payement related actions
     /// </summary>
-    public class PaymentsServices : IPayementServices
+    public class PaymentsServices : IPaymentServices
     {
         private readonly StripeChargeService _chargeService;
         private readonly StripeCustomerService _customerService;

@@ -8,7 +8,9 @@ using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataBaseAccess;
 using Streameus.Enums;
 using Streameus.Exceptions;
+using Streameus.Exceptions.HttpErrors;
 using Streameus.Models;
+using NoResultException = Streameus.Exceptions.NoResultException;
 
 namespace Streameus.DataAbstractionLayer.Services
 {
@@ -68,6 +70,8 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="userWantedId">The user's id who is followed</param>
         public bool AddFollowing(int userId, int userWantedId)
         {
+            if (userId == userWantedId)
+                throw new ConflictdException();
             var user = this.GetById(userId);
             var userWanted = this.GetById(userWantedId);
             if (user.Abonnements.Contains(userWanted))
@@ -125,7 +129,7 @@ namespace Streameus.DataAbstractionLayer.Services
         /// Returns all the user's followers
         /// </summary>
         /// <param name="id">userId</param>
-        /// <exception cref="NoResultException">If user doesnt exists</exception>
+        /// <exception cref="Exceptions.NoResultException">If user doesnt exists</exception>
         /// <exception cref="EmptyResultException">If user doesnt have any followers</exception>
         /// <returns>A list containing all the followers for the selected user</returns>
         public IQueryable<User> GetFollowersForUser(int id)

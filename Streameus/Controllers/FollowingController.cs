@@ -72,7 +72,7 @@ namespace Streameus.Controllers
         /// Follow somebody
         /// </summary>
         /// <param name="id">the id of the user to follow</param>
-        /// <exception cref="NotImplementedException"></exception>
+        ///  <response code="409">You cannot follow yourself</response>
         [Authorize]
         public bool Post(int id)
         {

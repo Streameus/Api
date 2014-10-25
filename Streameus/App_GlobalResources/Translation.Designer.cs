@@ -61,6 +61,15 @@ namespace Streameus.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have to add a card before trying to pay.
+        /// </summary>
+        internal static string AddCardFirst {
+            get {
+                return ResourceManager.GetString("AddCardFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Conference not found!.
         /// </summary>
         internal static string ConferenceNotFound {

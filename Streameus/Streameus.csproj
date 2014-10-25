@@ -123,8 +123,14 @@
     <Reference Include="Microsoft.Owin.Security.Twitter">
       <HintPath>..\packages\Microsoft.Owin.Security.Twitter.2.1.0\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Stripe.net">
+      <HintPath>..\packages\Stripe.net.2.3.0\lib\net40\Stripe.net.dll</HintPath>
     </Reference>
     <Reference Include="Swashbuckle.Core">
       <HintPath>..\packages\Swashbuckle.Core.4.0\lib\net40\Swashbuckle.Core.dll</HintPath>
@@ -185,9 +191,6 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
@@ -300,6 +303,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ConferenceController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\PayementsController.cs" />
     <Compile Include="Controllers\RecommendationController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\EventController.cs" />
@@ -321,6 +325,7 @@
     <Compile Include="DataAbstractionLayer\Contracts\IConferenceParametersServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IConferenceServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IParametersServices.cs" />
+    <Compile Include="DataAbstractionLayer\Contracts\IPayementServices.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IRoomService.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IUserServices.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\ConferenceCategory.cs" />
@@ -341,6 +346,7 @@
     <Compile Include="DataAbstractionLayer\Services\MessageGroupServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\MessageServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\ParametersServices.cs" />
+    <Compile Include="DataAbstractionLayer\Services\PaymentsServices.cs" />
     <Compile Include="DataAbstractionLayer\Services\RoomService.cs" />
     <Compile Include="DataAbstractionLayer\Services\UserServices.cs" />
     <Compile Include="DataAbstractionLayer\Initializers\StreameusInitializer.cs" />
@@ -607,7 +613,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-	<DeployIisAppPath>Default Web Site/</DeployIisAppPath>
+    <DeployIisAppPath>Default Web Site/</DeployIisAppPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

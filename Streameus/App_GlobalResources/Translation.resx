@@ -156,4 +156,7 @@
   <data name="TheConferenceIsNotStarted" xml:space="preserve">
     <value>The conference has not been started</value>
   </data>
+  <data name="AddCardFirst" xml:space="preserve">
+    <value>You have to add a card before trying to pay</value>
+  </data>
 </root>

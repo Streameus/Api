@@ -61,7 +61,8 @@ namespace Streameus.Controllers
         public UserViewModel Get(int id)
         {
             var user = this._userServices.GetById(id);
-            return new UserViewModel(user);
+            bool personnal = id == this.GetCurrentUserId();
+            return new UserViewModel(user, personnal);
         }
 
         // GET api/user/available

@@ -60,7 +60,7 @@ namespace Streameus.Controllers
                 conferencesList = options.ApplyTo(conferencesList) as IQueryable<Conference>;
             if (conferencesList == null) return conferences;
 
-            conferencesList.ForEach(e => conferences.Add(new EventViewModel(e)));
+            conferencesList.ForEach(e => conferences.Add(new ConferenceViewModel(e)));
             return conferences;
         }
 

@@ -48,12 +48,19 @@ namespace Streameus.Controllers
         /// <summary>
         /// Get all conferences
         /// </summary>
+        /// <param name="options">odata query options</param>
         /// <returns></returns>
         /// <responseCode></responseCode>
-        public IEnumerable<ConferenceViewModel> Get()
+        public IEnumerable<ConferenceViewModel> Get(ODataQueryOptions<Conference> options = null)
         {
             var conferences = new List<ConferenceViewModel>();
-            this._conferenceServices.GetAll().ForEach(c => conferences.Add(new ConferenceViewModel(c)));
+            var conferencesList = this._conferenceServices.GetAll();
+
+            if (options != null)
+                conferencesList = options.ApplyTo(conferencesList) as IQueryable<Conference>;
+            if (conferencesList == null) return conferences;
+
+            conferencesList.ForEach(e => conferences.Add(new EventViewModel(e)));
             return conferences;
         }
 
@@ -61,12 +68,15 @@ namespace Streameus.Controllers
         /// <summary>
         /// Get all conferences
         /// </summary>
+        /// <param name="options">odata query options</param>
         /// <returns></returns>
         /// <responseCode></responseCode>
         [Route("Soon")]
-        public IEnumerable<ConferenceViewModel> GetSoon(ODataQueryOptions<Conference> options)
+        public IEnumerable<ConferenceViewModel> GetSoon(ODataQueryOptions<Conference> options = null)
         {
-            var confs = options.ApplyTo(this._conferenceServices.GetSoonConfs()) as IQueryable<Conference>;
+            IQueryable<Conference> confs = this._conferenceServices.GetSoonConfs();
+            if (options != null)
+                confs = options.ApplyTo(confs) as IQueryable<Conference>;
             var conferences = new List<ConferenceViewModel>();
             confs.ForEach(c => conferences.Add(new ConferenceViewModel(c)));
             return conferences;
@@ -76,13 +86,19 @@ namespace Streameus.Controllers
         /// <summary>
         /// Get all conference's categories
         /// </summary>
+        /// <param name="options">odata query options</param>
         /// <returns></returns>
         /// <responseCode></responseCode>
         [Route("Categories")]
-        public IEnumerable<ConferenceCategoryViewModel> GetCategories()
+        public IEnumerable<ConferenceCategoryViewModel> GetCategories(ODataQueryOptions<Conference> options = null)
         {
             var categories = new List<ConferenceCategoryViewModel>();
-            this._conferenceCategoryServices.GetAll().ForEach(c => categories.Add(new ConferenceCategoryViewModel(c)));
+            var categoriesList = this._conferenceCategoryServices.GetAll();
+
+            if (options != null)
+                categoriesList = options.ApplyTo(categoriesList) as IQueryable<ConferenceCategory>;
+
+            categoriesList.ForEach(c => categories.Add(new ConferenceCategoryViewModel(c)));
             return categories;
         }
 
@@ -91,15 +107,20 @@ namespace Streameus.Controllers
         /// Get all conferences of one specified category
         /// </summary>
         /// <param name="id">the id of the category</param>
+        /// <param name="options">odata query options</param>
         /// <returns></returns>
         /// <responseCode></responseCode>
         [Route("Category/{id}")]
-        public IEnumerable<ConferenceViewModel> GetByCategory(int id)
+        public IEnumerable<ConferenceViewModel> GetByCategory(int id, ODataQueryOptions<Conference> options = null)
         {
             var conferences = new List<ConferenceViewModel>();
-            this._conferenceServices.GetAll()
-                .Where(i => i.CategoryId == id)
-                .ForEach(c => conferences.Add(new ConferenceViewModel(c)));
+            var conferencesList = this._conferenceServices.GetAll()
+                .Where(i => i.CategoryId == id);
+
+            if (options != null)
+                conferencesList = options.ApplyTo(conferencesList) as IQueryable<Conference>;
+
+            conferencesList.ForEach(c => conferences.Add(new ConferenceViewModel(c)));
             return conferences;
         }
 

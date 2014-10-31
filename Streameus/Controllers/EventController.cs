@@ -28,7 +28,7 @@ namespace Streameus.Controllers
         public EventController(IEventServices eventServices)
         {
             if (eventServices == null)
-                throw new ArgumentNullException("evenServices");
+                throw new ArgumentNullException("eventServices");
             this._eventServices = eventServices;
         }
 

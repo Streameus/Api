@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Web.Http;
+using System.Web.Http.OData.Query;
 using AutoMapper;
 using Microsoft.AspNet.Identity;
 using Streameus.DataAbstractionLayer.Contracts;
@@ -45,11 +46,11 @@ namespace Streameus.Controllers
         /// </summary>
         /// <returns></returns>
         [Authorize]
-        public SearchResultViewModel Get(string query)
+        public SearchResultViewModel Get(string query, ODataQueryOptions options = null)
         {
             var keywords = QueryToKeywords(query);
-            var userList = SearchInUsers(keywords);
-            var confList = SearchInConferences(keywords);
+            var userList = SearchInUsers(keywords, options);
+            var confList = SearchInConferences(keywords, options);
             return new SearchResultViewModel(confList, userList);
         }
 
@@ -60,10 +61,10 @@ namespace Streameus.Controllers
         /// <returns></returns>
         [Authorize]
         [Route("Users")]
-        public UserViewModel[] GetUsers(string query)
+        public UserViewModel[] GetUsers(string query, ODataQueryOptions options = null)
         {
             var keywords = QueryToKeywords(query);
-            var userList = SearchInUsers(keywords);
+            var userList = SearchInUsers(keywords, options);
             return userList.ToArray();
         }
 
@@ -74,10 +75,10 @@ namespace Streameus.Controllers
         /// <returns></returns>
         [Authorize]
         [Route("Conferences")]
-        public ConferenceViewModel[] GetConferences(string query)
+        public ConferenceViewModel[] GetConferences(string query, ODataQueryOptions options = null)
         {
             var keywords = QueryToKeywords(query);
-            var confList = SearchInConferences(keywords);
+            var confList = SearchInConferences(keywords, options);
             return confList.ToArray();
         }
 
@@ -92,28 +93,34 @@ namespace Streameus.Controllers
             return Regex.Replace(query, @"\s+", " ").ToLower();
         }
 
-        private List<UserViewModel> SearchInUsers(IEnumerable<string> keywords)
+        private List<UserViewModel> SearchInUsers(IEnumerable<string> keywords, ODataQueryOptions options = null)
         {
             var userList = new List<UserViewModel>();
-            _userServices.GetAll()
+            var users = _userServices.GetAll()
                 .Where(u => keywords.All(k => 
                     u.FirstName.ToLower().Contains(k)
                     || u.Description.ToLower().Contains(k)
                     || u.FirstName.ToLower().Contains(k)
                     || u.LastName.ToLower().Contains(k)
-                    || u.Pseudo.ToLower().Contains(k)))
-                .ForEach(u => userList.Add(new UserViewModel(u)));
+                    || u.Pseudo.ToLower().Contains(k)));
+            if (options != null)
+                users = options.ApplyTo(users) as IQueryable<User>;
+
+            users.ForEach(u => userList.Add(new UserViewModel(u)));
             return userList;
         }
 
-        private List<ConferenceViewModel> SearchInConferences(IEnumerable<string> keywords)
+        private List<ConferenceViewModel> SearchInConferences(IEnumerable<string> keywords, ODataQueryOptions options = null)
         {
             var confList = new List<ConferenceViewModel>();
-            _conferenceServices.GetAll()
+            var confs = _conferenceServices.GetAll()
                 .Where(c => keywords.All(k =>
                     c.Name.ToLower().Contains(k)
-                    || c.Description.ToLower().Contains(k)))
-                .ForEach(c => confList.Add(new ConferenceViewModel(c)));
+                    || c.Description.ToLower().Contains(k)));
+            if (options != null)
+                confs = options.ApplyTo(confs) as IQueryable<Conference>;
+            
+            confs.ForEach(c => confList.Add(new ConferenceViewModel(c)));
             return confList;
         }
 

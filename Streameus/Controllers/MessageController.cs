@@ -53,7 +53,7 @@ namespace Streameus.Controllers
         /// <exception cref="NoResultException"></exception>
         [System.Web.Http.Authorize]
         [Route("Group")]
-        public IEnumerable<MessageGroupViewModel> GetGroups(ODataQueryOptions<MessageGroup> options)
+        public IEnumerable<MessageGroupViewModel> GetGroups(ODataQueryOptions<MessageGroup> options = null)
         {
             var messageGroupList = new List<MessageGroupViewModel>();
             var groups = options.ApplyTo(this._messageGroupServices.GetAll().AsQueryable()) as IQueryable<MessageGroup>;
@@ -68,7 +68,7 @@ namespace Streameus.Controllers
         /// <returns></returns>
         [Route("Group/My")]
         [System.Web.Http.Authorize]
-        public IEnumerable<MessageGroupViewModel> GetMy(ODataQueryOptions<MessageGroupViewModel> options)
+        public IEnumerable<MessageGroupViewModel> GetMy(ODataQueryOptions<MessageGroupViewModel> options = null)
         {
             var userId = this.GetCurrentUserId();
             var userGroups = this._messageGroupServices.GetAll().Where(g => g.Members.Any(m => m.Id == userId)).AsQueryable();
@@ -86,7 +86,7 @@ namespace Streameus.Controllers
         /// <returns></returns>
         [System.Web.Http.Authorize]
         [Route("Group/{id}")]
-        public MessageGroupViewModel GetGroup(int id, ODataQueryOptions<Message> options)
+        public MessageGroupViewModel GetGroup(int id, ODataQueryOptions<Message> options = null)
         {
             var messageGroup = this._messageGroupServices.GetById(id);
             var user = this.CheckUser(messageGroup);
@@ -105,7 +105,7 @@ namespace Streameus.Controllers
         /// <returns></returns>
         [System.Web.Http.Authorize]
         [Route("{id}")]
-        public IEnumerable<MessageViewModel> GetMessages(int id, ODataQueryOptions<Message> options)
+        public IEnumerable<MessageViewModel> GetMessages(int id, ODataQueryOptions<Message> options = null)
         {
             var group = this._messageGroupServices.GetById(id);
             var user = this.CheckUser(group);

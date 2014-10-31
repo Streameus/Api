@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.OData.Query;
 using Streameus.App_GlobalResources;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.Enums;
@@ -45,22 +46,45 @@ namespace Streameus.Controllers
         /// <returns>Retourne une List Conf (int Id, DateTime Time, String Name) ou une List vide si null</returns>
         /// <responseCode></responseCode>
         [Authorize]
-        public IOrderedEnumerable<KeyValuePair<DateTime, List<ConferenceAgendaViewModel>>> Get()
+        public IOrderedEnumerable<KeyValuePair<DateTime, List<ConferenceAgendaViewModel>>> Get(ODataQueryOptions<Conference> options = null)
         {
             var owner = this._userServices.GetById(this.GetCurrentUserId());
             var conferences = owner.ConferencesRegistered.Concat(owner.ConferencesCreated).Concat(owner.ConferencesInvolved).OrderBy(c => c.Time);
+
             var confList = new List<ConferenceAgendaViewModel>();
-            foreach (var conference in conferences)
+            if (options != null)
             {
-                if (conference.Status != DataBaseEnums.ConfStatus.Finie)
-                {
-                    var confInfo = new ConferenceAgendaViewModel
+                var confs = conferences.AsQueryable();
+                confs = options.ApplyTo(confs) as IQueryable<Conference>;
+                if (confs != null)
+                    foreach (var conference in confs)
                     {
-                        Name = conference.Name,
-                        Date = conference.Time,
-                        Id = conference.Id,
-                    };
-                    confList.Add(confInfo);
+                        if (conference.Status != DataBaseEnums.ConfStatus.Finie)
+                        {
+                            var confInfo = new ConferenceAgendaViewModel
+                            {
+                                Name = conference.Name,
+                                Date = conference.Time,
+                                Id = conference.Id,
+                            };
+                            confList.Add(confInfo);
+                        }
+                    }
+            }
+            else
+            {
+                foreach (var conference in conferences)
+                {
+                    if (conference.Status != DataBaseEnums.ConfStatus.Finie)
+                    {
+                        var confInfo = new ConferenceAgendaViewModel
+                        {
+                            Name = conference.Name,
+                            Date = conference.Time,
+                            Id = conference.Id,
+                        };
+                        confList.Add(confInfo);
+                    }
                 }
             }
             var conflistDay = new Dictionary<DateTime, List<ConferenceAgendaViewModel>>();
@@ -68,7 +92,7 @@ namespace Streameus.Controllers
             {
                 if (!conflistDay.ContainsKey(conferenceAgendaViewModel.Date))
                     conflistDay.Add(conferenceAgendaViewModel.Date,
-                        new List<ConferenceAgendaViewModel>() {conferenceAgendaViewModel});
+                        new List<ConferenceAgendaViewModel>() { conferenceAgendaViewModel });
                 else
                 {
                     conflistDay[conferenceAgendaViewModel.Date].Add(conferenceAgendaViewModel);
@@ -83,12 +107,15 @@ namespace Streameus.Controllers
         /// <returns></returns>
         [Route("Live")]
         [Authorize]
-        public IEnumerable<ConferenceAgendaViewModel> GetLive()
+        public IEnumerable<ConferenceAgendaViewModel> GetLive(ODataQueryOptions<Conference> options = null)
         {
-            var conferences =
-                this._conferenceServices.GetLiveConferenceForUser(this.GetCurrentUserId())
-                    .Select(c => new ConferenceAgendaViewModel() {Date = c.Time, Id = c.Id, Name = c.Name});
-            return conferences;
+            var conferences = this._conferenceServices.GetLiveConferenceForUser(this.GetCurrentUserId());
+
+            var conferencesList = new List<ConferenceAgendaViewModel>();
+            if (options != null)
+                conferences = options.ApplyTo(conferences.AsQueryable()) as IQueryable<Conference>;
+            conferences.ForEach(c => conferencesList.Add(new ConferenceAgendaViewModel() { Date = c.Time, Id = c.Id, Name = c.Name }));
+            return conferencesList;
         }
 
         /// <summary>
@@ -97,12 +124,15 @@ namespace Streameus.Controllers
         /// <returns></returns>
         [Authorize]
         [Route("Soon")]
-        public IEnumerable<ConferenceAgendaViewModel> GetSoon()
+        public IEnumerable<ConferenceAgendaViewModel> GetSoon(ODataQueryOptions<Conference> options = null)
         {
-            var conferences =
-                this._conferenceServices.GetSoonConferenceForUser(this.GetCurrentUserId())
-                    .Select(c => new ConferenceAgendaViewModel() {Date = c.Time, Id = c.Id, Name = c.Name});
-            return conferences;
+            var conferences = this._conferenceServices.GetSoonConferenceForUser(this.GetCurrentUserId());
+
+            var conferencesList = new List<ConferenceAgendaViewModel>();
+            if (options != null)
+                conferences = options.ApplyTo(conferences.AsQueryable()) as IQueryable<Conference>;
+            conferences.ForEach(c => conferencesList.Add(new ConferenceAgendaViewModel() { Date = c.Time, Id = c.Id, Name = c.Name }));
+            return conferencesList;
         }
 
         /// <summary>

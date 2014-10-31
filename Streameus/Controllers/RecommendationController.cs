@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.OData.Query;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.Models;
 using Streameus.ViewModels;
@@ -40,10 +41,14 @@ namespace Streameus.Controllers
         /// <returns></returns>
         [Authorize]
         [Route("users")]
-        public IEnumerable<UserViewModel> GetUserRecommendations()
+        public IEnumerable<UserViewModel> GetUserRecommendations(ODataQueryOptions<User> options = null)
         {
             var suggestionList = new List<UserViewModel>();
-            IEnumerable<User> suggestions = this._userServices.GetSuggestionsForUser(this.GetCurrentUserId());
+            var suggestions = this._userServices.GetSuggestionsForUser(this.GetCurrentUserId());
+
+            if (options != null)
+                suggestions = options.ApplyTo(suggestions.AsQueryable()) as IQueryable<User>;
+
             suggestions.ForEach(s => suggestionList.Add(new UserViewModel(s)));
             if (!suggestionList.Any())
             {
@@ -59,10 +64,13 @@ namespace Streameus.Controllers
         /// <returns></returns>
         [Authorize]
         [Route("conferences")]
-        public IEnumerable<ConferenceViewModel> GetConferenceRecommendations()
+        public IEnumerable<ConferenceViewModel> GetConferenceRecommendations(ODataQueryOptions<Conference> options = null)
         {
             var suggestionList = new List<ConferenceViewModel>();
             var suggestions = this._conferenceServices.GetSuggestionsForUser(this.GetCurrentUserId());
+
+            if (options != null)
+                suggestions = options.ApplyTo(suggestions.AsQueryable()) as IQueryable<Conference>;
 
             suggestions.ForEach(s => suggestionList.Add(new ConferenceViewModel(s)));
             if (!suggestionList.Any())

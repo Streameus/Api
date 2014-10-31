@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.OData.Query;
 using AutoMapper;
 using Microsoft.AspNet.Identity;
 using Streameus.App_GlobalResources;
@@ -42,10 +43,15 @@ namespace Streameus.Controllers
         /// <returns></returns>
         /// <exception cref="NoResultException"></exception>
         [Authorize]
-        public IEnumerable<UserViewModel> Get()
+        public IEnumerable<UserViewModel> Get(ODataQueryOptions<User> options = null)
         {
             var userList = new List<UserViewModel>();
-            this._userServices.GetAll().ForEach(u => userList.Add(new UserViewModel(u)));
+            var user = this._userServices.GetAll();
+
+            if (options != null)
+                user = options.ApplyTo(user) as IQueryable<User>;
+
+            user.ForEach(u => userList.Add(new UserViewModel(u)));
             if (!userList.Any())
                 throw new NoResultException("Empty Set");
             return userList;
@@ -170,14 +176,23 @@ namespace Streameus.Controllers
         /// Get all conferences created by a specified user
         /// </summary>
         /// <param name="id">User id</param>
+        /// <param name="options">Odata query options</param>
         /// <returns></returns>
         [Authorize]
         [Route("{id}/conferences")]
-        public IEnumerable<ConferenceViewModel> GetConferencesOfUser(int id)
+        public IEnumerable<ConferenceViewModel> GetConferencesOfUser(int id, ODataQueryOptions<Conference> options = null)
         {
             var conferences = this._userServices.GetById(id).ConferencesCreated;
+
             var conferencesListe = new List<ConferenceViewModel>();
-            conferences.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c)));
+            if (options != null)
+            {
+                var confs = options.ApplyTo(conferences.AsQueryable()) as IQueryable<Conference>;
+                confs.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c)));
+            }
+            else
+                conferences.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c)));
+
             return conferencesListe;
         }
 
@@ -185,14 +200,22 @@ namespace Streameus.Controllers
         /// Get all conferences registered by a specified user
         /// </summary>
         /// <param name="id">User id</param>
+        /// <param name="options">OData query options</param>
         /// <returns></returns>
         [Authorize]
         [Route("{id}/Conferences/Registered")]
-        public IEnumerable<ConferenceViewModel> GetConferencesRegistered(int id)
+        public IEnumerable<ConferenceViewModel> GetConferencesRegistered(int id, ODataQueryOptions<Conference> options = null)
         {
             var conferences = this._userServices.GetById(id).ConferencesRegistered;
             var conferencesListe = new List<ConferenceViewModel>();
-            conferences.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c)));
+            if (options != null)
+            {
+                var confs = options.ApplyTo(conferences.AsQueryable()) as IQueryable<Conference>;
+                confs.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c)));
+            }
+            else
+                conferences.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c)));
+
             return conferencesListe;
         }
 
@@ -203,11 +226,18 @@ namespace Streameus.Controllers
         /// <returns></returns>
         [Authorize]
         [Route("{id}/Conferences/Attended")]
-        public IEnumerable<ConferenceViewModel> GetConferencesAttended(int id)
+        public IEnumerable<ConferenceViewModel> GetConferencesAttended(int id, ODataQueryOptions<Conference> options = null)
         {
             var conferences = this._userServices.GetById(id).ConferencesAttended;
             var conferencesListe = new List<ConferenceViewModel>();
-            conferences.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c)));
+            if (options != null)
+            {
+                var confs = options.ApplyTo(conferences.AsQueryable()) as IQueryable<Conference>;
+                confs.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c)));
+            }
+            else
+                conferences.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c)));
+
             return conferencesListe;
         }
     }

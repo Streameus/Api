@@ -294,11 +294,13 @@ namespace Streameus.Controllers
         /// <exception cref="ForbiddenException"></exception>
         /// <exception cref="PaymentRequiredException"></exception>
         /// <response code="402">Payment required</response>
+        /// <returns>an object containing the token {token: "..."}</returns>
         [Route("{id}/Token")]
         [Authorize]
-        public string GetTokenConference(int id)
+        public object GetTokenConference(int id)
         {
-            return this._conferenceServices.GetTokenForConference(id, this.GetCurrentUserId());
+            var token = this._conferenceServices.GetTokenForConference(id, this.GetCurrentUserId());
+            return new {token};
         }
 
 

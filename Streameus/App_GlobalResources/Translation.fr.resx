@@ -165,4 +165,7 @@
   <data name="TheConferenceIsNotFinished" xml:space="preserve">
     <value>La conference n'est pas encore terminee</value>
   </data>
+  <data name="ConferenceAlreadyMarked" xml:space="preserve">
+    <value>Vous avez deja note cette conference</value>
+  </data>
 </root>

@@ -65,8 +65,12 @@ namespace Streameus.ViewModels
         /// <summary>
         /// Entrance fee to the conference.
         /// </summary>
-        public float EntranceFee { get; set; }
+        public double EntranceFee { get; set; }
 
+        /// <summary>
+        /// Average mark given by users
+        /// </summary>
+        public double? Mark { get; set; }
 
         /// <summary>
         /// Create a vm based on a conference
@@ -86,6 +90,19 @@ namespace Streameus.ViewModels
             this.Category = new ConferenceCategoryViewModel(conf.Category);
             this.RoomId = conf.RoomId;
             this.EntranceFee = conf.EntranceFee;
+
+            //Check for false marks
+            if (conf.Mark > -1)
+            {
+                if (Math.Abs(conf.Mark) < 0.1 && !conf.Marks.Any())
+                {
+                    this.Mark = null;
+                }
+                else
+                {
+                    this.Mark = conf.Mark;
+                }
+            }
         }
     }
 }

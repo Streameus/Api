@@ -88,6 +88,7 @@ namespace Streameus.DataAbstractionLayer.Services
         public void AddConference(Conference newConf)
         {
             newConf.Id = 0;
+            newConf.Mark = -1;
             newConf.ConferenceParameters = new ConferenceParameters();
             this.Save(newConf);
             this._eventServices.CreateConf(newConf);
@@ -174,7 +175,7 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <returns></returns>
         public IQueryable<User> GetRegisteredUsersByConferenceId(int id)
         {
-            return this.GetById(id).Registred.AsQueryable();
+            return this.GetById(id).Registered.AsQueryable();
         }
 
         /// <summary>
@@ -195,8 +196,8 @@ namespace Streameus.DataAbstractionLayer.Services
             if (conference.Time > DateTime.Now || conference.Status == DataBaseEnums.ConfStatus.EnCours ||
                 conference.Status == DataBaseEnums.ConfStatus.AVenir)
             {
-                if (!conference.Registred.Contains(user))
-                    conference.Registred.Add(user);
+                if (!conference.Registered.Contains(user))
+                    conference.Registered.Add(user);
                 else
                     throw new DuplicateEntryException(Translation.UserHasAlreadySuscribed);
                 this.Save(conference);
@@ -220,9 +221,9 @@ namespace Streameus.DataAbstractionLayer.Services
 
             if (conference.Time > DateTime.Now)
             {
-                if (!conference.Registred.Contains(user))
+                if (!conference.Registered.Contains(user))
                     throw new DuplicateEntryException(Translation.UserIsNotEnlisted);
-                if (conference.Registred.Remove(user))
+                if (conference.Registered.Remove(user))
                 {
                     this.Save(conference);
                 }
@@ -319,7 +320,7 @@ namespace Streameus.DataAbstractionLayer.Services
         private void PayConferenceOwner(Conference conference)
         {
             var participantsNumber = conference.Participants.Count;
-            float total = (conference.EntranceFee*participantsNumber)*0.9f;
+            double total = (conference.EntranceFee*participantsNumber)*0.9;
             conference.Owner.Balance += total;
             this._userServices.UpdateUser(conference.Owner);
         }
@@ -333,7 +334,7 @@ namespace Streameus.DataAbstractionLayer.Services
         public bool IsUserRegistered(int confId, int userId)
         {
             var conf = this.GetById(confId);
-            return conf.Registred.Any(u => u.Id == userId);
+            return conf.Registered.Any(u => u.Id == userId);
         }
 
         /// <summary>
@@ -360,6 +361,34 @@ namespace Streameus.DataAbstractionLayer.Services
                 return this._roomServices.CreateToken(conference.RoomId, user.UserName, role);
             }
             throw new ApiException(HttpStatusCode.Unauthorized, Translation.TheConferenceIsNotStarted);
+        }
+
+        /// <summary>
+        /// Mark a conference a user participated to
+        /// </summary>
+        /// <param name="conferenceId"></param>
+        /// <param name="userId"></param>
+        /// <param name="mark">the mark given to the conference</param>
+        public double MarkConference(int conferenceId, int userId, int mark)
+        {
+            var user = this._userServices.GetById(userId);
+            var conference = this.GetById(conferenceId);
+
+            if (conference.Status != DataBaseEnums.ConfStatus.Finie)
+                throw new ForbiddenException(Translation.TheConferenceIsNotFinished);
+            if (!conference.Participants.Contains(user))
+                throw new ForbiddenException(Translation.UserIsNotEnlisted);
+            if (conference.OwnerId == userId)
+                throw new ForbiddenException(Translation.OwnerCannotSuscribeToItsConf);
+            if (conference.Marks.Any(m => m.UserId == userId))
+                throw new ForbiddenException(Translation.ConferenceAlreadyMarked);
+
+            conference.Marks.Add(new UserMark() {UserId = userId, ConferenceId = conferenceId, Mark = mark});
+            this.Save(conference);
+            conference.Mark = conference.Marks.Select(m => m.Mark).Average();
+            this.Save(conference);
+            this._userServices.UpdateRating(conference.Owner);
+            return conference.Mark;
         }
     }
 }

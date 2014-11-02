@@ -66,14 +66,14 @@ namespace Streameus.DataAbstractionLayer.Services
         /// <param name="userId"></param>
         /// <param name="amount"></param>
         /// <returns>the new balance</returns>
-        public float RefillUserBalance(int userId, float amount)
+        public double RefillUserBalance(int userId, int amount)
         {
             var user = this._userServices.GetById(userId);
 
             if (user.StripeCustomerId.IsNullOrWhiteSpace())
                 throw new StreameusStripeError(Translation.AddCardFirst);
             var newCharge = new StripeChargeCreateOptions();
-            newCharge.Amount = (int) amount;
+            newCharge.Amount = amount;
             newCharge.Currency = "eur";
             newCharge.CustomerId = user.StripeCustomerId;
             StripeCharge charge = this._chargeService.Create(newCharge);
@@ -88,7 +88,7 @@ namespace Streameus.DataAbstractionLayer.Services
         /// </summary>
         /// <param name="user"></param>
         /// <param name="amount"></param>
-        public void ChargeUser(User user, float amount)
+        public void ChargeUser(User user, double amount)
         {
             if (amount > user.Balance)
                 throw new PaymentRequiredException(String.Format(Translation.BalanceTooLow, amount));

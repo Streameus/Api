@@ -79,6 +79,15 @@ namespace Streameus.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You already marked this conference.
+        /// </summary>
+        internal static string ConferenceAlreadyMarked {
+            get {
+                return ResourceManager.GetString("ConferenceAlreadyMarked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Conference not found!.
         /// </summary>
         internal static string ConferenceNotFound {

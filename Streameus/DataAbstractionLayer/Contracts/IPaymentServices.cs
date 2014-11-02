@@ -20,13 +20,13 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <param name="userId"></param>
         /// <param name="amount"></param>
         /// <returns>the new balance</returns>
-        float RefillUserBalance(int userId, float amount);
+        double RefillUserBalance(int userId, int amount);
 
         /// <summary>
         /// charge an amount on the user's balance
         /// </summary>
         /// <param name="user"></param>
         /// <param name="amount"></param>
-        void ChargeUser(User user, float amount);
+        void ChargeUser(User user, double amount);
     }
 }

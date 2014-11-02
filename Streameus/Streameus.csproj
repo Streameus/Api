@@ -330,11 +330,13 @@
     <Compile Include="DataAbstractionLayer\Contracts\IUserServices.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\ConferenceCategory.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Mapping\ConferenceCategoryMap.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\Mapping\UserMarkMap.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\MessageGroup.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Mapping\MessageGroupMap.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Message.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\Mapping\MessageMap.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\EventItem.cs" />
+    <Compile Include="DataAbstractionLayer\DataModels\UserMark.cs" />
     <Compile Include="DataAbstractionLayer\Initializers\DropCreateDatabaseTables.cs" />
     <Compile Include="DataAbstractionLayer\Initializers\StreameusInitializerForAppHarbor.cs" />
     <Compile Include="DataAbstractionLayer\Initializers\StreameusSeed.cs" />

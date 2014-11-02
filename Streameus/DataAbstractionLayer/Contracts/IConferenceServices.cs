@@ -132,5 +132,13 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <param name="userId">the id of the user who needs a token</param>
         /// <returns></returns>
         string GetTokenForConference(int id, int userId);
+
+        /// <summary>
+        /// Mark a conference a user participated to
+        /// </summary>
+        /// <param name="conferenceId"></param>
+        /// <param name="userId"></param>
+        /// <param name="mark"></param>
+        double MarkConference(int conferenceId, int userId, int mark);
     }
 }

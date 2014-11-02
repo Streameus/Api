@@ -333,11 +333,12 @@ namespace Streameus.Controllers
         /// Mark a conference you have participated in
         /// </summary>
         /// <param name="id">Conference id</param>
+        /// <param name="mark">The mark given to the conference</param>
         [Authorize]
         [Route("{id}/Mark")]
-        public void PostMarkConference(int id)
+        public double PostMarkConference(int id, int mark)
         {
-            this._conferenceServices.MarkConference(id, this.GetCurrentUserId());
+            return this._conferenceServices.MarkConference(id, this.GetCurrentUserId(), mark);
         }
     }
 }

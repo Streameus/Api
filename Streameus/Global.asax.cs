@@ -68,6 +68,8 @@ namespace Streameus
                 .Where(t => t.Name.EndsWith("Services"))
                 .AsImplementedInterfaces();
 
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof (Stripe.StripeCharge)));
+
             // Build the IOC container.
             var container = builder.Build();
 

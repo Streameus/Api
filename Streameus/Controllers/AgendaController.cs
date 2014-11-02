@@ -40,7 +40,7 @@ namespace Streameus.Controllers
 
         // GET api/agenda
         /// <summary>
-        /// Retourne toutes les conferences A VENIR auxquelles l'utilisateur a souscrit
+        /// Retourne toutes les conferences EN COURS et A VENIR auxquelles l'utilisateur a souscrit
         /// </summary>
         /// <returns>Retourne une List Conf (int Id, DateTime Time, String Name) ou une List vide si null</returns>
         /// <responseCode></responseCode>
@@ -48,21 +48,18 @@ namespace Streameus.Controllers
         public IOrderedEnumerable<KeyValuePair<DateTime, List<ConferenceAgendaViewModel>>> Get()
         {
             var owner = this._userServices.GetById(this.GetCurrentUserId());
-            var conferences = owner.ConferencesRegistered.Concat(owner.ConferencesCreated).Concat(owner.ConferencesInvolved).OrderBy(c => c.Time);
-            var confList = new List<ConferenceAgendaViewModel>();
-            foreach (var conference in conferences)
+            var conferences =
+                owner.ConferencesRegistered.Concat(owner.ConferencesCreated)
+                    .Concat(owner.ConferencesInvolved)
+                    .Where(
+                        c => c.Status == DataBaseEnums.ConfStatus.AVenir || c.Status == DataBaseEnums.ConfStatus.EnCours)
+                    .OrderBy(c => c.Time);
+            var confList = conferences.Select(conference => new ConferenceAgendaViewModel
             {
-                if (conference.Status != DataBaseEnums.ConfStatus.Finie)
-                {
-                    var confInfo = new ConferenceAgendaViewModel
-                    {
-                        Name = conference.Name,
-                        Date = conference.Time,
-                        Id = conference.Id,
-                    };
-                    confList.Add(confInfo);
-                }
-            }
+                Name = conference.Name,
+                Date = conference.Time,
+                Id = conference.Id,
+            }).ToList();
             var conflistDay = new Dictionary<DateTime, List<ConferenceAgendaViewModel>>();
             foreach (var conferenceAgendaViewModel in confList)
             {

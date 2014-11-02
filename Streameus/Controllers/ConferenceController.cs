@@ -53,7 +53,8 @@ namespace Streameus.Controllers
         public IEnumerable<ConferenceViewModel> Get()
         {
             var conferences = new List<ConferenceViewModel>();
-            this._conferenceServices.GetAll().ForEach(c => conferences.Add(new ConferenceViewModel(c)));
+            int currentUser = this.GetCurrentUserId();
+            this._conferenceServices.GetAll().ForEach(c => conferences.Add(new ConferenceViewModel(c, currentUser)));
             return conferences;
         }
 
@@ -68,7 +69,8 @@ namespace Streameus.Controllers
         {
             var confs = options.ApplyTo(this._conferenceServices.GetSoonConfs()) as IQueryable<Conference>;
             var conferences = new List<ConferenceViewModel>();
-            confs.ForEach(c => conferences.Add(new ConferenceViewModel(c)));
+            var currentUser = this.GetCurrentUserId();
+            confs.ForEach(c => conferences.Add(new ConferenceViewModel(c, currentUser)));
             return conferences;
         }
 
@@ -97,9 +99,10 @@ namespace Streameus.Controllers
         public IEnumerable<ConferenceViewModel> GetByCategory(int id)
         {
             var conferences = new List<ConferenceViewModel>();
+            var currentUser = this.GetCurrentUserId();
             this._conferenceServices.GetAll()
                 .Where(i => i.CategoryId == id)
-                .ForEach(c => conferences.Add(new ConferenceViewModel(c)));
+                .ForEach(c => conferences.Add(new ConferenceViewModel(c, currentUser)));
             return conferences;
         }
 
@@ -110,15 +113,13 @@ namespace Streameus.Controllers
         /// <param name="id">the id of the conference</param>
         /// <returns></returns>
         /// <exception cref="NotFoundException"></exception>
-        public ConferenceViewModelUnique Get(int id)
+        public ConferenceViewModel Get(int id)
         {
             var conf = this._conferenceServices.GetById(id);
             if (conf == null)
                 throw new NotFoundException(Translation.ConferenceNotFound);
-            var conference = new ConferenceViewModelUnique(conf)
-            {
-                Registered = this._conferenceServices.IsUserRegistered(conf.Id, this.GetCurrentUserId())
-            };
+            var currentUser = this.GetCurrentUserId();
+            var conference = new ConferenceViewModel(conf, currentUser);
 
             return conference;
         }
@@ -173,7 +174,7 @@ namespace Streameus.Controllers
                 updatedConf.Time = conference.Time.Value;
             this._conferenceServices.UpdateConference(updatedConf, this.GetCurrentUserId());
             //since EF uses references, we will have the latest version here, so it's ok to return.
-            return new ConferenceViewModel(updatedConf);
+            return new ConferenceViewModel(updatedConf, this.GetCurrentUserId());
         }
 
         // DELETE api/conference/5

@@ -177,7 +177,7 @@ namespace Streameus.Controllers
         {
             var conferences = this._userServices.GetById(id).ConferencesCreated;
             var conferencesListe = new List<ConferenceViewModel>();
-            conferences.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c)));
+            conferences.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c, this.GetCurrentUserId())));
             return conferencesListe;
         }
 
@@ -192,7 +192,7 @@ namespace Streameus.Controllers
         {
             var conferences = this._userServices.GetById(id).ConferencesRegistered;
             var conferencesListe = new List<ConferenceViewModel>();
-            conferences.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c)));
+            conferences.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c, this.GetCurrentUserId())));
             return conferencesListe;
         }
 
@@ -207,7 +207,7 @@ namespace Streameus.Controllers
         {
             var conferences = this._userServices.GetById(id).ConferencesAttended;
             var conferencesListe = new List<ConferenceViewModel>();
-            conferences.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c)));
+            conferences.ForEach(c => conferencesListe.Add(new ConferenceViewModel(c, this.GetCurrentUserId())));
             return conferencesListe;
         }
     }

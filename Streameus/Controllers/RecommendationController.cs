@@ -62,13 +62,15 @@ namespace Streameus.Controllers
         public IEnumerable<ConferenceViewModel> GetConferenceRecommendations()
         {
             var suggestionList = new List<ConferenceViewModel>();
-            var suggestions = this._conferenceServices.GetSuggestionsForUser(this.GetCurrentUserId());
+            var currentUser = this.GetCurrentUserId();
+            var suggestions = this._conferenceServices.GetSuggestionsForUser(currentUser);
 
-            suggestions.ForEach(s => suggestionList.Add(new ConferenceViewModel(s)));
+
+            suggestions.ForEach(s => suggestionList.Add(new ConferenceViewModel(s, currentUser)));
             if (!suggestionList.Any())
             {
                 suggestions = this._conferenceServices.GetMostPopularConfs();
-                suggestions.ForEach(s => suggestionList.Add(new ConferenceViewModel(s)));
+                suggestions.ForEach(s => suggestionList.Add(new ConferenceViewModel(s, currentUser)));
             }
             return suggestionList;
         }

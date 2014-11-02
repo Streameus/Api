@@ -96,7 +96,7 @@ namespace Streameus.Controllers
         {
             var userList = new List<UserViewModel>();
             _userServices.GetAll()
-                .Where(u => keywords.All(k => 
+                .Where(u => keywords.All(k =>
                     u.FirstName.ToLower().Contains(k)
                     || u.Description.ToLower().Contains(k)
                     || u.FirstName.ToLower().Contains(k)
@@ -109,13 +109,14 @@ namespace Streameus.Controllers
         private List<ConferenceViewModel> SearchInConferences(IEnumerable<string> keywords)
         {
             var confList = new List<ConferenceViewModel>();
+            var currentUser = this.GetCurrentUserId();
+
             _conferenceServices.GetAll()
                 .Where(c => keywords.All(k =>
                     c.Name.ToLower().Contains(k)
                     || c.Description.ToLower().Contains(k)))
-                .ForEach(c => confList.Add(new ConferenceViewModel(c)));
+                .ForEach(c => confList.Add(new ConferenceViewModel(c, currentUser)));
             return confList;
         }
-
     }
 }

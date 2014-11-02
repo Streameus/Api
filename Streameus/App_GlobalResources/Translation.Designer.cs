@@ -160,6 +160,15 @@ namespace Streameus.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The conference is not finished yet.
+        /// </summary>
+        internal static string TheConferenceIsNotFinished {
+            get {
+                return ResourceManager.GetString("TheConferenceIsNotFinished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The conference has not been started.
         /// </summary>
         internal static string TheConferenceIsNotStarted {

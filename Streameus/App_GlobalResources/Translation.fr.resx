@@ -162,4 +162,7 @@
   <data name="BalanceTooLow" xml:space="preserve">
     <value>Votre solde est trop bas. Vous devez avoir au moins {0}€ Pour acceder a cette conference.</value>
   </data>
+  <data name="TheConferenceIsNotFinished" xml:space="preserve">
+    <value>La conference n'est pas encore terminee</value>
+  </data>
 </root>

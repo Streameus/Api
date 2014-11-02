@@ -328,5 +328,16 @@ namespace Streameus.Controllers
             var currentUserId = this.GetCurrentUserId();
             return this._conferenceServices.IsUserRegistered(id, currentUserId);
         }
+
+        /// <summary>
+        /// Mark a conference you have participated in
+        /// </summary>
+        /// <param name="id">Conference id</param>
+        [Authorize]
+        [Route("{id}/Mark")]
+        public void PostMarkConference(int id)
+        {
+            this._conferenceServices.MarkConference(id, this.GetCurrentUserId());
+        }
     }
 }

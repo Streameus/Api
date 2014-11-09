@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 #pragma warning disable 1591
+
 namespace Streameus.ViewModels
 {
     // Models used as parameters to AccountController actions.
@@ -35,8 +36,12 @@ namespace Streameus.ViewModels
     public class RegisterBindingModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "Email")]
         public string UserName { get; set; }
+
+        [Required]
+        [Display(Name = "User name")]
+        public string Pseudo { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]

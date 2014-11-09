@@ -411,7 +411,7 @@ namespace Streameus.Controllers
 
             User user = new User
             {
-                Pseudo = model.UserName,
+                Pseudo = model.Pseudo,
                 Email = model.UserName,
             };
 

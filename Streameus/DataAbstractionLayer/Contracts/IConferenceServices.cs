@@ -140,5 +140,11 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <param name="userId"></param>
         /// <param name="mark"></param>
         double MarkConference(int conferenceId, int userId, int mark);
+
+        /// <summary>
+        /// Get all conferences currently airing (status = EnCours)
+        /// </summary>
+        /// <returns>The list of conferences which a live</returns>
+        IQueryable<Conference> GetLiveConferences();
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web;
 using Streameus.App_GlobalResources;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataBaseAccess;
@@ -14,18 +13,18 @@ using Streameus.Models;
 namespace Streameus.DataAbstractionLayer.Services
 {
     /// <summary>
-    /// The conference services
+    ///     The conference services
     /// </summary>
     public class ConferenceServices : BaseServices<Conference>, IConferenceServices
     {
         private readonly IConferenceParametersServices _conferenceParametersServices;
         private readonly IEventServices _eventServices;
-        private readonly IUserServices _userServices;
-        private readonly IRoomServices _roomServices;
         private readonly IPaymentServices _paymentServices;
+        private readonly IRoomServices _roomServices;
+        private readonly IUserServices _userServices;
 
         /// <summary>
-        /// default constructor
+        ///     default constructor
         /// </summary>
         /// <param name="unitOfWork"></param>
         /// <param name="conferenceParametersServices"></param>
@@ -53,20 +52,7 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
-        /// Save a conference
-        /// </summary>
-        /// <param name="conference"></param>
-        protected override void Save(Conference conference)
-        {
-            if (conference.Id > 0)
-                this.Update(conference);
-            else
-                this.Insert(conference);
-            this.SaveChanges();
-        }
-
-        /// <summary>
-        /// Delete a conference
+        ///     Delete a conference
         /// </summary>
         /// <param name="id"></param>
         /// <exception cref="NotFoundException"></exception>
@@ -82,7 +68,7 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
-        /// Add a conference
+        ///     Add a conference
         /// </summary>
         /// <param name="newConf"></param>
         public void AddConference(Conference newConf)
@@ -96,7 +82,7 @@ namespace Streameus.DataAbstractionLayer.Services
 
 
         /// <summary>
-        /// Updates a conference
+        ///     Updates a conference
         /// </summary>
         /// <param name="updatedConf"></param>
         /// <param name="userId">The id of the user who wants to update this conference</param>
@@ -113,7 +99,7 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
-        /// Get conferences suggested for a user depending on its interests
+        ///     Get conferences suggested for a user depending on its interests
         /// </summary>
         /// <param name="userId">the targeted user</param>
         /// <returns></returns>
@@ -133,7 +119,7 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
-        /// Get the 5 most popular confs
+        ///     Get the 5 most popular confs
         /// </summary>
         /// <returns></returns>
         public IEnumerable<Conference> GetMostPopularConfs()
@@ -146,7 +132,7 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
-        /// Get popular confs comming soon
+        ///     Get popular confs comming soon
         /// </summary>
         /// <returns></returns>
         public IQueryable<Conference> GetSoonConfs()
@@ -159,7 +145,7 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
-        /// Get all users participating to a conference
+        ///     Get all users participating to a conference
         /// </summary>
         /// <param name="id">The conference Id</param>
         /// <returns></returns>
@@ -169,7 +155,7 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
-        /// Get all users registered to a conference
+        ///     Get all users registered to a conference
         /// </summary>
         /// <param name="id">The conference Id</param>
         /// <returns></returns>
@@ -179,7 +165,7 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
-        /// Suscribe a user to a conference
+        ///     Suscribe a user to a conference
         /// </summary>
         /// <remarks>This method adds the user to the Participants List</remarks>
         /// <param name="conferenceId">The conference Id</param>
@@ -208,7 +194,7 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
-        /// Unsuscribe a user from a conference
+        ///     Unsuscribe a user from a conference
         /// </summary>
         /// <remarks>This method removes the user from the Participants List</remarks>
         /// <param name="conferenceId">The conference Id</param>
@@ -237,7 +223,7 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
-        /// Get all the conference the user suscribed to which are live
+        ///     Get all the conference the user suscribed to which are live
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
@@ -254,7 +240,7 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
-        /// Get all the conferences the user suscribed to happening in the next 24hours
+        ///     Get all the conferences the user suscribed to happening in the next 24hours
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
@@ -269,7 +255,7 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
-        /// Start a conference, change its status from AVenir to EnCours
+        ///     Start a conference, change its status from AVenir to EnCours
         /// </summary>
         /// <remarks>User needs to be the owner</remarks>
         /// <param name="confId">the Id of the conference</param>
@@ -292,13 +278,13 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
-        /// Stop a conference, change its status from EnCours to Finie
-        ///Gives the money to the conference owner
+        ///     Stop a conference, change its status from EnCours to Finie
+        ///     Gives the money to the conference owner
         /// </summary>
         /// <remarks>User needs to be the owner</remarks>
         /// <param name="confId">the Id of the conference</param>
         /// <param name="userId">the Id of the user who wants tho make the change</param>
-        /// <returns>True if success false otherwise</returns>        
+        /// <returns>True if success false otherwise</returns>
         public bool StopConference(int confId, int userId)
         {
             var conference = this.GetById(confId);
@@ -317,16 +303,9 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         //We take a 10% fee on every conf
-        private void PayConferenceOwner(Conference conference)
-        {
-            var participantsNumber = conference.Participants.Count;
-            double total = (conference.EntranceFee*participantsNumber)*0.9;
-            conference.Owner.Balance += total;
-            this._userServices.UpdateUser(conference.Owner);
-        }
 
         /// <summary>
-        /// Check if the user is registered to the conf
+        ///     Check if the user is registered to the conf
         /// </summary>
         /// <param name="userId">The user ID</param>
         /// <param name="confId">The conf ID</param>
@@ -338,7 +317,7 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
-        /// Get the token needed to access an active conference
+        ///     Get the token needed to access an active conference
         /// </summary>
         /// <param name="id">the conference ID</param>
         /// <param name="userId">the id of the user who needs a token</param>
@@ -364,7 +343,7 @@ namespace Streameus.DataAbstractionLayer.Services
         }
 
         /// <summary>
-        /// Mark a conference a user participated to
+        ///     Mark a conference a user participated to
         /// </summary>
         /// <param name="conferenceId"></param>
         /// <param name="userId"></param>
@@ -383,12 +362,42 @@ namespace Streameus.DataAbstractionLayer.Services
             if (conference.Marks.Any(m => m.UserId == userId))
                 throw new ForbiddenException(Translation.ConferenceAlreadyMarked);
 
-            conference.Marks.Add(new UserMark() {UserId = userId, ConferenceId = conferenceId, Mark = mark});
+            conference.Marks.Add(new UserMark {UserId = userId, ConferenceId = conferenceId, Mark = mark});
             this.Save(conference);
             conference.Mark = conference.Marks.Select(m => m.Mark).Average();
             this.Save(conference);
             this._userServices.UpdateRating(conference.Owner);
             return conference.Mark;
+        }
+
+        /// <summary>
+        ///     Get all conferences currently airing (status = EnCours)
+        /// </summary>
+        /// <returns>The list of conferences which a live</returns>
+        public IQueryable<Conference> GetLiveConferences()
+        {
+            return this.GetDbSet<Conference>().Where(c => c.Status == DataBaseEnums.ConfStatus.EnCours);
+        }
+
+        /// <summary>
+        ///     Save a conference
+        /// </summary>
+        /// <param name="conference"></param>
+        protected override void Save(Conference conference)
+        {
+            if (conference.Id > 0)
+                this.Update(conference);
+            else
+                this.Insert(conference);
+            this.SaveChanges();
+        }
+
+        private void PayConferenceOwner(Conference conference)
+        {
+            var participantsNumber = conference.Participants.Count;
+            double total = (conference.EntranceFee*participantsNumber)*0.9;
+            conference.Owner.Balance += total;
+            this._userServices.UpdateUser(conference.Owner);
         }
     }
 }

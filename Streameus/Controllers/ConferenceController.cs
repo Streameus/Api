@@ -105,7 +105,8 @@ namespace Streameus.Controllers
         /// <returns></returns>
         /// <responseCode></responseCode>
         [Route("Categories")]
-        public IEnumerable<ConferenceCategoryViewModel> GetCategories(ODataQueryOptions<Conference> options = null)
+        public IEnumerable<ConferenceCategoryViewModel> GetCategories(
+            ODataQueryOptions<ConferenceCategoryViewModel> options = null)
         {
             var categories = new List<ConferenceCategoryViewModel>();
             var categoriesList = this._conferenceCategoryServices.GetAll();
@@ -134,7 +135,7 @@ namespace Streameus.Controllers
 
             if (options != null)
                 conferencesList = options.ApplyTo(conferencesList) as IQueryable<Conference>;
-            
+
             var currentUser = this.GetCurrentUserId();
             conferencesList.ForEach(c => conferences.Add(new ConferenceViewModel(c, currentUser)));
             return conferences;

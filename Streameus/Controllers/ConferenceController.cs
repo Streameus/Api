@@ -52,12 +52,13 @@ namespace Streameus.Controllers
         {
             var conferences = new List<ConferenceViewModel>();
             var conferencesList = this._conferenceServices.GetAll();
+            var currentUser = this.GetCurrentUserId();
 
             if (options != null)
                 conferencesList = options.ApplyTo(conferencesList) as IQueryable<Conference>;
             if (conferencesList == null) return conferences;
 
-            conferencesList.ForEach(e => conferences.Add(new ConferenceViewModel(e)));
+            conferencesList.ForEach(e => conferences.Add(new ConferenceViewModel(e, currentUser)));
             return conferences;
         }
 
@@ -133,8 +134,9 @@ namespace Streameus.Controllers
 
             if (options != null)
                 conferencesList = options.ApplyTo(conferencesList) as IQueryable<Conference>;
-
-            conferencesList.ForEach(c => conferences.Add(new ConferenceViewModel(c)));
+            
+            var currentUser = this.GetCurrentUserId();
+            conferencesList.ForEach(c => conferences.Add(new ConferenceViewModel(c, currentUser)));
             return conferences;
         }
 

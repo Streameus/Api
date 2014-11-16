@@ -49,7 +49,10 @@ namespace Streameus.Controllers
         public IOrderedEnumerable<KeyValuePair<DateTime, List<ConferenceAgendaViewModel>>> Get(ODataQueryOptions<Conference> options = null)
         {
             var owner = this._userServices.GetById(this.GetCurrentUserId());
-            var conferences = owner.ConferencesRegistered.Concat(owner.ConferencesCreated).Concat(owner.ConferencesInvolved).OrderBy(c => c.Time);
+            var conferences = owner.ConferencesRegistered.Concat(owner.ConferencesCreated)
+                .Concat(owner.ConferencesInvolved)
+                .Where(c => c.Status == DataBaseEnums.ConfStatus.AVenir || c.Status == DataBaseEnums.ConfStatus.EnCours)
+                .OrderBy(c => c.Time);
 
             var confList = new List<ConferenceAgendaViewModel>();
             if (options != null)
@@ -82,7 +85,7 @@ namespace Streameus.Controllers
                         Name = conference.Name,
                         Date = conference.Time,
                         Id = conference.Id,
-                        };
+                    };
                         confList.Add(confInfo);
                     }
                 }

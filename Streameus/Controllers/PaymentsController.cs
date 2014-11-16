@@ -39,7 +39,7 @@ namespace Streameus.Controllers
         /// <returns></returns>
         [Authorize]
         [Route("User/me/Balance")]
-        public float GetMyBalance()
+        public double GetMyBalance()
         {
             return this._userServices.GetById(this.GetCurrentUserId()).Balance;
         }
@@ -64,7 +64,7 @@ namespace Streameus.Controllers
         /// <returns>The new balance</returns>
         [Authorize]
         [Route("User/me/Charge")]
-        public float PutCharge(float amount)
+        public double PutCharge(int amount)
         {
             try
             {

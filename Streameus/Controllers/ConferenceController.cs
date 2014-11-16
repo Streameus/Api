@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.OData.Query;
-using Microsoft.AspNet.Identity;
 using Streameus.App_GlobalResources;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.Enums;
@@ -18,17 +15,17 @@ using WebGrease.Css.Extensions;
 namespace Streameus.Controllers
 {
     /// <summary>
-    /// Conference controller
+    ///     Conference controller
     /// </summary>
     [RoutePrefix("api/Conference")]
     public class ConferenceController : BaseController
     {
-        private readonly IConferenceServices _conferenceServices;
         private readonly IConferenceCategoryServices _conferenceCategoryServices;
+        private readonly IConferenceServices _conferenceServices;
         private readonly IUserServices _userServices;
 
         /// <summary>
-        /// Default constructor
+        ///     Default constructor
         /// </summary>
         /// <param name="conferenceCategoryServices"></param>
         /// <param name="conferenceServices"></param>
@@ -46,7 +43,7 @@ namespace Streameus.Controllers
 
         // GET api/conference
         /// <summary>
-        /// Get all conferences
+        ///     Get all conferences
         /// </summary>
         /// <param name="options">odata query options</param>
         /// <returns></returns>
@@ -66,7 +63,7 @@ namespace Streameus.Controllers
 
         // GET api/conference
         /// <summary>
-        /// Get all conferences
+        ///     Get all conferences
         /// </summary>
         /// <param name="options">odata query options</param>
         /// <returns></returns>
@@ -78,13 +75,30 @@ namespace Streameus.Controllers
             if (options != null)
                 confs = options.ApplyTo(confs) as IQueryable<Conference>;
             var conferences = new List<ConferenceViewModel>();
-            confs.ForEach(c => conferences.Add(new ConferenceViewModel(c)));
+            var currentUser = this.GetCurrentUserId();
+            confs.ForEach(c => conferences.Add(new ConferenceViewModel(c, currentUser)));
+            return conferences;
+        }
+
+        // GET api/conference
+        /// <summary>
+        ///     Get all conferences
+        /// </summary>
+        /// <returns></returns>
+        /// <responseCode></responseCode>
+        [Route("Live")]
+        public IEnumerable<ConferenceViewModel> GetLive(ODataQueryOptions<Conference> options)
+        {
+            var confs = options.ApplyTo(this._conferenceServices.GetLiveConferences()) as IQueryable<Conference>;
+            var conferences = new List<ConferenceViewModel>();
+            var currentUser = this.GetCurrentUserId();
+            confs.ForEach(c => conferences.Add(new ConferenceViewModel(c, currentUser)));
             return conferences;
         }
 
         // GET api/Conference/Categories
         /// <summary>
-        /// Get all conference's categories
+        ///     Get all conference's categories
         /// </summary>
         /// <param name="options">odata query options</param>
         /// <returns></returns>
@@ -104,7 +118,7 @@ namespace Streameus.Controllers
 
         // GET api/Conference/Category/5
         /// <summary>
-        /// Get all conferences of one specified category
+        ///     Get all conferences of one specified category
         /// </summary>
         /// <param name="id">the id of the category</param>
         /// <param name="options">odata query options</param>
@@ -126,27 +140,25 @@ namespace Streameus.Controllers
 
         // GET api/conference/5
         /// <summary>
-        /// Get one conference
+        ///     Get one conference
         /// </summary>
         /// <param name="id">the id of the conference</param>
         /// <returns></returns>
         /// <exception cref="NotFoundException"></exception>
-        public ConferenceViewModelUnique Get(int id)
+        public ConferenceViewModel Get(int id)
         {
             var conf = this._conferenceServices.GetById(id);
             if (conf == null)
                 throw new NotFoundException(Translation.ConferenceNotFound);
-            var conference = new ConferenceViewModelUnique(conf)
-            {
-                Registered = this._conferenceServices.IsUserRegistered(conf.Id, this.GetCurrentUserId())
-            };
+            var currentUser = this.GetCurrentUserId();
+            var conference = new ConferenceViewModel(conf, currentUser);
 
             return conference;
         }
 
         // POST api/conference
         /// <summary>
-        /// Create a new conference
+        ///     Create a new conference
         /// </summary>
         /// <param name="conference">data for the new conference</param>
         /// <returns></returns>
@@ -154,9 +166,9 @@ namespace Streameus.Controllers
         public ConferenceViewModel Post([FromBody] ConferenceFormViewModel conference)
         {
             var userId = this.GetCurrentUserId();
-            var user = _userServices.GetById(userId);
-            var category = _conferenceCategoryServices.GetById(conference.CategoryId);
-            var newConf = new Conference()
+            var user = this._userServices.GetById(userId);
+            var category = this._conferenceCategoryServices.GetById(conference.CategoryId);
+            var newConf = new Conference
             {
                 Name = conference.Name,
                 Description = conference.Description,
@@ -173,7 +185,7 @@ namespace Streameus.Controllers
 
         // PUT api/conference/5
         /// <summary>
-        /// Update a conference
+        ///     Update a conference
         /// </summary>
         /// <param name="conference">data to update the conference</param>
         /// <returns></returns>
@@ -194,12 +206,12 @@ namespace Streameus.Controllers
                 updatedConf.Time = conference.Time.Value;
             this._conferenceServices.UpdateConference(updatedConf, this.GetCurrentUserId());
             //since EF uses references, we will have the latest version here, so it's ok to return.
-            return new ConferenceViewModel(updatedConf);
+            return new ConferenceViewModel(updatedConf, this.GetCurrentUserId());
         }
 
         // DELETE api/conference/5
         /// <summary>
-        /// Delete a conference
+        ///     Delete a conference
         /// </summary>
         /// <param name="id"></param>
         [Authorize]
@@ -209,7 +221,7 @@ namespace Streameus.Controllers
         }
 
         /// <summary>
-        /// Get all the user participating to a conference
+        ///     Get all the user participating to a conference
         /// </summary>
         /// <param name="id">The conference Id</param>
         /// <returns></returns>
@@ -224,7 +236,7 @@ namespace Streameus.Controllers
         }
 
         /// <summary>
-        /// Get all the user registered to a conference
+        ///     Get all the user registered to a conference
         /// </summary>
         /// <param name="id">The conference Id</param>
         /// <param name="options">Odata options</param>
@@ -243,7 +255,7 @@ namespace Streameus.Controllers
         }
 
         /// <summary>
-        /// Suscribe to a conference
+        ///     Suscribe to a conference
         /// </summary>
         /// <param name="id">the id of the conference you want to suscribe to</param>
         [Route("{id}/Subscribe")]
@@ -261,7 +273,7 @@ namespace Streameus.Controllers
         }
 
         /// <summary>
-        /// Unsuscribe from a conference
+        ///     Unsuscribe from a conference
         /// </summary>
         /// <param name="id">the id of the conference you want to unsuscribe from</param>
         [Authorize]
@@ -279,7 +291,7 @@ namespace Streameus.Controllers
         }
 
         /// <summary>
-        /// Start a conf, changes its status from AVenir to enCours
+        ///     Start a conf, changes its status from AVenir to enCours
         /// </summary>
         /// <param name="id"></param>
         /// <exception cref="ForbiddenException"></exception>
@@ -294,8 +306,8 @@ namespace Streameus.Controllers
         }
 
         /// <summary>
-        /// Stop a conf, changes its status from EnCours to Finie
-        /// Pay the conference owner
+        ///     Stop a conf, changes its status from EnCours to Finie
+        ///     Pay the conference owner
         /// </summary>
         /// <param name="id"></param>
         /// <exception cref="ForbiddenException"></exception>
@@ -308,23 +320,25 @@ namespace Streameus.Controllers
         }
 
         /// <summary>
-        /// Get the token to watch a conference
+        ///     Get the token to watch a conference
         /// </summary>
         /// <param name="id"></param>
         /// <exception cref="ForbiddenException"></exception>
         /// <exception cref="PaymentRequiredException"></exception>
         /// <response code="402">Payment required</response>
+        /// <returns>an object containing the token {token: "..."}</returns>
         [Route("{id}/Token")]
         [Authorize]
-        public string GetTokenConference(int id)
+        public object GetTokenConference(int id)
         {
-            return this._conferenceServices.GetTokenForConference(id, this.GetCurrentUserId());
+            var token = this._conferenceServices.GetTokenForConference(id, this.GetCurrentUserId());
+            return new {token};
         }
 
 
         // GET api/user/AmIRegistered/{id}
         /// <summary>
-        /// Tells you if the user is registered to a conference
+        ///     Tells you if the user is registered to a conference
         /// </summary>
         /// <param name="id">the id of the conf to be checked</param>
         /// <param name="userId">The id of the user</param>
@@ -338,7 +352,7 @@ namespace Streameus.Controllers
 
         // GET api/user/AmIRegistered/{id}
         /// <summary>
-        /// Tells you if you are registered to a conference
+        ///     Tells you if you are registered to a conference
         /// </summary>
         /// <param name="id">the id of the conf to be checked</param>
         /// <returns></returns>
@@ -348,6 +362,18 @@ namespace Streameus.Controllers
         {
             var currentUserId = this.GetCurrentUserId();
             return this._conferenceServices.IsUserRegistered(id, currentUserId);
+        }
+
+        /// <summary>
+        ///     Mark a conference you have participated in
+        /// </summary>
+        /// <param name="id">Conference id</param>
+        /// <param name="mark">The mark given to the conference</param>
+        [Authorize]
+        [Route("{id}/Mark")]
+        public double PostMarkConference(int id, int mark)
+        {
+            return this._conferenceServices.MarkConference(id, this.GetCurrentUserId(), mark);
         }
     }
 }

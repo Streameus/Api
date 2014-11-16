@@ -44,7 +44,7 @@ namespace Streameus.Models.Mapping
                     m.MapRightKey("Participant_Id");
                 });
 
-            this.HasMany(t => t.Registred)
+            this.HasMany(t => t.Registered)
                 .WithMany(t => t.ConferencesRegistered)
                 .Map(m =>
                 {

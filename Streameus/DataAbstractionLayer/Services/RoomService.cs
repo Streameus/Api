@@ -41,7 +41,6 @@ namespace Streameus.DataAbstractionLayer.Services
                 var response = client.GetAsync("/createRoom/" + roomName).Result;
                 response.EnsureSuccessStatusCode();
                 return (await response.Content.ReadAsAsync<RoomObject>())._id;
-//                return room._id;
             }
         }
 

@@ -116,7 +116,7 @@ namespace Streameus.Models
         /// <summary>
         /// User reputation
         /// </summary>
-        public int Reputation { get; set; }
+        public double Reputation { get; set; }
 
         /// <summary>
         /// Abonnements visibility
@@ -266,7 +266,7 @@ namespace Streameus.Models
         /// <summary>
         /// User balance, used to pay conferences
         /// </summary>
-        public float Balance { get; set; }
+        public double Balance { get; set; }
 
         /// <summary>
         /// User name, uses Email (lowercased) to prevent duplication of content

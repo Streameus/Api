@@ -24,7 +24,7 @@ namespace Streameus.Models
         public Conference()
         {
             this.Documents = new HashSet<Document>();
-            this.Registred = new HashSet<User>();
+            this.Registered = new HashSet<User>();
             this.Speakers = new HashSet<User>();
             this.Participants = new HashSet<User>();
         }
@@ -113,13 +113,24 @@ namespace Streameus.Models
         /// <summary>
         /// Users planning to participate to the Conference
         /// </summary>
-        public virtual ICollection<User> Registred { get; set; }
+        public virtual ICollection<User> Registered { get; set; }
 
         /// <summary>
         /// Entrance fee to the conference.
         /// </summary>
-        [DefaultValue(0f)]
-        [Range(0, float.MaxValue)]
-        public virtual float EntranceFee { get; set; }
+        [DefaultValue(0)]
+        [Range(0, double.MaxValue)]
+        public double EntranceFee { get; set; }
+
+        /// <summary>
+        /// User Marks for the conference
+        /// </summary>
+        public virtual ICollection<UserMark> Marks { get; set; }
+
+        /// <summary>
+        /// The conference mark, based on every mark collected
+        /// </summary>
+        [DefaultValue(-1)]
+        public double Mark { get; set; }
     }
 }

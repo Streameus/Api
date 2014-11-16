@@ -53,7 +53,7 @@ namespace Streameus.ViewModels
         /// <summary>
         /// Entrance fee to the conference.
         /// </summary>
-        [Range(0, float.MaxValue)]
-        public float? EntranceFee { get; set; }
+        [Range(0, double.MaxValue)]
+        public double? EntranceFee { get; set; }
     }
 }

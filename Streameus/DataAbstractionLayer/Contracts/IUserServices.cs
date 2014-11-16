@@ -94,5 +94,17 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <returns></returns>
         /// <param name="take">The max number of results desired</param>
         IQueryable<User> GetUsersWithBestReputation(int take = 5);
+
+        /// <summary>
+        /// Update the rating of a conference owner
+        /// </summary>
+        /// <param name="userId"></param>
+        void UpdateRating(int userId);
+
+        /// <summary>
+        /// Update the rating of a conference owner
+        /// </summary>
+        /// <param name="user"></param>
+        void UpdateRating(User user);
     }
 }

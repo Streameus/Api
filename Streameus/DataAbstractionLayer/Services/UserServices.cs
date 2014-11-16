@@ -215,6 +215,25 @@ namespace Streameus.DataAbstractionLayer.Services
             return this.GetAll().OrderByDescending(u => u.Reputation).Take(take);
         }
 
+        /// <summary>
+        /// Update the rating of a conference owner
+        /// </summary>
+        /// <param name="userId"></param>
+        public void UpdateRating(int userId)
+        {
+            this.UpdateRating(this.GetById(userId));
+        }
+
+        /// <summary>
+        /// Update the rating of a conference owner
+        /// </summary>
+        /// <param name="user"></param>
+        public void UpdateRating(User user)
+        {
+            user.Reputation = user.ConferencesCreated.Where(c => c.Marks.Any()).Select(c => c.Mark).Average();
+            this.Save(user);
+        }
+
 
         /// <summary>
         /// Check if user pseudo exists in db

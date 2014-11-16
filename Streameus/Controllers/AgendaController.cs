@@ -41,7 +41,7 @@ namespace Streameus.Controllers
 
         // GET api/agenda
         /// <summary>
-        /// Retourne toutes les conferences A VENIR auxquelles l'utilisateur a souscrit
+        /// Retourne toutes les conferences EN COURS et A VENIR auxquelles l'utilisateur a souscrit
         /// </summary>
         /// <returns>Retourne une List Conf (int Id, DateTime Time, String Name) ou une List vide si null</returns>
         /// <responseCode></responseCode>
@@ -78,10 +78,10 @@ namespace Streameus.Controllers
                     if (conference.Status != DataBaseEnums.ConfStatus.Finie)
                     {
                         var confInfo = new ConferenceAgendaViewModel
-                        {
-                            Name = conference.Name,
-                            Date = conference.Time,
-                            Id = conference.Id,
+                    {
+                        Name = conference.Name,
+                        Date = conference.Time,
+                        Id = conference.Id,
                         };
                         confList.Add(confInfo);
                     }

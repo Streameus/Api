@@ -41,7 +41,7 @@ namespace Streameus.ViewModels
             this.Followers = user.Followers.Count;
             this.Followings = user.Abonnements.Count;
             this.Conferences = user.ConferencesCreated.Count;
-            this.Balance = personal ? user.Balance : (float?) null;
+            this.Balance = personal ? user.Balance : (double?) null;
 
             this.DisplayName = this.FullName.Trim().Length > 0 ? this.FullName : this.Pseudo;
         }
@@ -95,7 +95,7 @@ namespace Streameus.ViewModels
         /// <summary>
         ///     reputation of the user
         /// </summary>
-        public int Reputation { get; set; }
+        public double Reputation { get; set; }
 
         /// <summary>
         ///     User birth day
@@ -155,6 +155,6 @@ namespace Streameus.ViewModels
         /// <summary>
         ///     The user balance
         /// </summary>
-        public float? Balance { get; set; }
+        public double? Balance { get; set; }
     }
 }

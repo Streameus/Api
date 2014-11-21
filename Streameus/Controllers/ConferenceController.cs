@@ -88,9 +88,11 @@ namespace Streameus.Controllers
         /// <returns></returns>
         /// <responseCode></responseCode>
         [Route("Live")]
-        public IEnumerable<ConferenceViewModel> GetLive(ODataQueryOptions<Conference> options)
+        public IEnumerable<ConferenceViewModel> GetLive(ODataQueryOptions<Conference> options = null)
         {
-            var confs = options.ApplyTo(this._conferenceServices.GetLiveConferences()) as IQueryable<Conference>;
+            var confs = this._conferenceServices.GetLiveConferences();
+            if (options != null)
+                confs = options.ApplyTo(confs) as IQueryable<Conference>;
             var conferences = new List<ConferenceViewModel>();
             var currentUser = this.GetCurrentUserId();
             confs.ForEach(c => conferences.Add(new ConferenceViewModel(c, currentUser)));
@@ -105,15 +107,10 @@ namespace Streameus.Controllers
         /// <returns></returns>
         /// <responseCode></responseCode>
         [Route("Categories")]
-        public IEnumerable<ConferenceCategoryViewModel> GetCategories(
-            ODataQueryOptions<ConferenceCategory> options = null)
+        public IEnumerable<ConferenceCategoryViewModel> GetCategories()
         {
             var categories = new List<ConferenceCategoryViewModel>();
             var categoriesList = this._conferenceCategoryServices.GetAll();
-
-            if (options != null)
-                categoriesList = options.ApplyTo(categoriesList) as IQueryable<ConferenceCategory>;
-
             categoriesList.ForEach(c => categories.Add(new ConferenceCategoryViewModel(c)));
             return categories;
         }

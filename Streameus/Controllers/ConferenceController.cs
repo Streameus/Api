@@ -106,7 +106,7 @@ namespace Streameus.Controllers
         /// <responseCode></responseCode>
         [Route("Categories")]
         public IEnumerable<ConferenceCategoryViewModel> GetCategories(
-            ODataQueryOptions<ConferenceCategoryViewModel> options = null)
+            ODataQueryOptions<ConferenceCategory> options = null)
         {
             var categories = new List<ConferenceCategoryViewModel>();
             var categoriesList = this._conferenceCategoryServices.GetAll();

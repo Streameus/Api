@@ -44,6 +44,13 @@ namespace Streameus.DataAbstractionLayer.Services
             }
         }
 
+        /// <summary>
+        /// Create a token to connect to a conference
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <param name="userName"></param>
+        /// <param name="role"></param>
+        /// <returns></returns>
         public string CreateToken(string roomId, string userName, string role)
         {
             using (var client = new HttpClient())

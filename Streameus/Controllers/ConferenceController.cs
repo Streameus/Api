@@ -103,7 +103,6 @@ namespace Streameus.Controllers
         /// <summary>
         ///     Get all conference's categories
         /// </summary>
-        /// <param name="options">odata query options</param>
         /// <returns></returns>
         /// <responseCode></responseCode>
         [Route("Categories")]

@@ -452,13 +452,25 @@
     <Content Include="Content\Images\Conferences\Categories\1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\Conferences\Categories\arts.jpg" />
-    <Content Include="Content\Images\Conferences\Categories\Economics.jpg" />
+    <Content Include="Content\Images\Conferences\Categories\6.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Conferences\Categories\2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\Conferences\Categories\IT.jpg" />
-    <Content Include="Content\Images\Conferences\Categories\life.jpg" />
-    <Content Include="Content\Images\Conferences\Categories\miscellaneous.jpg" />
-    <Content Include="Content\Images\Conferences\Categories\politics.jpg" />
-    <Content Include="Content\Images\Conferences\Categories\science.jpg" />
+    <Content Include="Content\Images\Conferences\Categories\4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Conferences\Categories\7.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Conferences\Categories\5.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Conferences\Categories\3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\Conferences\default.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -71,19 +71,6 @@ namespace Streameus.DataAbstractionLayer
         /// <param name="modelBuilder"/>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //Un initializer de db different est requis pour appHarbor, cf doc de la classe.
-            var appHarborDev = ConfigurationManager.AppSettings["Environment"] == "AppHarborDev";
-            var appHarbor = ConfigurationManager.AppSettings["Environment"] == "AppHarbor";
-            if (appHarborDev)
-                Database.SetInitializer(new StreameusInitializerForAppHarbor());
-            else if (appHarbor)
-                Database.SetInitializer(new CreateDatabaseIfNotExists<StreameusContext>());
-            else
-                Database.SetInitializer(new StreameusInitializer());
-
-            new LogEvent("les valeurs de appharbor sont: dev(" + appHarborDev + "), prod(" + appHarbor + ")").Raise();
-            new LogEvent("Environment: " + ConfigurationManager.AppSettings["Environment"] + ".").Raise();
-
             modelBuilder.Configurations.Add(new CommentMap());
             modelBuilder.Configurations.Add(new ConferenceParametersMap());
             modelBuilder.Configurations.Add(new DocumentMap());
@@ -92,6 +79,24 @@ namespace Streameus.DataAbstractionLayer
             modelBuilder.Configurations.Add(new ConferenceMap());
             modelBuilder.Configurations.Add(new MessageMap());
             modelBuilder.Configurations.Add(new MessageGroupMap());
+
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<StreameusContext, Migrations.Configuration>());
+
+//            else
+//            {
+//                //Un initializer de db different est requis pour appHarbor, cf doc de la classe.
+//                var appHarborDev = ConfigurationManager.AppSettings["Environment"] == "AppHarborDev";
+//                var appHarbor = ConfigurationManager.AppSettings["Environment"] == "AppHarbor";
+//                if (appHarborDev)
+//                    Database.SetInitializer(new StreameusInitializerForAppHarbor());
+//                else if (appHarbor)
+//                    Database.SetInitializer(new CreateDatabaseIfNotExists<StreameusContext>());
+//                else
+//                    Database.SetInitializer(new StreameusInitializer());
+//
+//                new LogEvent("les valeurs de appharbor sont: dev(" + appHarborDev + "), prod(" + appHarbor + ")").Raise();
+//                new LogEvent("Environment: " + ConfigurationManager.AppSettings["Environment"] + ".").Raise();
+//            }
         }
 
         public class LogEvent : WebRequestErrorEvent

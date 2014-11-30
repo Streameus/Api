@@ -185,7 +185,8 @@ namespace Streameus.Controllers
             return this.Ok();
         }
 
-        private async Task<IHttpActionResult> AddExternalLogin(ExternalLoginData externalData, string email)
+        private async Task<IHttpActionResult> AddExternalLogin(ExternalLoginData externalData, string email,
+            IHttpActionResult previousErrorResult)
         {
             if (externalData == null)
             {
@@ -193,7 +194,8 @@ namespace Streameus.Controllers
             }
 
             var user = await UserManager.FindByNameAsync(email);
-
+            if (user == null)
+                return previousErrorResult;
             IdentityResult result =
                 await this.UserManager.AddLoginAsync(Convert.ToInt32(user.Id),
                     new UserLoginInfo(externalData.LoginProvider, externalData.ProviderKey));
@@ -205,7 +207,7 @@ namespace Streameus.Controllers
                 return errorResult;
             }
             ClaimsIdentity oAuthIdentity = await this.UserManager.CreateIdentityAsync(user,
-    OAuthDefaults.AuthenticationType);
+                OAuthDefaults.AuthenticationType);
             ClaimsIdentity cookieIdentity = await this.UserManager.CreateIdentityAsync(user,
                 CookieAuthenticationDefaults.AuthenticationType);
             AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
@@ -319,7 +321,7 @@ namespace Streameus.Controllers
 
                 if (errorResult != null)
                 {
-                    return await this.AddExternalLogin(externalLogin, email);
+                    return await this.AddExternalLogin(externalLogin, email, errorResult);
                 }
             }
             //Log the new/found user in

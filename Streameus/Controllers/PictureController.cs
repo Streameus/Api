@@ -289,6 +289,15 @@ namespace Streameus.Controllers
                                 HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/Categories/" + fileId +
                                                                    ".png");
                         }
+                        else if (
+                            File.Exists(
+                                HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/Categories/" + fileId +
+                                                                   ".jpg")))
+                        {
+                            defaultPicture =
+                                HttpContext.Current.Server.MapPath("~/Content/Images/Conferences/Categories/" + fileId +
+                                                                   ".jpg");
+                        }
                         else
                         {
                             defaultPicture =

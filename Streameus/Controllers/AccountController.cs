@@ -7,16 +7,19 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Results;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
+using Streameus.Exceptions.HttpErrors;
 using Streameus.Models;
 using Streameus.Providers;
 using Streameus.Results;
 using Streameus.ViewModels;
+using Swashbuckle.Swagger;
 
 namespace Streameus.Controllers
 {
@@ -473,13 +476,70 @@ namespace Streameus.Controllers
             IdentityResult result =
                 await UserManager.AddPasswordAsync(Convert.ToInt32(User.Identity.GetUserId()), model.NewPassword);
             IHttpActionResult errorResult = GetErrorResult(result);
-
             if (errorResult != null)
             {
                 return errorResult;
             }
 
             return Ok();
+        }
+
+        // POST: /Account/ForgotPassword
+        /// <summary>
+        /// Send email to reset an user's password
+        /// </summary>
+        /// <remarks>Your callback page must call Resetpassword</remarks>
+        /// <param name="model"></param>
+        /// <param name="callbackUrlProvided">The url provided in the mail to reset the password</param>
+        /// <returns></returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("AskResetPassword")]
+        public async Task<OkResult> ForgotPassword([FromBody] ForgotPasswordViewModel model, String callbackUrlProvided)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.FindByNameAsync(model.Email);
+                if (user == null)
+                {
+                    return this.Ok();
+                }
+
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = callbackUrlProvided + "?userId=" + user.Id + "&tokenReset=" + code;
+
+                await UserManager.SendEmailAsync(user.Id, "Reset Password",
+                    "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                return this.Ok();
+            }
+            // If we got this far, something failed, redisplay form
+            return this.Ok();
+        }
+
+        /// <summary>
+        /// Reset an user password, after the user received an email
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Either 404, 409 or 200</returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("ResetPassword")]
+        public async Task<IHttpActionResult> ResetPassword(LocalPasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.FindByIdAsync(model.userId);
+                if (user == null)
+                {
+                    return this.NotFound();
+                }
+                var result = await UserManager.ResetPasswordAsync(model.userId, model.token, model.NewPassword);
+                if (result.Succeeded)
+                    return this.Ok();
+                if (result.Errors.Any())
+                    throw new ConflictException(result.Errors.ToString());
+            }
+            return this.Conflict();
         }
 
         /// <summary>

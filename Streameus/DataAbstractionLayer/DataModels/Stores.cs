@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Streameus.DataAbstractionLayer;
+using Streameus.Providers;
 
 namespace Streameus.Models
 {
@@ -99,6 +100,8 @@ namespace Streameus.Models
                 manager.UserTokenProvider =
                     new DataProtectorTokenProvider<User, int>(dataProtectionProvider.Create("PasswordReset"));
             }
+            manager.EmailService = new EmailServiceProvider();
+
             return manager;
         }
     }

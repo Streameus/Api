@@ -406,6 +406,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Translation.resx</DependentUpon>
     </Compile>
+    <Compile Include="Providers\EmailServiceProvider.cs" />
     <Compile Include="ViewModels\AccountBindingModels.cs" />
     <Compile Include="ViewModels\AddExternalLoginBindingModel.cs" />
     <Compile Include="ViewModels\ConferenceAgendaViewModel.cs" />

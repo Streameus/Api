@@ -185,6 +185,36 @@ namespace Streameus.Controllers
             return this.Ok();
         }
 
+        private async Task<IHttpActionResult> AddExternalLogin(ExternalLoginData externalData, string email)
+        {
+            if (externalData == null)
+            {
+                return this.BadRequest("The external login is already associated with an account.");
+            }
+
+            var user = await UserManager.FindByNameAsync(email);
+
+            IdentityResult result =
+                await this.UserManager.AddLoginAsync(Convert.ToInt32(user.Id),
+                    new UserLoginInfo(externalData.LoginProvider, externalData.ProviderKey));
+
+            IHttpActionResult errorResult = this.GetErrorResult(result);
+
+            if (errorResult != null)
+            {
+                return errorResult;
+            }
+            ClaimsIdentity oAuthIdentity = await this.UserManager.CreateIdentityAsync(user,
+    OAuthDefaults.AuthenticationType);
+            ClaimsIdentity cookieIdentity = await this.UserManager.CreateIdentityAsync(user,
+                CookieAuthenticationDefaults.AuthenticationType);
+            AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
+            this.Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
+
+
+            return this.Ok();
+        }
+
         // POST api/Account/RemoveLogin
         /// <summary>
         /// Delete user
@@ -289,7 +319,7 @@ namespace Streameus.Controllers
 
                 if (errorResult != null)
                 {
-                    return errorResult;
+                    return await this.AddExternalLogin(externalLogin, email);
                 }
             }
             //Log the new/found user in

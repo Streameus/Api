@@ -99,8 +99,15 @@ namespace Streameus.DataAbstractionLayer
 //            }
         }
 
+        /// <summary>
+        /// Custom exception to log in appharbor
+        /// </summary>
         public class LogEvent : WebRequestErrorEvent
         {
+            /// <summary>
+            /// Base ctor
+            /// </summary>
+            /// <param name="message"></param>
             public LogEvent(string message)
                 : base(null, null, 100001, new Exception(message))
             {

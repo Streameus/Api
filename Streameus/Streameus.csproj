@@ -361,7 +361,7 @@
     <Compile Include="Enums\ModelEnums.cs" />
     <Compile Include="Exceptions\EmptyResultException.cs" />
     <Compile Include="Exceptions\HttpErrors\BadRequestException.cs" />
-    <Compile Include="Exceptions\HttpErrors\ConflictdException.cs" />
+    <Compile Include="Exceptions\HttpErrors\ConflictException.cs" />
     <Compile Include="Exceptions\HttpErrors\ApiException.cs" />
     <Compile Include="Exceptions\HttpErrors\ForbiddenException.cs" />
     <Compile Include="Exceptions\HttpErrors\NoResultException.cs" />

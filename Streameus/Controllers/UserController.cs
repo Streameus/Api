@@ -114,7 +114,7 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="userViewModel"></param>
         /// <returns></returns>
-        /// <exception cref="ConflictdException">An user already exist with same infos</exception>
+        /// <exception cref="ConflictException">An user already exist with same infos</exception>
         public UserViewModel Post([FromBody] UserViewModel userViewModel)
         {
             userViewModel.Id = 0;
@@ -125,7 +125,7 @@ namespace Streameus.Controllers
             }
             catch (DuplicateEntryException entryException)
             {
-                throw new ConflictdException(entryException.Message);
+                throw new ConflictException(entryException.Message);
             }
             return new UserViewModel(newUser);
         }
@@ -137,7 +137,7 @@ namespace Streameus.Controllers
         /// <param name="id"></param>
         /// <param name="userViewModel"></param>
         /// <returns></returns>
-        /// <exception cref="ConflictdException">An user already exist with same infos</exception>
+        /// <exception cref="ConflictException">An user already exist with same infos</exception>
         [Authorize]
         public UserViewModel Put(int id, [FromBody] UserViewModel userViewModel)
         {
@@ -148,7 +148,7 @@ namespace Streameus.Controllers
             }
             catch (DuplicateEntryException entryException)
             {
-                throw new ConflictdException(entryException.Message);
+                throw new ConflictException(entryException.Message);
             }
             return new UserViewModel(newUser);
         }
@@ -180,7 +180,8 @@ namespace Streameus.Controllers
         /// <returns></returns>
         [Authorize]
         [Route("{id}/conferences")]
-        public IEnumerable<ConferenceViewModel> GetConferencesOfUser(int id, ODataQueryOptions<Conference> options = null)
+        public IEnumerable<ConferenceViewModel> GetConferencesOfUser(int id,
+            ODataQueryOptions<Conference> options = null)
         {
             var conferences = this._userServices.GetById(id).ConferencesCreated;
 
@@ -204,7 +205,8 @@ namespace Streameus.Controllers
         /// <returns></returns>
         [Authorize]
         [Route("{id}/Conferences/Registered")]
-        public IEnumerable<ConferenceViewModel> GetConferencesRegistered(int id, ODataQueryOptions<Conference> options = null)
+        public IEnumerable<ConferenceViewModel> GetConferencesRegistered(int id,
+            ODataQueryOptions<Conference> options = null)
         {
             var conferences = this._userServices.GetById(id).ConferencesRegistered;
             var conferencesListe = new List<ConferenceViewModel>();
@@ -223,10 +225,12 @@ namespace Streameus.Controllers
         /// Get all conferences attended by a specified user
         /// </summary>
         /// <param name="id">User id</param>
+        /// <param name="options"></param>
         /// <returns></returns>
         [Authorize]
         [Route("{id}/Conferences/Attended")]
-        public IEnumerable<ConferenceViewModel> GetConferencesAttended(int id, ODataQueryOptions<Conference> options = null)
+        public IEnumerable<ConferenceViewModel> GetConferencesAttended(int id,
+            ODataQueryOptions<Conference> options = null)
         {
             var conferences = this._userServices.GetById(id).ConferencesAttended;
             var conferencesListe = new List<ConferenceViewModel>();

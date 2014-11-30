@@ -71,7 +71,8 @@ namespace Streameus.Controllers
         public IEnumerable<MessageGroupViewModel> GetMy(ODataQueryOptions<MessageGroupViewModel> options = null)
         {
             var userId = this.GetCurrentUserId();
-            var userGroups = this._messageGroupServices.GetAll().Where(g => g.Members.Any(m => m.Id == userId)).AsQueryable();
+            var userGroups =
+                this._messageGroupServices.GetAll().Where(g => g.Members.Any(m => m.Id == userId)).AsQueryable();
             var messageGroupList = new List<MessageGroupViewModel>();
             userGroups.ForEach(u => messageGroupList.Add(new MessageGroupViewModel(u, userId)));
             return options.ApplyTo(messageGroupList.AsQueryable()) as IQueryable<MessageGroupViewModel>;
@@ -127,7 +128,7 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="newMessageViewModel"></param>
         /// <returns></returns>
-        /// <exception cref="ConflictdException">An message already exist with same infos</exception>
+        /// <exception cref="ConflictException">An message already exist with same infos</exception>
         [System.Web.Http.Authorize]
         public MessageViewModel Post([FromBody] NewMessageViewModel newMessageViewModel)
         {
@@ -137,7 +138,7 @@ namespace Streameus.Controllers
             {
                 msgGroup = _messageGroupServices.GetById(newMessageViewModel.MessageGroupId);
             }
-            // Create a new message group
+                // Create a new message group
             else
             {
                 msgGroup = new MessageGroup();
@@ -185,22 +186,23 @@ namespace Streameus.Controllers
             //try
             //{
             var usersCount = users.Count();
-                var existingGroup =
-                    messageGroups.FirstOrDefault(g => g.Members.All(i => userIds.Contains(i.Id)) && userIds.Count() == g.Members.Count);
-                // Search if a group already exists with those users
-                if (existingGroup != null)
-                {
-                    // Sorting messages
-                    var totalMsgs = existingGroup.Messages.Count;
-                    var sortedMessages = options.ApplyTo(existingGroup.Messages.AsQueryable()) as IQueryable<Message>;
-                    if (sortedMessages != null)
-                        existingGroup.Messages = sortedMessages.ToArray();
-                    return new NewMessageGroupViewModel(existingGroup, userId, totalMsgs);
-                }
-                // Create a new one
-                var group = new MessageGroup {Members = users};
-                this._messageGroupServices.AddMessageGroup(group);
-                return new NewMessageGroupViewModel(group, userId);
+            var existingGroup =
+                messageGroups.FirstOrDefault(
+                    g => g.Members.All(i => userIds.Contains(i.Id)) && userIds.Count() == g.Members.Count);
+            // Search if a group already exists with those users
+            if (existingGroup != null)
+            {
+                // Sorting messages
+                var totalMsgs = existingGroup.Messages.Count;
+                var sortedMessages = options.ApplyTo(existingGroup.Messages.AsQueryable()) as IQueryable<Message>;
+                if (sortedMessages != null)
+                    existingGroup.Messages = sortedMessages.ToArray();
+                return new NewMessageGroupViewModel(existingGroup, userId, totalMsgs);
+            }
+            // Create a new one
+            var group = new MessageGroup {Members = users};
+            this._messageGroupServices.AddMessageGroup(group);
+            return new NewMessageGroupViewModel(group, userId);
             //}
             //catch (Exception e)
             //{

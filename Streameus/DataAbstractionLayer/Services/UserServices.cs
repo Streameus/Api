@@ -71,7 +71,7 @@ namespace Streameus.DataAbstractionLayer.Services
         public bool AddFollowing(int userId, int userWantedId)
         {
             if (userId == userWantedId)
-                throw new ConflictdException();
+                throw new ConflictException();
             var user = this.GetById(userId);
             var userWanted = this.GetById(userWantedId);
             if (user.Abonnements.Contains(userWanted))

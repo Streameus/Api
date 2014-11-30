@@ -1,6 +1,7 @@
 using System.Configuration;
 using Streameus.DataAbstractionLayer;
 using Streameus.DataAbstractionLayer.Initializers;
+using Streameus.Models;
 
 namespace Streameus.Migrations
 {
@@ -20,7 +21,8 @@ namespace Streameus.Migrations
         protected override void Seed(StreameusContext context)
         {
             //TODO uncomment this if you wanna seed
-            StreameusSeeder.Seed(context);
+            if (!context.GetDbSet<User>().Any())
+                StreameusSeeder.Seed(context);
         }
     }
 }

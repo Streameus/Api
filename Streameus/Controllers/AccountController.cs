@@ -271,67 +271,74 @@ namespace Streameus.Controllers
                 return this.Redirect(this.Url.Content("~/") + "#error=" + Uri.EscapeDataString(error));
             }
 
-            if (!this.User.Identity.IsAuthenticated)
+            try
             {
-                return new ChallengeResult(provider, this);
-            }
-            var claimsIdentity = this.User.Identity as ClaimsIdentity;
-            ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(claimsIdentity);
-            if (externalLogin == null || claimsIdentity == null)
-            {
-                return this.InternalServerError();
-            }
-
-            if (externalLogin.LoginProvider != provider)
-            {
-                this.Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                return new ChallengeResult(provider, this);
-            }
-
-            //look if the user exists
-            User user = await this.UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
-                externalLogin.ProviderKey));
-
-            bool hasRegistered = user != null;
-            if (hasRegistered) //if yes, we sign his cookie out
-            {
-                this.Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-            }
-            else //if not, we create the user
-            {
-                var emailClaim = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
-                string email = "";
-                if (emailClaim != null)
+                if (!this.User.Identity.IsAuthenticated)
                 {
-                    email = emailClaim.Value;
+                    return new ChallengeResult(provider, this);
                 }
-                user = new User
+                var claimsIdentity = this.User.Identity as ClaimsIdentity;
+                ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(claimsIdentity);
+                if (externalLogin == null || claimsIdentity == null)
                 {
-                    Pseudo = externalLogin.UserName,
-                    UserName = email,
-                };
-
-                user.Logins.Add(new CustomUserLogin
-                {
-                    LoginProvider = externalLogin.LoginProvider,
-                    ProviderKey = externalLogin.ProviderKey
-                });
-                IdentityResult result = await this.UserManager.CreateAsync(user);
-                IHttpActionResult errorResult = this.GetErrorResult(result);
-
-                if (errorResult != null)
-                {
-                    return await this.AddExternalLogin(externalLogin, email, errorResult);
+                    return this.InternalServerError();
                 }
+
+                if (externalLogin.LoginProvider != provider)
+                {
+                    this.Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+                    return new ChallengeResult(provider, this);
+                }
+
+                //look if the user exists
+                User user = await this.UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
+                    externalLogin.ProviderKey));
+
+                bool hasRegistered = user != null;
+                if (hasRegistered) //if yes, we sign his cookie out
+                {
+                    this.Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+                }
+                else //if not, we create the user
+                {
+                    var emailClaim = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+                    string email = "";
+                    if (emailClaim != null)
+                    {
+                        email = emailClaim.Value;
+                    }
+                    user = new User
+                    {
+                        Pseudo = externalLogin.UserName,
+                        UserName = email,
+                    };
+
+                    user.Logins.Add(new CustomUserLogin
+                    {
+                        LoginProvider = externalLogin.LoginProvider,
+                        ProviderKey = externalLogin.ProviderKey
+                    });
+                    IdentityResult result = await this.UserManager.CreateAsync(user);
+                    IHttpActionResult errorResult = this.GetErrorResult(result);
+
+                    if (errorResult != null)
+                    {
+                        return await this.AddExternalLogin(externalLogin, email, errorResult);
+                    }
+                }
+                //Log the new/found user in
+                ClaimsIdentity oAuthIdentity = await this.UserManager.CreateIdentityAsync(user,
+                    OAuthDefaults.AuthenticationType);
+                ClaimsIdentity cookieIdentity = await this.UserManager.CreateIdentityAsync(user,
+                    CookieAuthenticationDefaults.AuthenticationType);
+                AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
+                this.Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
+                return this.Ok();
             }
-            //Log the new/found user in
-            ClaimsIdentity oAuthIdentity = await this.UserManager.CreateIdentityAsync(user,
-                OAuthDefaults.AuthenticationType);
-            ClaimsIdentity cookieIdentity = await this.UserManager.CreateIdentityAsync(user,
-                CookieAuthenticationDefaults.AuthenticationType);
-            AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
-            this.Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
-            return this.Ok();
+            catch (Exception e)
+            {
+                return this.Redirect(this.Url.Content("~/") + "#error=" + Uri.EscapeDataString(e.Message));
+            }
         }
 
         // GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true

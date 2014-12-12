@@ -5,9 +5,12 @@ using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Web.Http;
+using System.Web.Http.OData;
 using System.Web.Http.OData.Query;
 using AutoMapper;
 using Microsoft.AspNet.Identity;
+using Microsoft.Data.Edm.Evaluation;
+using Microsoft.Data.Edm.Library;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.Exceptions;
 using Streameus.Exceptions.HttpErrors;
@@ -45,13 +48,21 @@ namespace Streameus.Controllers
         /// Search on users and conferences
         /// </summary>
         /// <returns></returns>
-        [Authorize]
+        //[Authorize]
         public SearchResultViewModel Get(string query, ODataQueryOptions options = null)
         {
+            ODataQueryOptions<User> tutu = null;
+            ODataQueryOptions<Conference> tata = null;
+            if (options != null)
+            { 
+                tutu = new ODataQueryOptions<User>(options.Context, options.Request);
+                tata = new ODataQueryOptions<Conference>(options.Context, options.Request);
+            }
             var keywords = QueryToKeywords(query);
-            var userList = SearchInUsers(keywords, options);
-            var confList = SearchInConferences(keywords, options);
-            return new SearchResultViewModel(confList, userList);
+            var userList = SearchInUsers(keywords, tutu);
+            var confList = SearchInConferences(keywords, tata);
+            var searchList = new List<SearchResultViewModel> {new SearchResultViewModel(confList, userList)};
+            return searchList.First();
         }
 
         // GET api/search/user
@@ -61,7 +72,7 @@ namespace Streameus.Controllers
         /// <returns></returns>
         [Authorize]
         [Route("Users")]
-        public UserViewModel[] GetUsers(string query, ODataQueryOptions options = null)
+        public UserViewModel[] GetUsers(string query, ODataQueryOptions<User> options = null)
         {
             var keywords = QueryToKeywords(query);
             var userList = SearchInUsers(keywords, options);
@@ -75,7 +86,7 @@ namespace Streameus.Controllers
         /// <returns></returns>
         [Authorize]
         [Route("Conferences")]
-        public ConferenceViewModel[] GetConferences(string query, ODataQueryOptions options = null)
+        public ConferenceViewModel[] GetConferences(string query, ODataQueryOptions<Conference> options = null)
         {
             var keywords = QueryToKeywords(query);
             var confList = SearchInConferences(keywords, options);

@@ -53,6 +53,9 @@ namespace Streameus.Controllers
             if (!suggestionList.Any())
             {
                 suggestions = this._userServices.GetUsersWithBestReputation();
+                if (options != null)
+                    suggestions = options.ApplyTo(suggestions.AsQueryable()) as IQueryable<User>;
+
                 suggestions.ForEach(s => suggestionList.Add(new UserViewModel(s)));
             }
             return suggestionList;
@@ -76,6 +79,9 @@ namespace Streameus.Controllers
             if (!suggestionList.Any())
             {
                 suggestions = this._conferenceServices.GetMostPopularConfs();
+                if (options != null)
+                    suggestions = options.ApplyTo(suggestions.AsQueryable()) as IQueryable<Conference>;
+
                 suggestions.ForEach(s => suggestionList.Add(new ConferenceViewModel(s)));
             }
             return suggestionList;

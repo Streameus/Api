@@ -26,18 +26,40 @@ namespace Streameus.Models.Mapping
             this.ToTable("Conferences");
 
             // Relationships
-            this.HasMany(t => t.Members)
-                .WithMany(t => t.Conferences)
+            this.HasMany(t => t.Speakers)
+                .WithMany(t => t.ConferencesInvolved)
                 .Map(m =>
                 {
-                    m.ToTable("ConferenceMembers");
-                    m.MapLeftKey("Conferences_Id");
-                    m.MapRightKey("Members_Id");
+                    m.ToTable("ConferenceSpeakers");
+                    m.MapLeftKey("Conference_Id");
+                    m.MapRightKey("Speaker_Id");
+                });
+
+            this.HasMany(t => t.Participants)
+                .WithMany(t => t.ConferencesAttended)
+                .Map(m =>
+                {
+                    m.ToTable("ConferenceParticipants");
+                    m.MapLeftKey("Conference_Id");
+                    m.MapRightKey("Participant_Id");
+                });
+
+            this.HasMany(t => t.Registered)
+                .WithMany(t => t.ConferencesRegistered)
+                .Map(m =>
+                {
+                    m.ToTable("ConferenceRegistred");
+                    m.MapLeftKey("Conference_Id");
+                    m.MapRightKey("Registred_Id");
                 });
 
             this.HasRequired(t => t.Owner)
                 .WithMany(t => t.ConferencesCreated)
                 .HasForeignKey(d => d.OwnerId).WillCascadeOnDelete(false);
+
+            this.HasRequired(t => t.Category)
+                .WithMany(t => t.Conferences)
+                .HasForeignKey(d => d.CategoryId).WillCascadeOnDelete(false);
         }
     }
 }

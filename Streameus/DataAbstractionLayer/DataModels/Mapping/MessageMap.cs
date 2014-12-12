@@ -6,12 +6,12 @@ namespace Streameus.Models.Mapping
     /// <summary>
     /// Mapping for posts
     /// </summary>
-    public class PostMap : EntityTypeConfiguration<Post>
+    public class MessageMap : EntityTypeConfiguration<Message>
     {
         /// <summary>
         /// Default constructor
         /// </summary>
-        public PostMap()
+        public MessageMap()
         {
             // Primary Key
             this.HasKey(t => t.Id);
@@ -21,13 +21,17 @@ namespace Streameus.Models.Mapping
                 .IsRequired();
 
             // Table & Column Mappings
-            this.ToTable("Posts");
-            this.Property(t => t.AuthorId).HasColumnName("AuthorId");
+            this.ToTable("Messages");
+            this.Property(t => t.SenderId).HasColumnName("SenderId");
+            this.Property(t => t.GroupId).HasColumnName("GroupId");
 
             // Relationships
-            this.HasRequired(t => t.Author)
-                .WithMany(t => t.Posts)
-                .HasForeignKey(d => d.AuthorId);
+            this.HasRequired(t => t.Sender)
+                .WithMany(t => t.SentMessages)
+                .HasForeignKey(d => d.SenderId);
+            this.HasRequired(t => t.Group)
+                .WithMany(t => t.Messages)
+                .HasForeignKey(d => d.GroupId);
         }
     }
 }

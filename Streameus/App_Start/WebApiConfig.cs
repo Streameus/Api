@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin.Security.OAuth;
+﻿using System.Web.Http.Cors;
+using Microsoft.Owin.Security.OAuth;
 #pragma warning disable 1591
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,6 @@ using System.Web.Http;
 using Streameus.Areas.HelpPage;
 using Streameus.Documentation;
 using Streameus.Hooks;
-using XmlDocumentationProvider = Streameus.Documentation.XmlDocumentationProvider;
 
 namespace Streameus
 {
@@ -21,12 +21,6 @@ namespace Streameus
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
-
-            // Web API configuration and services
-            //Permet de controler la generation de la doc XML, est utilise pour swagger
-            config.SetDocumentationProvider(new XmlDocumentationProvider(
-                HttpContext.Current.Server.MapPath("~/App_Data/StreameusDocumentation.xml")));
-
 
             //Verifier automatiquement le model a chaque requete
             config.Filters.Add(new ValidateModelAttribute());

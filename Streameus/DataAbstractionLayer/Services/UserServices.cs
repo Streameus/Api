@@ -6,8 +6,11 @@ using Microsoft.Ajax.Utilities;
 using Streameus.App_GlobalResources;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataBaseAccess;
+using Streameus.Enums;
 using Streameus.Exceptions;
+using Streameus.Exceptions.HttpErrors;
 using Streameus.Models;
+using NoResultException = Streameus.Exceptions.NoResultException;
 
 namespace Streameus.DataAbstractionLayer.Services
 {
@@ -17,15 +20,19 @@ namespace Streameus.DataAbstractionLayer.Services
     public class UserServices : BaseServices<User>, IUserServices
     {
         private readonly IParametersServices _parametersServices;
+        private readonly IEventServices _eventServices;
 
         /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="unitOfWork"></param>
         /// <param name="parametersServices"></param>
-        public UserServices(IUnitOfWork unitOfWork, IParametersServices parametersServices) : base(unitOfWork)
+        /// <param name="eventServices"></param>
+        public UserServices(IUnitOfWork unitOfWork, IParametersServices parametersServices, IEventServices eventServices)
+            : base(unitOfWork)
         {
             this._parametersServices = parametersServices;
+            this._eventServices = eventServices;
         }
 
         /// <summary>
@@ -54,6 +61,41 @@ namespace Streameus.DataAbstractionLayer.Services
                 throw new DuplicateEntryException("User with the same pseudo already exists");
             newUser.Parameters = new Parameters();
             this.Save(newUser);
+        }
+
+        /// <summary>
+        /// Add a following to an user
+        /// </summary>
+        /// <param name="userId">The user's id who wants a following</param>
+        /// <param name="userWantedId">The user's id who is followed</param>
+        public bool AddFollowing(int userId, int userWantedId)
+        {
+            if (userId == userWantedId)
+                throw new ConflictException();
+            var user = this.GetById(userId);
+            var userWanted = this.GetById(userWantedId);
+            if (user.Abonnements.Contains(userWanted))
+                return false;
+            user.Abonnements.Add(userWanted);
+            this.Save(user);
+            this._eventServices.StartFollowing(user, userWanted);
+            return true;
+        }
+
+        /// <summary>
+        /// Remove a following of an user
+        /// </summary>
+        /// <param name="userId">The user's id who wants remove following</param>
+        /// <param name="userUnwantedId">The user's id who is deleted</param>
+        public bool RemoveFollowing(int userId, int userUnwantedId)
+        {
+            var user = this.GetById(userId);
+            var userUnwanted = this.GetById(userUnwantedId);
+            if (!user.Abonnements.Contains(userUnwanted))
+                return false;
+            user.Abonnements.Remove(userUnwanted);
+            this.Save(user);
+            return true;
         }
 
         /// <summary>
@@ -87,7 +129,7 @@ namespace Streameus.DataAbstractionLayer.Services
         /// Returns all the user's followers
         /// </summary>
         /// <param name="id">userId</param>
-        /// <exception cref="NoResultException">If user doesnt exists</exception>
+        /// <exception cref="Exceptions.NoResultException">If user doesnt exists</exception>
         /// <exception cref="EmptyResultException">If user doesnt have any followers</exception>
         /// <returns>A list containing all the followers for the selected user</returns>
         public IQueryable<User> GetFollowersForUser(int id)
@@ -132,6 +174,66 @@ namespace Streameus.DataAbstractionLayer.Services
             }
         }
 
+        /// <summary>
+        /// Check if the current user follows the target user
+        /// </summary>
+        /// <param name="currentUserId">The current user ID</param>
+        /// <param name="targetUserId">the target user ID</param>
+        /// <returns></returns>
+        public bool IsUserFollowing(int currentUserId, int targetUserId)
+        {
+            var currentUser = this.GetById(currentUserId);
+            return currentUser.Abonnements.Any(a => a.Id == targetUserId);
+        }
+
+        /// <summary>
+        /// Get suggested users to follow based on a user
+        /// </summary>
+        /// <param name="userId">The Id of the user needing suggestions</param>
+        /// <param name="take">The max number of results desired</param>
+        /// <returns>The list of suggested users</returns>
+        public IEnumerable<User> GetSuggestionsForUser(int userId, int take = 5)
+        {
+            var user = this.GetById(userId);
+            var results = user.Abonnements.SelectMany(userAbonnedTo => userAbonnedTo.Abonnements)
+                .Where(potentialUser => !user.Abonnements.Contains(potentialUser) && potentialUser != user)
+                .GroupBy(uniqueUser => uniqueUser)
+                .Select(uniqueUser => new {uniqueUser.Key, Count = uniqueUser.Count()})
+                .OrderByDescending(group => group.Count)
+                .Take(take)
+                .Select(group => group.Key);
+            return results;
+        }
+
+        /// <summary>
+        /// Get the 5 users with the highest rep
+        /// </summary>
+        /// <returns></returns>
+        /// <param name="take">The max number of results desired</param>
+        public IQueryable<User> GetUsersWithBestReputation(int take = 5)
+        {
+            return this.GetAll().OrderByDescending(u => u.Reputation).Take(take);
+        }
+
+        /// <summary>
+        /// Update the rating of a conference owner
+        /// </summary>
+        /// <param name="userId"></param>
+        public void UpdateRating(int userId)
+        {
+            this.UpdateRating(this.GetById(userId));
+        }
+
+        /// <summary>
+        /// Update the rating of a conference owner
+        /// </summary>
+        /// <param name="user"></param>
+        public void UpdateRating(User user)
+        {
+            user.Reputation = user.ConferencesCreated.Where(c => c.Marks.Any()).Select(c => c.Mark).Average();
+            this.Save(user);
+        }
+
 
         /// <summary>
         /// Check if user pseudo exists in db
@@ -141,6 +243,17 @@ namespace Streameus.DataAbstractionLayer.Services
         private bool IsUserPseudoUnique(User user)
         {
             return !this.GetDbSet<User>().Any(u => u.Pseudo == user.Pseudo && u.Id != user.Id);
+        }
+
+
+        /// <summary>
+        /// Check if a pseudo exists in db
+        /// </summary>
+        /// <param name="pseudo">The pseudo to be checked</param>
+        /// <returns>Returns true if the pseudo exists</returns>
+        public bool IsPseudoExist(string pseudo)
+        {
+            return !this.GetDbSet<User>().Any(u => u.Pseudo == pseudo);
         }
 
         /// <summary>

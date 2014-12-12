@@ -1,21 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Results;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
+using Streameus.Exceptions.HttpErrors;
 using Streameus.Models;
 using Streameus.Providers;
 using Streameus.Results;
 using Streameus.ViewModels;
+using Swashbuckle.Swagger;
 
 namespace Streameus.Controllers
 {
@@ -24,7 +28,7 @@ namespace Streameus.Controllers
     /// </summary>
     [Authorize]
     [RoutePrefix("api/Account")]
-    public class AccountController : ApiController
+    public class AccountController : BaseController
     {
         private const string LocalLoginProvider = "Local";
 
@@ -58,7 +62,7 @@ namespace Streameus.Controllers
 
         // GET api/Account/UserInfo
         /// <summary>
-        /// Return the info available on the logged in user
+        /// Return the info available on the authenticated user
         /// </summary>
         /// <returns></returns>
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
@@ -81,6 +85,7 @@ namespace Streameus.Controllers
         /// </summary>
         /// <returns></returns>
         [Route("Logout")]
+        [Authorize]
         public IHttpActionResult Logout()
         {
             this.Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
@@ -89,7 +94,7 @@ namespace Streameus.Controllers
 
         // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
         /// <summary>
-        /// ?
+        /// GetManageInfo
         /// </summary>
         /// <param name="returnUrl"></param>
         /// <param name="generateState"></param>
@@ -180,6 +185,38 @@ namespace Streameus.Controllers
             return this.Ok();
         }
 
+        private async Task<IHttpActionResult> AddExternalLogin(ExternalLoginData externalData, string email,
+            IHttpActionResult previousErrorResult)
+        {
+            if (externalData == null)
+            {
+                return this.BadRequest("The external login is already associated with an account.");
+            }
+
+            var user = await UserManager.FindByNameAsync(email);
+            if (user == null)
+                return previousErrorResult;
+            IdentityResult result =
+                await this.UserManager.AddLoginAsync(Convert.ToInt32(user.Id),
+                    new UserLoginInfo(externalData.LoginProvider, externalData.ProviderKey));
+
+            IHttpActionResult errorResult = this.GetErrorResult(result);
+
+            if (errorResult != null)
+            {
+                return errorResult;
+            }
+            ClaimsIdentity oAuthIdentity = await this.UserManager.CreateIdentityAsync(user,
+                OAuthDefaults.AuthenticationType);
+            ClaimsIdentity cookieIdentity = await this.UserManager.CreateIdentityAsync(user,
+                CookieAuthenticationDefaults.AuthenticationType);
+            AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
+            this.Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
+
+
+            return this.Ok();
+        }
+
         // POST api/Account/RemoveLogin
         /// <summary>
         /// Delete user
@@ -218,10 +255,10 @@ namespace Streameus.Controllers
 
         // GET api/Account/ExternalLogin
         /// <summary>
-        /// Renvoie l'url d'authentification du provider si non authentifie,
+        /// GET authentification URL of provider, if don't authenticated.
         /// </summary>
-        /// <param name="provider">Nom du provider</param>
-        /// <param name="error">erreurs possibles rencontree lors de l'OAuth</param>
+        /// <param name="provider">Name of the provider</param>
+        /// <param name="error">Errors during OAuth</param>
         /// <returns></returns>
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalCookie)]
@@ -234,59 +271,88 @@ namespace Streameus.Controllers
                 return this.Redirect(this.Url.Content("~/") + "#error=" + Uri.EscapeDataString(error));
             }
 
-            if (!this.User.Identity.IsAuthenticated)
+            try
             {
-                return new ChallengeResult(provider, this);
-            }
+                if (!this.User.Identity.IsAuthenticated)
+                {
+                    return new ChallengeResult(provider, this);
+                }
+                var claimsIdentity = this.User.Identity as ClaimsIdentity;
+                ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(claimsIdentity);
+                if (externalLogin == null || claimsIdentity == null)
+                {
+                    return this.InternalServerError();
+                }
 
-            ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(this.User.Identity as ClaimsIdentity);
+                if (externalLogin.LoginProvider != provider)
+                {
+                    this.Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+                    return new ChallengeResult(provider, this);
+                }
 
-            if (externalLogin == null)
-            {
-                return this.InternalServerError();
-            }
+                //look if the user exists
+                User user = await this.UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
+                    externalLogin.ProviderKey));
 
-            if (externalLogin.LoginProvider != provider)
-            {
-                this.Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                return new ChallengeResult(provider, this);
-            }
+                bool hasRegistered = user != null;
+                if (hasRegistered) //if yes, we sign his cookie out
+                {
+                    this.Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+                }
+                else //if not, we create the user
+                {
+                    var emailClaim = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+                    string email = "";
+                    if (emailClaim != null)
+                    {
+                        email = emailClaim.Value;
+                    }
+                    user = new User
+                    {
+                        Pseudo = externalLogin.UserName,
+                        UserName = email,
+                    };
 
-            User user = await this.UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
-                externalLogin.ProviderKey));
+                    user.Logins.Add(new CustomUserLogin
+                    {
+                        LoginProvider = externalLogin.LoginProvider,
+                        ProviderKey = externalLogin.ProviderKey
+                    });
+                    IdentityResult result = await this.UserManager.CreateAsync(user);
+                    IHttpActionResult errorResult = this.GetErrorResult(result);
 
-            bool hasRegistered = user != null;
-
-            if (hasRegistered)
-            {
-                this.Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+                    if (errorResult != null)
+                    {
+                        return await this.AddExternalLogin(externalLogin, email, errorResult);
+                    }
+                }
+                //Log the new/found user in
                 ClaimsIdentity oAuthIdentity = await this.UserManager.CreateIdentityAsync(user,
                     OAuthDefaults.AuthenticationType);
                 ClaimsIdentity cookieIdentity = await this.UserManager.CreateIdentityAsync(user,
                     CookieAuthenticationDefaults.AuthenticationType);
                 AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
                 this.Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
+                return this.Ok();
             }
-            else
+            catch (Exception e)
             {
-                IEnumerable<Claim> claims = externalLogin.GetClaims();
-                ClaimsIdentity identity = new ClaimsIdentity(claims, OAuthDefaults.AuthenticationType);
-                this.Authentication.SignIn(identity);
+                return this.Redirect(this.Url.Content("~/") + "#error=" + Uri.EscapeDataString(e.Message));
             }
-
-            return this.Ok();
         }
 
         // GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true
         /// <summary>
-        /// Renvoie la liste des provider d'OAuth disponibles sur l'API
+        /// Get OAuth providers list available on the API 
         /// </summary>
-        /// <param name="returnUrl">L'url vers laquelle on veut etre redirige</param>
-        /// <param name="generateState">permet de generer un valeur state pour l'OAuth (mettre a true, c'est plus simple)</param>
+        /// <param name="returnUrl">URL where we want to be redirected</param>
+        /// <param name="generateState">Allows to generate a state value for OAuth (put on true, it's easier)</param>
+        /// <remarks>specify "/authsuccess" in redirect url to be sent to a specific page in case of success</remarks>
         /// <returns></returns>
         [AllowAnonymous]
         [Route("ExternalLogins")]
-        public IEnumerable<ExternalLoginViewModel> GetExternalLogins(string returnUrl, bool generateState = false)
+        public IEnumerable<ExternalLoginViewModel> GetExternalLogins(string returnUrl,
+            bool generateState = false)
         {
             IEnumerable<AuthenticationDescription> descriptions = this.Authentication.GetExternalAuthenticationTypes();
             List<ExternalLoginViewModel> logins = new List<ExternalLoginViewModel>();
@@ -325,11 +391,13 @@ namespace Streameus.Controllers
         }
 
         // POST api/Account/RegisterExternal
+        /// <remarks>Not used anymore since the first call to externalLogin register</remarks>
         /// <summary>
         /// Method to call after the first call to GetExternalLogin to persist the user in db
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
+        [Obsolete]
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("RegisterExternal")]
@@ -366,6 +434,151 @@ namespace Streameus.Controllers
             }
 
             return this.Ok();
+        }
+
+        // POST api/Account/Register
+        /// <summary>
+        /// Register a local account
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [Route("Register")]
+        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            User user = new User
+            {
+                Pseudo = model.Pseudo,
+                Email = model.UserName,
+            };
+
+            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+            IHttpActionResult errorResult = GetErrorResult(result);
+
+            if (errorResult != null)
+            {
+                return errorResult;
+            }
+
+            return Ok();
+        }
+
+        // POST api/Account/ChangePassword
+        /// <summary>
+        /// Change account password
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Authorize]
+        [Route("ChangePassword")]
+        public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            IdentityResult result =
+                await
+                    UserManager.ChangePasswordAsync(Convert.ToInt32(this.User.Identity.GetUserId()), model.OldPassword,
+                        model.NewPassword);
+            IHttpActionResult errorResult = GetErrorResult(result);
+
+            if (errorResult != null)
+            {
+                return errorResult;
+            }
+
+            return Ok();
+        }
+
+        // POST api/Account/SetPassword
+        /// <summary>
+        /// Set account password
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Authorize]
+        [Route("SetPassword")]
+        public async Task<IHttpActionResult> SetPassword(SetPasswordBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            IdentityResult result =
+                await UserManager.AddPasswordAsync(Convert.ToInt32(User.Identity.GetUserId()), model.NewPassword);
+            IHttpActionResult errorResult = GetErrorResult(result);
+            if (errorResult != null)
+            {
+                return errorResult;
+            }
+
+            return Ok();
+        }
+
+        // POST: /Account/ForgotPassword
+        /// <summary>
+        /// Send email to reset an user's password
+        /// </summary>
+        /// <remarks>Your callback page must call Resetpassword</remarks>
+        /// <param name="model"></param>
+        /// <param name="callbackUrlProvided">The url provided in the mail to reset the password</param>
+        /// <returns></returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("AskResetPassword")]
+        public async Task<OkResult> ForgotPassword([FromBody] ForgotPasswordViewModel model, String callbackUrlProvided)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.FindByNameAsync(model.Email);
+                if (user == null)
+                {
+                    return this.Ok();
+                }
+
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = callbackUrlProvided + "?userId=" + user.Id + "&tokenReset=" + code;
+
+                await UserManager.SendEmailAsync(user.Id, "Reset Password",
+                    "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                return this.Ok();
+            }
+            // If we got this far, something failed, redisplay form
+            return this.Ok();
+        }
+
+        /// <summary>
+        /// Reset an user password, after the user received an email
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Either 404, 409 or 200</returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("ResetPassword")]
+        public async Task<IHttpActionResult> ResetPassword(LocalPasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.FindByIdAsync(model.userId);
+                if (user == null)
+                {
+                    return this.NotFound();
+                }
+                var result = await UserManager.ResetPasswordAsync(model.userId, model.token, model.NewPassword);
+                if (result.Succeeded)
+                    return this.Ok();
+                if (result.Errors.Any())
+                    throw new ConflictException(result.Errors.ToString());
+            }
+            return this.Conflict();
         }
 
         /// <summary>

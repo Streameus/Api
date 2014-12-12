@@ -18,15 +18,26 @@ namespace Streameus.DataBaseAccess
         void SaveChanges();
 
         /// <summary>
-        /// Get the context used within the unit of work
-        /// </summary>
-        DbContext Context { get; }
-
-        /// <summary>
         /// Get one of the entity set stored in the context
         /// </summary>
         /// <typeparam name="TEntity">The type of set to retrieve</typeparam>
         /// <returns>The entity type set</returns>
         DbSet<TEntity> GetDbSet<TEntity>() where TEntity : class;
+
+        /// <summary>
+        /// Set a context's entry state
+        /// </summary>
+        /// <param name="entity">The entity</param>
+        /// <param name="entityState">The state to set</param>
+        /// <typeparam name="TEntity"></typeparam>
+        void EntryState<TEntity>(TEntity entity, EntityState entityState) where TEntity : class;
+
+        /// <summary>
+        /// Get a context's entry state
+        /// </summary>
+        /// <param name="entity">The entity</param>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <returns>The entity state in the context</returns>
+        EntityState EntryState<TEntity>(TEntity entity) where TEntity : class;
     }
 }

@@ -11,7 +11,7 @@ using Streameus.Exceptions.HttpErrors;
 namespace Streameus.Hooks
 {
     /// <summary>
-    /// Cette classe permet de retourner une herreur http en cas d'exception
+    /// Cette classe permet de retourner une erreur http en cas d'exception
     /// </summary>
     public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {

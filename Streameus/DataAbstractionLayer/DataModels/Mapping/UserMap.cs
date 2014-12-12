@@ -29,9 +29,6 @@ namespace Streameus.Models.Mapping
             this.Property(t => t.LastName)
                 .IsRequired();
 
-            this.Property(t => t.PicturePath)
-                .IsRequired();
-
             this.Property(t => t.Phone)
                 .IsRequired();
 

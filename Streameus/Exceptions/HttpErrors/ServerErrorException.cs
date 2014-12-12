@@ -3,15 +3,15 @@
 namespace Streameus.Exceptions.HttpErrors
 {
     /// <summary>
-    /// Exception thrown in case of conflict with ressource provided (409)
+    /// Exception thrown in case of internal error
     /// </summary>
-    public class ConflictdException : ApiException
+    public class ServerErrorException : ApiException
     {
         /// <summary>
         /// Default constructor
         /// </summary>
-        public ConflictdException()
-            : base(HttpStatusCode.Conflict)
+        public ServerErrorException()
+            : base(HttpStatusCode.InternalServerError)
         {
         }
 
@@ -19,8 +19,8 @@ namespace Streameus.Exceptions.HttpErrors
         /// Constructor with error message
         /// </summary>
         /// <param name="reason"></param>
-        public ConflictdException(string reason)
-            : base(HttpStatusCode.Conflict, reason)
+        public ServerErrorException(string reason)
+            : base(HttpStatusCode.InternalServerError, reason)
         {
         }
     }

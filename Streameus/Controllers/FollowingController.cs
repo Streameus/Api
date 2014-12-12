@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.OData.Query;
 using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity;
 using Streameus.DataAbstractionLayer.Contracts;
 using Streameus.DataAbstractionLayer.Services;
 using Streameus.Exceptions;
@@ -34,26 +38,31 @@ namespace Streameus.Controllers
 
         // GET api/following/5
         /// <summary>
-        /// Get all the person's this user is following
+        /// Get all the people this user is following
         /// </summary>
         /// <param name="id">the user id</param>
+        /// <param name="options">OData query options</param>
         /// <returns></returns>
         /// <exception cref="NotFoundException"></exception>
-        public List<UserViewModel> Get(int id)
+        [Authorize]
+        public List<UserViewModel> Get(int id, ODataQueryOptions<User> options = null)
         {
             var abonnementsViewModels = new List<UserViewModel>();
             try
             {
                 var abonnements = this._userServices.GetAbonnementsForUser(id);
+                if (options != null)
+                    abonnements = options.ApplyTo(abonnements) as IQueryable<User>;
                 abonnements.ForEach(f => abonnementsViewModels.Add(new UserViewModel(f)));
             }
             catch (NoResultException e)
             {
                 throw new NotFoundException(e.Message);
             }
-            catch (EmptyResultException e)
+            catch (EmptyResultException)
             {
-                throw new Exceptions.HttpErrors.NoResultException(e.Message);
+                //Now this case doesn't matter anymore.
+                //Sends back an empty array instead
             }
             return abonnementsViewModels;
         }
@@ -63,11 +72,12 @@ namespace Streameus.Controllers
         /// Follow somebody
         /// </summary>
         /// <param name="id">the id of the user to follow</param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void Post(int id)
+        ///  <response code="409">You cannot follow yourself</response>
+        [Authorize]
+        public bool Post(int id)
         {
-            //Todo implementer apres l'auth
-            throw new NotImplementedException("Revenez quand l'auth marchera");
+            var userId = this.GetCurrentUserId();
+            return this._userServices.AddFollowing(userId, id);
         }
 
         // DELETE api/following/5
@@ -76,10 +86,11 @@ namespace Streameus.Controllers
         /// </summary>
         /// <param name="id">the id of the user to stop following</param>
         /// <exception cref="NotImplementedException"></exception>
-        public void Delete(int id)
+        [Authorize]
+        public bool Delete(int id)
         {
-            //Todo implementer apres l'auth
-            throw new NotImplementedException("Revenez quand l'auth marchera");
+            var userId = this.GetCurrentUserId();
+            return this._userServices.RemoveFollowing(userId, id);
         }
     }
 }

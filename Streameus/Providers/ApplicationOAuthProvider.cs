@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
@@ -51,6 +49,9 @@ namespace Streameus.Providers
         {
             using (StreameusUserManager userManager = context.OwinContext.GetUserManager<StreameusUserManager>())
             {
+                //Authorize CORS for everyone yeah!
+                //context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
+
                 User user = await userManager.FindAsync(context.UserName, context.Password);
 
                 if (user == null)
@@ -129,10 +130,10 @@ namespace Streameus.Providers
             {
                 Uri expectedRootUri = new Uri(context.Request.Uri, "/");
 
-                if (expectedRootUri.AbsoluteUri == context.RedirectUri)
-                {
-                    context.Validated();
-                }
+                //if (expectedRootUri.AbsoluteUri == context.RedirectUri)
+                //{
+                context.Validated();
+                //}
             }
 
             return Task.FromResult<object>(null);

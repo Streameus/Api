@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Streameus.DataAbstractionLayer;
+using Streameus.Providers;
 
 namespace Streameus.Models
 {
@@ -22,6 +25,25 @@ namespace Streameus.Models
         public StreameusUserStore(StreameusContext context)
             : base(context)
         {
+        }
+
+        /// <summary>
+        /// Overload to delete the CustomUserLogin from the db (prevents ForeignKeyError)
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="login"></param>
+        /// <returns></returns>
+        public override Task RemoveLoginAsync(User user, UserLoginInfo login)
+        {
+            var provider = login.LoginProvider;
+            var key = login.ProviderKey;
+            var entry = user.Logins.SingleOrDefault(l => l.LoginProvider == provider && l.ProviderKey == key);
+            if (entry != null)
+            {
+                user.Logins.Remove(entry);
+                this.Context.Set<CustomUserLogin>().Remove(entry);
+            }
+            return Task.FromResult(0);
         }
     }
 
@@ -71,7 +93,6 @@ namespace Streameus.Models
             manager.PasswordValidator = new PasswordValidator()
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true
             };
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
@@ -79,6 +100,8 @@ namespace Streameus.Models
                 manager.UserTokenProvider =
                     new DataProtectorTokenProvider<User, int>(dataProtectionProvider.Create("PasswordReset"));
             }
+            manager.EmailService = new EmailServiceProvider();
+
             return manager;
         }
     }

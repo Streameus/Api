@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Streameus.Exceptions.HttpErrors;
 using Streameus.ViewModels;
 
 namespace Streameus.DataAbstractionLayer.Contracts
@@ -18,6 +19,7 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// Get an entity by it's id
         /// </summary>
         /// <param name="id"></param>
+        /// <exception cref="NotFoundException"></exception>
         /// <returns></returns>
         TEntity GetById(int id);
 
@@ -25,6 +27,6 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// Return all existing entry for this entity
         /// </summary>
         /// <returns></returns>
-        IEnumerable<TEntity> GetAll();
+        IQueryable<TEntity> GetAll();
     }
 }

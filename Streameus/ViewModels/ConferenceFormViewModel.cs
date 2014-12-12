@@ -43,5 +43,17 @@ namespace Streameus.ViewModels
         [Required]
         [Range(15, 240)]
         public int ScheduledDuration { get; set; }
+
+        /// <summary>
+        /// The category id
+        /// </summary>
+        [Required]
+        public int CategoryId { get; set; }
+
+        /// <summary>
+        /// Entrance fee to the conference.
+        /// </summary>
+        [Range(0, double.MaxValue)]
+        public double? EntranceFee { get; set; }
     }
 }

@@ -1,5 +1,8 @@
 ﻿using System.Data.Entity;
+using System.Web.UI.WebControls;
 using Newtonsoft.Json;
+using Streameus.Hooks;
+using Swashbuckle.Application;
 #pragma warning disable 1591
 using System;
 using System.Collections.Generic;
@@ -22,7 +25,6 @@ using Streameus.DataBaseAccess;
 using Streameus.Documentation;
 using Streameus.Models;
 using Streameus.ViewModels;
-using Swashbuckle.Models;
 
 namespace Streameus
 {
@@ -36,9 +38,9 @@ namespace Streameus
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             this.RegisterIoC();
-            this.SetInitializer();
             this.RegisterAutoMapping();
-            this.SwaggerParameters();
+            //Register handler for Ajax PUT/DELETE request
+            GlobalConfiguration.Configuration.MessageHandlers.Add(new XHttpMethodOverrideDelegatingHandler());
 //            this.SetJsonSerializerProperties();
         }
 
@@ -52,17 +54,6 @@ namespace Streameus
             settings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
         }
 
-        private void SwaggerParameters()
-        {
-            SwaggerSpecConfig.Customize(
-                c =>
-                {
-                    c.IgnoreObsoleteActions = true;
-                    c.OperationFilter<AddStandardResponseMessages>();
-                    c.OperationFilter<AddAuthorizationResponseMessages>();
-                });
-        }
-
         private void RegisterIoC()
         {
             var builder = new ContainerBuilder();
@@ -71,11 +62,13 @@ namespace Streameus
             //Register api controllers
             builder.RegisterApiControllers(dataAccess);
             //Set UnitOfWork to exist for the whole duration of the API request
-            builder.Register(u => new UnitOfWork(new StreameusContext())).As<IUnitOfWork>().InstancePerApiRequest();
+            builder.Register(u => new UnitOfWork(new StreameusContext())).As<IUnitOfWork>().InstancePerRequest();
             //Register all the services
             builder.RegisterAssemblyTypes(dataAccess)
                 .Where(t => t.Name.EndsWith("Services"))
                 .AsImplementedInterfaces();
+
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof (Stripe.StripeCharge)));
 
             // Build the IOC container.
             var container = builder.Build();
@@ -88,17 +81,10 @@ namespace Streameus
 
         private void RegisterAutoMapping()
         {
-            Mapper.CreateMap<UserViewModel, User>();
-        }
-
-        private void SetInitializer()
-        {
-            //Un initializer de db different est requis pour appHarbor, cf doc de la classe.
-            var appHarbor = ConfigurationManager.AppSettings["Environment"] == "AppHarbor";
-            if (appHarbor)
-                Database.SetInitializer(new StreameusInitializerForAppHarbor());
-            else
-                Database.SetInitializer(new StreameusInitializer());
+            Mapper.CreateMap<UserViewModel, User>()
+                .ForMember(m => m.Followers, config => config.Ignore())
+                .ForSourceMember(m => m.Followers, config => config.Ignore())
+                .ForSourceMember(m => m.Followings, config => config.Ignore());
         }
     }
 }

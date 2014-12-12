@@ -21,6 +21,20 @@ namespace Streameus.DataAbstractionLayer.Contracts
         void AddUser(User newUser);
 
         /// <summary>
+        /// Add a following to an user
+        /// </summary>
+        /// <param name="userId">The user's id who wants a following</param>
+        /// <param name="userWantedId">The user's id who is followed</param>
+        bool AddFollowing(int userId, int userWantedId);
+
+        /// <summary>
+        /// Remove a following of an user
+        /// </summary>
+        /// <param name="userId">The user's id who wants remove following</param>
+        /// <param name="userUnwantedId">The user's id who is deleted</param>
+        bool RemoveFollowing(int userId, int userUnwantedId);
+
+        /// <summary>
         /// Update a new user
         /// </summary>
         /// <param name="user">The user to be updated</param>
@@ -32,6 +46,13 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// </summary>
         /// <param name="id">Id of the user to be deleted</param>
         void Delete(int id);
+
+        /// <summary>
+        /// Check if a pseudo exists in db
+        /// </summary>
+        /// <param name="pseudo">The pseudo to be checked</param>
+        /// <returns>Returns true if the pseudo exists</returns>
+        bool IsPseudoExist(string pseudo);
 
         /// <summary>
         /// Returns all the user's followers
@@ -50,5 +71,40 @@ namespace Streameus.DataAbstractionLayer.Contracts
         /// <exception cref="EmptyResultException">No followings</exception>
         /// <exception cref="NoResultException">The user wasn't found</exception>
         IQueryable<User> GetAbonnementsForUser(int id);
+
+        /// <summary>
+        /// Check if the current user follows the target user
+        /// </summary>
+        /// <param name="currentUserId">The current user ID</param>
+        /// <param name="targetUserId">the target user ID</param>
+        /// <returns></returns>
+        bool IsUserFollowing(int currentUserId, int targetUserId);
+
+        /// <summary>
+        /// Get suggested users to follow based on a user
+        /// </summary>
+        /// <param name="userId">The Id of the user needing suggestions</param>
+        /// <param name="take">The max number of results desired</param>
+        /// <returns>The list of suggested users</returns>
+        IEnumerable<User> GetSuggestionsForUser(int userId, int take = 5);
+
+        /// <summary>
+        /// Get the 5 users with the highest rep
+        /// </summary>
+        /// <returns></returns>
+        /// <param name="take">The max number of results desired</param>
+        IQueryable<User> GetUsersWithBestReputation(int take = 5);
+
+        /// <summary>
+        /// Update the rating of a conference owner
+        /// </summary>
+        /// <param name="userId"></param>
+        void UpdateRating(int userId);
+
+        /// <summary>
+        /// Update the rating of a conference owner
+        /// </summary>
+        /// <param name="user"></param>
+        void UpdateRating(User user);
     }
 }

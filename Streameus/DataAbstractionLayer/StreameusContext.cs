@@ -25,7 +25,6 @@ namespace Streameus.DataAbstractionLayer
         public StreameusContext()
             : base("Name=StreameusContext")
         {
-            DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
         }
 
         /// <summary>

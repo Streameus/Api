@@ -49,18 +49,11 @@ namespace Streameus.Controllers
         /// </summary>
         /// <returns></returns>
         //[Authorize]
-        public SearchResultViewModel Get(string query, ODataQueryOptions options = null)
+        public SearchResultViewModel Get(string query)
         {
-            ODataQueryOptions<User> tutu = null;
-            ODataQueryOptions<Conference> tata = null;
-            if (options != null)
-            { 
-                tutu = new ODataQueryOptions<User>(options.Context, options.Request);
-                tata = new ODataQueryOptions<Conference>(options.Context, options.Request);
-            }
             var keywords = QueryToKeywords(query);
-            var userList = SearchInUsers(keywords, tutu);
-            var confList = SearchInConferences(keywords, tata);
+            var userList = SearchInUsers(keywords);
+            var confList = SearchInConferences(keywords);
             var searchList = new List<SearchResultViewModel> {new SearchResultViewModel(confList, userList)};
             return searchList.First();
         }
@@ -108,7 +101,7 @@ namespace Streameus.Controllers
         {
             var userList = new List<UserViewModel>();
             var users = _userServices.GetAll()
-                .Where(u => keywords.All(k => 
+                .Where(u => keywords.All(k =>
                     u.FirstName.ToLower().Contains(k)
                     || u.Description.ToLower().Contains(k)
                     || u.FirstName.ToLower().Contains(k)
@@ -121,7 +114,8 @@ namespace Streameus.Controllers
             return userList;
         }
 
-        private List<ConferenceViewModel> SearchInConferences(IEnumerable<string> keywords, ODataQueryOptions options = null)
+        private List<ConferenceViewModel> SearchInConferences(IEnumerable<string> keywords,
+            ODataQueryOptions options = null)
         {
             var confList = new List<ConferenceViewModel>();
             var confs = _conferenceServices.GetAll()
@@ -130,10 +124,9 @@ namespace Streameus.Controllers
                     || c.Description.ToLower().Contains(k)));
             if (options != null)
                 confs = options.ApplyTo(confs) as IQueryable<Conference>;
-            
+
             confs.ForEach(c => confList.Add(new ConferenceViewModel(c)));
             return confList;
         }
-
     }
 }

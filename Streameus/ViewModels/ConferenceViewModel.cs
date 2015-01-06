@@ -63,6 +63,11 @@ namespace Streameus.ViewModels
         public string RoomId { get; set; }
 
         /// <summary>
+        /// The url for prezziew
+        /// </summary>
+        public string PrezziewUrl { get; set; }
+
+        /// <summary>
         /// Entrance fee to the conference.
         /// </summary>
         public double EntranceFee { get; set; }
@@ -95,6 +100,7 @@ namespace Streameus.ViewModels
             this.FinalDuration = conf.FinalDuration;
             this.Category = new ConferenceCategoryViewModel(conf.Category);
             this.RoomId = conf.RoomId;
+            this.PrezziewUrl = conf.PrezziewUrl;
             this.EntranceFee = conf.EntranceFee;
 
             //Check for false marks

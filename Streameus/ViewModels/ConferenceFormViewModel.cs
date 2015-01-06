@@ -51,6 +51,11 @@ namespace Streameus.ViewModels
         public int CategoryId { get; set; }
 
         /// <summary>
+        /// The url for prezziew
+        /// </summary>
+        public string PrezziewUrl { get; set; }
+
+        /// <summary>
         /// Entrance fee to the conference.
         /// </summary>
         [Range(0, double.MaxValue)]

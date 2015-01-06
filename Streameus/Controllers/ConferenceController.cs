@@ -176,7 +176,8 @@ namespace Streameus.Controllers
                 Status = DataBaseEnums.ConfStatus.AVenir,
                 Owner = user,
                 Category = category,
-                EntranceFee = conference.EntranceFee.HasValue ? conference.EntranceFee.Value : 0
+                EntranceFee = conference.EntranceFee.HasValue ? conference.EntranceFee.Value : 0,
+                PrezziewUrl = conference.PrezziewUrl
             };
             this._conferenceServices.AddConference(newConf);
             return this.Get(newConf.Id);
@@ -199,6 +200,7 @@ namespace Streameus.Controllers
             updatedConf.Name = conference.Name;
             updatedConf.Description = conference.Description;
             updatedConf.ScheduledDuration = conference.ScheduledDuration;
+            updatedConf.PrezziewUrl = conference.PrezziewUrl;
             if (conference.EntranceFee.HasValue)
                 updatedConf.EntranceFee = conference.EntranceFee.Value;
             if (conference.Time != null)

@@ -81,6 +81,11 @@ namespace Streameus.Models
         public string RoomId { get; set; }
 
         /// <summary>
+        /// The url for prezziew
+        /// </summary>
+        public string PrezziewUrl { get; set; }
+
+        /// <summary>
         /// Conference Parameters
         /// </summary>
         public virtual ConferenceParameters ConferenceParameters { get; set; }

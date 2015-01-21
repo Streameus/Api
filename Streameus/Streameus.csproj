@@ -133,6 +133,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MySql.Data.Entity.6.9.5\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
     </Reference>
+    <Reference Include="MySql.Web, Version=6.8.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -329,6 +330,7 @@
     <Compile Include="Controllers\ResourceController.cs" />
     <Compile Include="Controllers\RessourceController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="DataAbstractionLayer\Initializers\MysqlInitializer.cs" />
     <Compile Include="DataAbstractionLayer\MySqlConfiguration.cs" />
     <Compile Include="DataAbstractionLayer\MySqlHistoryContext.cs" />
     <Compile Include="DataAbstractionLayer\Contracts\IConferenceCategoryServices.cs" />
@@ -387,6 +389,10 @@
     </Compile>
     <Compile Include="Hooks\ApiExceptionFilterAttribute.cs" />
     <Compile Include="Hooks\XHttpMethodOverrideDelegatingHandler.cs" />
+    <Compile Include="Migrations\201501212036359_Initial.cs" />
+    <Compile Include="Migrations\201501212036359_Initial.Designer.cs">
+      <DependentUpon>201501212036359_Initial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ValidateModelAttribute.cs" />
     <Compile Include="DataAbstractionLayer\DataModels\ApplicationUser.cs" />
@@ -567,6 +573,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <EmbeddedResource Include="Migrations\201501212036359_Initial.resx">
+      <DependentUpon>201501212036359_Initial.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Scripts\swagger.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

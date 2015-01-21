@@ -98,34 +98,34 @@ namespace Streameus.ViewModels
             this.Time = conf.Time;
             this.ScheduledDuration = conf.ScheduledDuration;
             this.FinalDuration = conf.FinalDuration;
-            this.Category = new ConferenceCategoryViewModel(conf.Category);
+//            this.Category = new ConferenceCategoryViewModel(conf.Category);
             this.RoomId = conf.RoomId;
             this.PrezziewUrl = conf.PrezziewUrl;
             this.EntranceFee = conf.EntranceFee;
 
             //Check for false marks
-            if (conf.Mark > -1)
-            {
-                if (Math.Abs(conf.Mark) < 0.1 && !conf.Marks.Any())
-                {
-                    this.Mark = null;
-                }
-                else
-                {
-                    this.Mark = conf.Mark;
-                }
-            }
+//            if (conf.Mark > -1)
+//            {
+//                if (Math.Abs(conf.Mark) < 0.1 && !conf.Marks.Any())
+//                {
+//                    this.Mark = null;
+//                }
+//                else
+//                {
+//                    this.Mark = conf.Mark;
+//                }
+//            }
 
-            if (userId > 0)
-            {
-                if (conf.OwnerId == userId || conf.Registered.Any(u => u.Id == userId) ||
-                    conf.Speakers.Any(u => u.Id == userId))
-                    this.Registered = true;
-                else
-                {
-                    this.Registered = false;
-                }
-            }
+//            if (userId > 0)
+//            {
+//                if (conf.OwnerId == userId || conf.Registered.Any(u => u.Id == userId) ||
+//                    conf.Speakers.Any(u => u.Id == userId))
+//                    this.Registered = true;
+//                else
+//                {
+//                    this.Registered = false;
+//                }
+//            }
         }
     }
 }

@@ -14,15 +14,32 @@ namespace Streameus.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
-            ContextKey = "Streameus.DataAbstractionLayer.StreameusContext";
+            AutomaticMigrationsEnabled = false;
+
+            // register mysql code generator
+            SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
+
+            SetHistoryContextFactory("MySql.Data.MySqlClient", (conn, schema) => new MySqlHistoryContext(conn, schema));
         }
 
         protected override void Seed(StreameusContext context)
         {
-            //TODO uncomment this if you wanna seed
             if (!context.GetDbSet<User>().Any())
                 StreameusSeeder.Seed(context);
         }
     }
+
+//        public Configuration()
+//        {
+//            AutomaticMigrationsEnabled = true;
+//            ContextKey = "Streameus.DataAbstractionLayer.StreameusContext";
+//        }
+//
+//        protected override void Seed(StreameusContext context)
+//        {
+//            //TODO uncomment this if you wanna seed
+//            if (!context.GetDbSet<User>().Any())
+//                StreameusSeeder.Seed(context);
+//        }
+//    }
 }

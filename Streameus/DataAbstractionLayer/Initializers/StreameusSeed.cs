@@ -47,7 +47,14 @@ namespace Streameus.DataAbstractionLayer.Initializers
                 new User {Parameters = new Parameters(), FirstName = "Yan", LastName = "Li"},
                 new User {Parameters = new Parameters(), FirstName = "Peggy", LastName = "Justice", Gender = false},
                 new User {Parameters = new Parameters(), FirstName = "Laura", LastName = "Norman", Gender = false},
-                new User {Parameters = new Parameters(), FirstName = "Nino", LastName = "Olivetto", Gender = true}
+                new User {Parameters = new Parameters(), FirstName = "Nino", LastName = "Olivetto", Gender = true},
+				new User {Parameters = new Parameters(), FirstName = "Jacqueline", LastName = "Bryant", Gender = true},
+				new User {Parameters = new Parameters(), FirstName = "Knight", LastName = "Bernice", Gender = true},
+				new User {Parameters = new Parameters(), FirstName = "Victor", LastName = "Carter", Gender = true},
+				new User {Parameters = new Parameters(), FirstName = "Darryl", LastName = "Hanson", Gender = true},
+				new User {Parameters = new Parameters(), FirstName = "Russell", LastName = "Dixon", Gender = true},
+				new User {Parameters = new Parameters(), FirstName = "Terry", LastName = "Newman", Gender = true},
+				new User {Parameters = new Parameters(), FirstName = "Jennie", LastName = "Frazier", Gender = true}
             };
             for (var i = 0; i < _userCount; i++)
             {
